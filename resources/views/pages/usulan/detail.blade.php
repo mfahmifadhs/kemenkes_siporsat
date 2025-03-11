@@ -10,7 +10,7 @@
                 <h1 class="m-0">Usulan</h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('usulan', $data->form_.kode_form) }}">Daftar</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('usulan', $data->form->kode_form) }}">Daftar</a></li>
                     <li class="breadcrumb-item active">Detail</li>
                 </ol>
             </div>
