@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AtkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormController;
@@ -48,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('gdn', [GdnController::class, 'index'])->name('gdn');
     Route::get('ukt', [UktController::class, 'index'])->name('ukt');
+    Route::get('atk', [AtkController::class, 'index'])->name('atk');
 
     // Akses Super User
     Route::group(['middleware' => ['access:user']], function () {

@@ -103,7 +103,7 @@
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar mt-3">
+            <div class="sidebar mt-3" style="overflow-y: auto; max-height: 90vh;">
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -114,7 +114,15 @@
                             </a>
                         </li>
 
-                        <li class="nav-header"><i>Menu</i></li>
+                        <!-- <li class="nav-header"><i>Menu ATK</i></li>
+                        <li class="nav-item">
+                            <a href="{{ route('atk') }}" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-pencil"></i>
+                                <p>Alat Tulis Kantor</p>
+                            </a>
+                        </li> -->
+
+                        <li class="nav-header"><i>Menu Lainnya</i></li>
                         <li class="nav-item">
                             <a href="{{ route('gdn') }}" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-city"></i>
@@ -130,12 +138,6 @@
 
                         @if (Auth::user()->role_id == 1)
                         <li class="nav-header"><i>Usulan</i></li>
-                        <li class="nav-item">
-                            <a href="{{ route('usulan', '*') }}" class="nav-link font-weight-bold">
-                                <i class="nav-icon fa-solid fa-file-invoice"></i>
-                                <p>Usulan</p>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="{{ route('form') }}" class="nav-link font-weight-bold">
                                 <i class="nav-icon fa-solid fa-file-lines"></i>
