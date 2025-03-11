@@ -225,7 +225,7 @@ class UsulanController extends Controller
                 'tanggal_selesai'    => $request->tanggal_selesai ?? null,
                 'otp_2'              => $request->persetujuan == 'true' ? rand(111111, 999999) : null,
                 'otp_3'              => $otp3,
-                'tanggal_usulan'     => Carbon::parse($request->tanggal_ambil . ' ' . now()->toTimeString()) ?? Carbon::now()
+                'tanggal_usulan'     => Carbon::parse($request->tanggal_selesai . ' ' . now()->toTimeString()) ?? Carbon::now()
             ]);
             return redirect()->route('usulan.detail', $id)->with('success', 'Berhasil Melakukan Verifikasi');
         }
