@@ -209,7 +209,7 @@ class UsulanController extends Controller
 
             $klasifikasi = $data->form->klasifikasi;
             $kodeSurat   = $data->user->pegawai->uker->kode_surat;
-            $nomorSurat  = Usulan::whereHas('user.pegawai', function ($query) use ($data) {
+            $nomorSurat  = Usulan::whereHas('pegawai', function ($query) use ($data) {
                 $query->where('status_persetujuan', 'true')->where('uker_id', $data->pegawai->uker_id)->whereYear('tanggal_usulan', Carbon::now()->format('Y'));
             })->count() + 1;
             $tahunSurat  = Carbon::now()->format('Y');
