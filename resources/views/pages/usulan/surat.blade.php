@@ -80,9 +80,9 @@
             <img src="{{ asset('dist/img/header-'.$data->pegawai->uker->utama_id.'.png') }}" alt="">
         </div>
         <div class="card-body no-break">
-            <div class="text-center">
-                <h2><b>Surat Usulan</b></h2>
-                <h4>Nomor Surat : {{ $data->nomor_usulan }}</h4>
+            <div class="text-center text-uppercase">
+                <h3><b>{{ $data->form_id == 3 ? 'Berita Acara Serah Terima' : 'Surat Usulan' }}</b></h3>
+                <h4>Nomor : {{ $data->nomor_usulan }}</h4>
             </div>
         </div>
         <div class="card-body h3 no-break">
@@ -106,6 +106,8 @@
                 <div class="col-9">: {{ $data->pegawai->uker->unit_kerja }} | {{ $data->pegawai->uker->utama->unit_utama }}</div>
             </div>
         </div>
+        <!-- ========================= UKT & GDN ============================ -->
+        @if (in_array($data->form_id, [1,2]))
         <div class="card-body">
             <div class="table-container">
                 <table class="table table-bordered border border-dark">
@@ -130,12 +132,43 @@
                 </table>
             </div>
         </div>
+        @endif
+
+        <!-- ========================== ATK ================================= -->
+        @if ($data->form_id == 3)
+        <div class="card-body h4" style="overflow-y: auto; max-height: 50vh;">
+            <label>Uraian Permintaan</label>
+            <div class="table-responsive">
+                <table id="table" class="table table-bordered border border-dark h4">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="th">No</th>
+                            <th class="th">Nama Barang</th>
+                            <th class="th">Deskripsi</th>
+                            <th class="th">Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data->detailAtk as $row)
+                        <tr class="bg-white">
+                            <td class="td text-center">{{ $loop->iteration }}</td>
+                            <td class="td">{{ $row->atk->nama_barang }}</td>
+                            <td class="td">{{ $row->atk->deskripsi }}</td>
+                            <td class="td text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
         <div class="card-body">
             <div class="footer-container">
                 <div class="row">
                     <div class="col-md-12 mb-5">
                         <h3 class="lh-base">
-                            Demikian surat usulan ini kami sampaikan. Atas perhatian dan kerjasamanya diucapkan terima kasih
+                            Demikian {{ $data->form_id == 3 ? 'berita acara serah terima' : 'surat usulan' }}
+                            ini kami sampaikan. Atas perhatian dan kerjasamanya diucapkan terima kasih
                         </h3>
                     </div>
                     @if ($data->status_persetujuan == 'true')
@@ -160,14 +193,14 @@
                     @if ($data->nama_penerima)
                     <div class="col-5">
                         <h3>Diserahkan oleh,</h3>
-                        <h3>{{ $data->verif->jabatan->jabatan }} {{ $data->verif->tim_kerja }}</h3>
+                        <h3>{{ $data->form_id == 3 ? 'Petugas Gudang' : $data->verif->jabatan->jabatan.' '.$data->verif->tim_kerja }}</h3>
                         <h3 class="my-3"><img src="{{ \App\Helpers\QrCodeHelper::generateQrCode('https://siporsat.kemkes.go.id/surat/'. $data->otp_4 .'/'. $data->kode_usulan) }}" width="150" alt="QR Code"></h3>
-                        <h3>Petugas Gudang</h3>
+                        <h3>{{ $data->form_id == 3 ? 'Nando' : 'Staf' }}</h3>
                     </div>
                     <div class="col-2"></div>
                     <div class="col-5">
                         <h3>Diterima oleh,</h3>
-                        <h3>Staf</h3>
+                        <h3>{{ $data->pegawai->uker->unit_kerja }}</h3>
                         <h3 class="my-3"><img src="{{ \App\Helpers\QrCodeHelper::generateQrCode('https://siporsat.kemkes.go.id/surat/'. $data->otp_3 .'/'. $data->kode_usulan) }}" width="150" alt="QR Code"></h3>
                         <h3>{{ $data->nama_penerima }}</h3>
                     </div>

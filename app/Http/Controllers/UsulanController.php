@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Mail\mailToken;
+use App\Models\Atk;
+use App\Models\AtkKeranjang;
 use App\Models\Form;
 use App\Models\GdnPerbaikan;
 use App\Models\UnitKerja;
+use App\Models\User;
 use App\Models\Usulan;
+use App\Models\UsulanAtk;
 use App\Models\UsulanDetail;
 use Illuminate\Http\Request;
 use Endroid\QrCode\QrCode;
@@ -243,23 +247,57 @@ class UsulanController extends Controller
 
     public function store(Request $request, $id)
     {
+        $akses = Auth::user()->akses_id;
+        if (!$request->pengusul && $akses == 3) {
+            return redirect()->route('atk-bucket.store', http_build_query($request->all()));
+        }
+
         $form = Form::where('kode_form', $id)->first();
         $kode = Str::random(6);
+        $otp  = rand(111111, 999999);
+        $verif = User::where('akses_id', 1)->first();
+        $user  = User::where('id', $request->pengusul)->first();
+
         $id_usulan = Usulan::withTrashed()->count() + 1;
 
         $tambah = new Usulan();
         $tambah->id_usulan      = $id_usulan;
-        $tambah->user_id        = Auth::user()->id;
-        $tambah->pegawai_id     = Auth::user()->pegawai_id;
+        $tambah->user_id        = $request->cito == 'true' ? $user->id : Auth::user()->id;
+        $tambah->pegawai_id     = $request->cito == 'true' ? $user->pegawai_id : Auth::user()->pegawai_id;
         $tambah->form_id        = $form->id_form;
         $tambah->kode_usulan    = $kode;
-        $tambah->tanggal_usulan = Carbon::now();
-        $tambah->otp_1          = rand(111111, 999999);
+        $tambah->tanggal_usulan = $request->tanggal ?? Carbon::now();
+        $tambah->otp_1          = $otp;
         $tambah->created_at     = Carbon::now();
+
+        if ($request->cito == 'true') {
+            $klasifikasi = $form->klasifikasi;
+            $kodeSurat   = $user->pegawai->uker->kode_surat;
+            $nomorSurat  = Usulan::whereHas('pegawai', function ($query) use ($user) {
+                $query->where('status_persetujuan', 'true')->where('uker_id', $user->pegawai->uker_id)->whereYear('tanggal_usulan', Carbon::now()->format('Y'));
+            })->count() + 1;
+            $tahunSurat = Carbon::now()->format('Y');
+            $format     = $klasifikasi . '/' . $kodeSurat . '/' . $nomorSurat . '/' . $tahunSurat;
+
+            $tambah->verif_id           = $verif->pegawai_id;
+            $tambah->nomor_usulan       = $format;
+            $tambah->nama_penerima      = $request->penerima;
+            $tambah->status_persetujuan = 'true';
+            $tambah->status_proses      = 'selesai';
+            $tambah->tanggal_selesai    = $request->tanggal ?? Carbon::now();
+            $tambah->otp_2              = $otp;
+            $tambah->otp_3              = $otp;
+            $tambah->otp_4              = $otp;
+        }
+
         $tambah->save();
 
         if ($form->id_form == 1 || $form->id_form == 2) {
             $this->storeDetail($request, $id_usulan);
+        }
+
+        if ($form->id_form == 3) {
+            $this->storeAtk($request, $id_usulan);
         }
 
         return redirect()->route('usulan.detail', $id_usulan)->with('success', 'Berhasil Menambahkan');
@@ -279,6 +317,30 @@ class UsulanController extends Controller
             $detail->keterangan  = $request->keterangan[$i];
             $detail->created_at  = Carbon::now();
             $detail->save();
+        }
+
+        return;
+    }
+
+    public function storeAtk(Request $request, $id)
+    {
+        $atk = $request->id_atk;
+        foreach ($atk as $i => $atk_id) {
+            $atkSelect = Atk::where('id_atk', $atk_id)->first();
+            $id_detail = UsulanAtk::withTrashed()->count() + 1;
+            $detail = new UsulanAtk();
+            $detail->id_detail  = $id_detail;
+            $detail->usulan_id  = $id;
+            $detail->atk_id     = $atk_id;
+            $detail->jumlah     = $request->jumlah[$i];
+            $detail->satuan_id  = $atkSelect->satuan_id;
+            $detail->harga      = $atkSelect->harga;
+            $detail->jumlah     = $request->jumlah[$i];
+            $detail->keterangan = $request->keterangan_permintaan[$i];
+            $detail->created_at = Carbon::now();
+            $detail->save();
+
+            AtkKeranjang::where('id_keranjang', $request->id_keranjang[$i])->delete();
         }
 
         return;

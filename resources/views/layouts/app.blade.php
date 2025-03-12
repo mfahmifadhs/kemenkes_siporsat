@@ -114,13 +114,47 @@
                             </a>
                         </li>
 
-                        <!-- <li class="nav-header"><i>Menu ATK</i></li>
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
+                        <li class="nav-header"><i>Menu ATK</i></li>
                         <li class="nav-item">
-                            <a href="{{ route('atk') }}" class="nav-link font-weight-bold">
+                            <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
-                                <p>Alat Tulis Kantor</p>
+                                <p>
+                                Alat Tulis Kantor
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
                             </a>
-                        </li> -->
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('atk') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Permintaan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('usulan','atk') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Daftar Usulan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('atk-kategori') }}" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-pencil-ruler"></i>
+                                <p>Kategori</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('atk-satuan') }}" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-pencil-ruler"></i>
+                                <p>Satuan</p>
+                            </a>
+                        </li>
+                        @endif
 
                         <li class="nav-header"><i>Menu Lainnya</i></li>
                         <li class="nav-item">

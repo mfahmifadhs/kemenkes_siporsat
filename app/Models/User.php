@@ -43,4 +43,8 @@ class User extends Authenticatable
     public function usulan() {
         return $this->hasMany(Usulan::class, 'user_id');
     }
+
+    public function keranjang() {
+        return $this->hasMany(AtkKeranjang::class, 'user_id');
+    }
 }

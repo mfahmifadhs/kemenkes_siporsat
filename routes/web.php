@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\AtkController;
+use App\Http\Controllers\AtkKategori;
+use App\Http\Controllers\AtkKategoriController;
+use App\Http\Controllers\AtkKeranjang;
+use App\Http\Controllers\AtkKeranjangController;
+use App\Http\Controllers\AtkSatuanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormController;
@@ -31,8 +36,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('profil/edit/{id}',   [AuthController::class, 'profilUpdate'])->name('profil.edit');
     Route::get('profil/update/{id}', [AuthController::class, 'profilUpdate'])->name('profil.update');
     Route::get('email',              [AuthController::class, 'email'])->name('email');
-    Route::get('emai/update',        [AuthController::class, 'email'])->name('email.update');
-    Route::get('emai/delete/{id}',   [AuthController::class, 'emailDelete'])->name('email.delete');
+    Route::get('email/update',       [AuthController::class, 'email'])->name('email.update');
+    Route::get('email/delete/{id}',  [AuthController::class, 'emailDelete'])->name('email.delete');
+    Route::get('users/select',       [UserController::class, 'select'])->name('users.select');
+
+    Route::post('atk-stok/store',         [AtkKeranjangController::class, 'keranjang'])->name('atk-stok.create');
+
+    Route::get('atk-bucket/update/{aksi}/{id}', [AtkKeranjangController::class, 'update'])->name('atk-bucket.update');
+    Route::get('atk-bucket/remove/{id}',        [AtkKeranjangController::class, 'remove'])->name('atk-bucket.remove');
+    Route::get('atk-bucket/store',              [AtkKeranjangController::class, 'store'])->name('atk-bucket.store');
+    Route::post('atk-bucket/create',            [AtkKeranjangController::class, 'create'])->name('atk-bucket.create');
 
     Route::get('usulan/verif/{id}',   [UsulanController::class, 'verif'])->name('usulan.verif');
     Route::get('usulan/proses/{id}',  [UsulanController::class, 'proses'])->name('usulan.proses');
@@ -71,13 +84,23 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('kriteria/store', [PenilaianKriteriaController::class, 'store'])->name('kriteria.store');
         Route::post('kriteria/update/{id}', [PenilaianKriteriaController::class, 'update'])->name('kriteria.update');
 
+
+        Route::group(['middleware' => ['access:admin-atk']], function () {
+            Route::get('atk-kategori', [AtkKategoriController::class, 'show'])->name('atk-kategori');
+            Route::post('atk-kategori/store', [AtkKategoriController::class, 'store'])->name('atk-kategori.store');
+            Route::post('atk-kategori/update/{id}', [AtkKategoriController::class, 'update'])->name('atk-kategori.update');
+
+            Route::get('atk-satuan', [AtkSatuanController::class, 'show'])->name('atk-satuan');
+            Route::post('atk-satuan/store', [AtkSatuanController::class, 'store'])->name('atk-satuan.store');
+            Route::post('atk-satuan/update/{id}', [AtkSatuanController::class, 'update'])->name('atk-satuan.update');
+        });
+
     });
 
     // Akses Super Admin
     Route::group(['middleware' => ['access:master']], function () {
 
         Route::get('users', [UserController::class, 'show'])->name('users');
-        Route::get('users/select', [UserController::class, 'select'])->name('users.select');
         Route::get('users/detail/{id}', [UserController::class, 'detail'])->name('users.detail');
         Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
         Route::post('users/store', [UserController::class, 'store'])->name('users.store');
@@ -91,15 +114,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('pegawai/store', [PegawaiController::class, 'store'])->name('pegawai.store');
         Route::post('pegawai/update/{id}', [PegawaiController::class, 'update'])->name('pegawai.update');
 
-        Route::get('form/store', [FormController::class, 'show'])->name('form');
+        Route::get('form', [FormController::class, 'show'])->name('form');
         Route::post('form/store', [FormController::class, 'store'])->name('form.store');
         Route::post('form/update/{id}', [FormController::class, 'update'])->name('form.update');
 
-        Route::get('uker/store', [UnitKerjaController::class, 'show'])->name('uker');
+        Route::get('uker', [UnitKerjaController::class, 'show'])->name('uker');
         Route::post('uker/store', [UnitKerjaController::class, 'store'])->name('uker.store');
         Route::post('uker/update/{id}', [UnitKerjaController::class, 'update'])->name('uker.update');
 
-        Route::get('akses/store', [UserAksesController::class, 'show'])->name('akses');
+        Route::get('akses', [UserAksesController::class, 'show'])->name('akses');
         Route::post('akses/store', [UserAksesController::class, 'store'])->name('akses.store');
         Route::post('akses/update/{id}', [UserAksesController::class, 'update'])->name('akses.update');
 

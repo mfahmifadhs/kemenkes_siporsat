@@ -40,10 +40,11 @@ class UserController extends Controller
         $uker       = $request->uker;
         $jabatan    = $request->jabatan;
         $status     = $request->status;
+        $search     = $request->search;
 
         $data       = User::with('pegawai')->orderBy('status', 'desc');
 
-        if ($uker || $jabatan || $status) {
+        if ($uker || $jabatan || $status || $search) {
 
             if ($uker) {
                 $res = $data->whereHas('pegawai.uker', function ($query) use ($uker) {
@@ -59,6 +60,12 @@ class UserController extends Controller
 
             if ($status) {
                 $res = $data->where('status', $status);
+            }
+
+            if ($search) {
+                $res = $data->whereHas('pegawai.uker', function ($query) use ($search) {
+                    $query->where('nama_pegawai', 'like', '%' . $search . '%');
+                });
             }
 
             $result = $res->get();

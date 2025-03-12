@@ -32498,17 +32498,17 @@ html.maximized-card {
 }
 
 .btn-app {
-  border-radius: 3px;
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  color: #6c757d;
-  font-size: 12px;
-  height: 60px;
-  margin: 0 0 10px 10px;
-  min-width: 80px;
-  padding: 15px 5px;
-  position: relative;
-  text-align: center;
+    border-radius: 3px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #000;
+    font-size: 12px;
+    height: 38px;
+    /* margin: 10px 10px 10px 10px; */
+    /* min-width: 80px; */
+    padding: 8px 0px;
+    /* position: relative; */
+    text-align: center;
 }
 
 .btn-app > .fa,
@@ -52541,5 +52541,63 @@ a.text-muted:hover {
     cursor: pointer;
     color: blue; /* Sesuaikan warna teks yang menunjukkan opsi show more */
     margin: 0% 0% 0% 18%;
+}
+
+.card-psdia {
+    height: 100%;
+    border: 1px solid;
+}
+
+.card-psdia .card-body {
+    padding: 10px;
+}
+
+.card-psdia h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+}
+
+.card-psdia h5 {
+    font-size: 10px;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.card-psdia h6 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+}
+
+.keranjang {
+    width: 100vh;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.keranjang h6 {
+    font-size: 12px;
+}
+
+.keranjang h5 {
+    font-size: 14px;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon input {
+    padding-right: 30px;
+    /* Ruang untuk ikon */
+}
+
+.input-with-icon i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
 

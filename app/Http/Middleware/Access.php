@@ -15,7 +15,8 @@ class Access
             return redirect('/')->with('failed','Anda tidak memiliki akses!');
         }
 
-        $role = Auth::user()->role_id;
+        $role  = Auth::user()->role_id;
+        $akses = Auth::user()->akses_id;
 
         if ($status == 'master')
         {
@@ -29,6 +30,15 @@ class Access
         if ($status == 'admin')
         {
             if ($role == 1 || $role == 2) {
+                return $next($request);
+            } else {
+                return back()->with('failed','Anda tidak memiliki akses!');
+            }
+        }
+
+        if ($status == 'admin-atk')
+        {
+            if ($akses == 3) {
                 return $next($request);
             } else {
                 return back()->with('failed','Anda tidak memiliki akses!');
