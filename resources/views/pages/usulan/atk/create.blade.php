@@ -155,7 +155,7 @@
                                 <h6 class="text-secondary">{{ $row->deskripsi ? $row->deskripsi : $row->satuan->nama_satuan }}</h6>
                             </div>
                             <div class="card-footer">
-                                <form id="form-{{ $row->id_atk }}" action="{{ route('atk-bucket.store') }}" method="POST">
+                                <form id="form-{{ $row->id_atk }}" action="{{ route('atk-bucket.create') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="atk_id" value="{{ $row->id_atk }}">
                                     <input type="hidden" name="proses" value="keranjang">

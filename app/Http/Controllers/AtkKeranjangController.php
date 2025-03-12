@@ -25,11 +25,13 @@ class AtkKeranjangController extends Controller
                 'jumlah' => $bucket->jumlah + (int) str_replace('.', '', $request->qty)
             ]);
         } else {
+            $id_keranjang = AtkKeranjang::withTrashed()->count() + 1;
             $tambah = new AtkKeranjang();
-            $tambah->user_id    = Auth::user()->id;
-            $tambah->atk_id     = $request->atk_id;
-            $tambah->jumlah     = (int) str_replace('.', '', $request->qty);
-            $tambah->status     = $request->status;
+            $tambah->id_keranjang = $id_keranjang;
+            $tambah->user_id      = Auth::user()->id;
+            $tambah->atk_id       = $request->atk_id;
+            $tambah->jumlah       = (int) str_replace('.', '', $request->qty);
+            $tambah->status       = $request->status;
             $tambah->save();
         }
 
