@@ -239,7 +239,7 @@
                                     <div class="card-body p-0">
                                         <ul class="nav flex-column font-weight-bold">
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'ukt') }}" method="GET">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="proses" value="verif">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
@@ -254,7 +254,7 @@
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'ukt') }}" method="GET">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="proses" value="proses">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
@@ -269,7 +269,7 @@
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'ukt') }}" method="GET">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="proses" value="selesai">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
@@ -284,7 +284,7 @@
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'ukt') }}" method="GET">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="proses" value="false">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
