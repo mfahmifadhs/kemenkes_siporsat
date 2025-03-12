@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\mailToken;
 use App\Models\Atk;
+use App\Models\AtkKategori;
 use App\Models\AtkKeranjang;
 use App\Models\Form;
 use App\Models\GdnPerbaikan;
@@ -160,9 +161,9 @@ class UsulanController extends Controller
                 'kode'      => $row->kode_usulan,
                 'tanggal'   => Carbon::parse($row->tanggal_usulan)->isoFormat('DD MMM Y'),
                 'uker'      => ucwords(strtolower($row->user?->pegawai->uker->unit_kerja)),
-                'nosurat'   => $row->no_surat_usulan ?? '-',
+                'nosurat'   => $row->nomor_usulan ?? '-',
                 'totalItem' => $row->detail->count(),
-                'hal'       => $row->detail->map(function ($item) {
+                'hal'       => $row->form_id == 3 ? $row->keterangan : $row->detail->map(function ($item) {
                     return Str::limit(' ' . $item->judul, 150);
                 }),
                 'deskripsi' => $row->detail->map(function ($item) {
@@ -382,35 +383,45 @@ class UsulanController extends Controller
         $data = Usulan::where('id_usulan', $id)->first();
         $form = $data->form->kode_form;
         $gdn  = GdnPerbaikan::orderBy('jenis_perbaikan', 'asc')->get();
+        $kategori = AtkKategori::where('status', 'true')->get();
 
-        return view('pages.usulan.' . $form . '.edit', compact('id', 'data', 'gdn'));
+        return view('pages.usulan.' . $form . '.edit', compact('id', 'data', 'gdn', 'kategori'));
     }
 
     public function update(Request $request, $id)
     {
-        $judul = $request->judul;
+        $usulan = Usulan::where('id_usulan', $id)->first();
 
-        foreach ($judul as $i => $judul) {
-            $id_detail = $request->id_detail[$i];
+        Usulan::where('id_usulan', $id)->update([
+            'tanggal_usulan'  => $request->tanggal_usulan,
+            'nama_penerima'   => $request->nama_penerima,
+            'tanggal_selesai' => $request->tanggal_ambil,
+            'keterangan'      => $request->keterangan
+        ]);
 
-            if ($id_detail) {
-                UsulanDetail::where('id_detail', $id_detail)->update([
-                    'kategori_id' => $request->kategori[$i] ?? null,
-                    'judul'       => $judul,
-                    'uraian'      => $request->uraian[$i],
-                    'keterangan'  => $request->keterangan[$i],
-                ]);
-            } else {
-                $id_detail = UsulanDetail::withTrashed()->count() + 1;
-                $detail = new UsulanDetail();
-                $detail->id_detail   = $id_detail;
-                $detail->usulan_id   = $id;
-                $detail->kategori_id = $request->kategori[$i] ?? null;
-                $detail->judul       = $request->judul[$i];
-                $detail->uraian      = $request->uraian[$i];
-                $detail->keterangan  = $request->keterangan[$i];
-                $detail->created_at  = Carbon::now();
-                $detail->save();
+        if (in_array($usulan->form_id, [1, 2])) {
+            $judul = $request->judul;
+            foreach ($judul as $i => $judul) {
+                $id_detail = $request->id_detail[$i];
+                if ($id_detail) {
+                    UsulanDetail::where('id_detail', $id_detail)->update([
+                        'kategori_id' => $request->kategori[$i] ?? null,
+                        'judul'       => $judul,
+                        'uraian'      => $request->uraian[$i],
+                        'keterangan'  => $request->keterangan[$i],
+                    ]);
+                } else {
+                    $id_detail = UsulanDetail::withTrashed()->count() + 1;
+                    $detail = new UsulanDetail();
+                    $detail->id_detail   = $id_detail;
+                    $detail->usulan_id   = $id;
+                    $detail->kategori_id = $request->kategori[$i] ?? null;
+                    $detail->judul       = $request->judul[$i];
+                    $detail->uraian      = $request->uraian[$i];
+                    $detail->keterangan  = $request->keterangan[$i];
+                    $detail->created_at  = Carbon::now();
+                    $detail->save();
+                }
             }
         }
 
@@ -426,7 +437,12 @@ class UsulanController extends Controller
         $data = Usulan::where('id_usulan', $id)->first();
         $form = $data->form->kode_form;
 
-        UsulanDetail::where('usulan_id', $id)->delete();
+        if ($data->form_id == 3) {
+            UsulanAtk::where('usulan_id', $id)->delete();
+        } else {
+            UsulanDetail::where('usulan_id', $id)->delete();
+        }
+
         Usulan::where('id_usulan', $id)->delete();
 
         return redirect()->route('usulan', $form)->with('success', 'Berhasil Menghapus');

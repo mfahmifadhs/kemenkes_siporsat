@@ -40,8 +40,10 @@
                                     <tr>
                                         <th style="width: 0%;">No</th>
                                         <th style="width: 10%;">Aksi</th>
+                                        <th style="width: auto;">Kode</th>
                                         <th style="width: auto;">Unit Kerja</th>
                                         <th style="width: auto;">Tanggal</th>
+                                        <th style="width: auto;">Nomor</th>
                                         <th style="width: auto;">Hal</th>
                                         <th style="width: auto;" class="d-none">Deskripsi</th>
                                         <th style="width: 10%;">Status</th>
@@ -218,8 +220,10 @@
                                 <tr>
                                     <td class="align-middle">${item.no}</td>
                                     <td class="align-middle">${item.aksi}</td>
+                                    <td class="align-middle">${item.kode}</td>
                                     <td class="align-middle">${item.uker}</td>
                                     <td class="align-middle">${item.tanggal}</td>
+                                    <td class="align-middle">${item.nosurat}</td>
                                     <td class="align-middle text-left">${item.hal}</td>
                                     <td class="align-middle text-left d-none">${item.deskripsi}</td>
                                     <td class="align-middle">${item.status}</td>

@@ -15,6 +15,7 @@ use App\Http\Controllers\UktController;
 use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserAksesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsulanAtkController;
 use App\Http\Controllers\UsulanController;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('atk-bucket/remove/{id}',        [AtkKeranjangController::class, 'remove'])->name('atk-bucket.remove');
     Route::get('atk-bucket/store',              [AtkKeranjangController::class, 'store'])->name('atk-bucket.store');
     Route::post('atk-bucket/create',            [AtkKeranjangController::class, 'create'])->name('atk-bucket.create');
+
+    Route::get('usulan-atk/hapus/{id}', [UsulanAtkController::class, 'delete'])->name('usulan-atk.delete');
+    Route::post('usulan-atk/store',     [UsulanAtkController::class, 'store'])->name('usulan-atk.store');
+    Route::post('usulan-atk/update',    [UsulanAtkController::class, 'update'])->name('usulan-atk.update');
+
+    Route::get('atk/select-detail/{id}', [AtkController::class, 'select'])->name('atk.select-detail');
 
     Route::get('usulan/verif/{id}',   [UsulanController::class, 'verif'])->name('usulan.verif');
     Route::get('usulan/proses/{id}',  [UsulanController::class, 'proses'])->name('usulan.proses');

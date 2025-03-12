@@ -115,7 +115,7 @@
                         </li>
 
                         @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
-                        <li class="nav-header"><i>Menu ATK</i></li>
+                        <li class="nav-header"><i>Menu</i></li>
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
@@ -141,22 +141,7 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('atk-kategori') }}" class="nav-link font-weight-bold">
-                                <i class="nav-icon fas fa-pencil-ruler"></i>
-                                <p>Kategori</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('atk-satuan') }}" class="nav-link font-weight-bold">
-                                <i class="nav-icon fas fa-pencil-ruler"></i>
-                                <p>Satuan</p>
-                            </a>
-                        </li>
                         @endif
-
-                        <li class="nav-header"><i>Menu Lainnya</i></li>
                         <li class="nav-item">
                             <a href="{{ route('gdn') }}" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-city"></i>
@@ -169,6 +154,35 @@
                                 <p>Kerumahtanggaan</p>
                             </a>
                         </li>
+
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
+                        <li class="nav-header"><i>Master Data</i></li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-pencil"></i>
+                                <p>
+                                Master ATK
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('atk-kategori') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Kategori</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('atk-satuan') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Satuan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
 
                         @if (Auth::user()->role_id == 1)
                         <li class="nav-header"><i>Usulan</i></li>
