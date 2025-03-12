@@ -103,7 +103,7 @@
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar mt-3" style="overflow-y: auto; max-height: 90vh;">
+            <div class="sidebar mt-3" style="overflow-y: auto; max-height: 100vh;">
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -164,6 +164,12 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('atk-barang') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Barang</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ route('atk-kategori') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>

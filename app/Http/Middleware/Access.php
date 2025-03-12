@@ -38,7 +38,7 @@ class Access
 
         if ($status == 'admin-atk')
         {
-            if ($akses == 3) {
+            if ($role == 1 || $akses == 3) {
                 return $next($request);
             } else {
                 return back()->with('failed','Anda tidak memiliki akses!');

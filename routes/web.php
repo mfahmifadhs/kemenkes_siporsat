@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('usulan-atk/store',     [UsulanAtkController::class, 'store'])->name('usulan-atk.store');
     Route::post('usulan-atk/update',    [UsulanAtkController::class, 'update'])->name('usulan-atk.update');
 
-    Route::get('atk/select-detail/{id}', [AtkController::class, 'select'])->name('atk.select-detail');
+    Route::get('atk/select-detail/{id}', [AtkController::class, 'selectByCategory'])->name('atk.select-detail');
 
     Route::get('usulan/verif/{id}',   [UsulanController::class, 'verif'])->name('usulan.verif');
     Route::get('usulan/proses/{id}',  [UsulanController::class, 'proses'])->name('usulan.proses');
@@ -93,6 +93,16 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         Route::group(['middleware' => ['access:admin-atk']], function () {
+            Route::get('atk-barang',                    [AtkController::class, 'show'])->name('atk-barang');
+            Route::get('atk-barang/select',             [AtkController::class, 'select'])->name('atk-barang.select');
+            Route::get('atk-barang/select/detail/{id}', [AtkController::class, 'selectById'])->name('atk-barang.select-detail');
+            Route::get('atk-barang/detail/{id}',        [AtkController::class, 'detail'])->name('atk-barang.detail');
+            Route::get('atk-barang/edit/{id}',          [AtkController::class, 'edit'])->name('atk-barang.edit');
+            Route::get('atk-barang/create',             [AtkController::class, 'create'])->name('atk-barang.create');
+            Route::post('atk-barang/store',             [AtkController::class, 'store'])->name('atk-barang.store');
+            Route::post('atk-barang/upload',            [AtkController::class, 'upload'])->name('atk-barang.upload');
+            Route::post('atk-barang/update',            [AtkController::class, 'update'])->name('atk-barang.update');
+
             Route::get('atk-kategori', [AtkKategoriController::class, 'show'])->name('atk-kategori');
             Route::post('atk-kategori/store', [AtkKategoriController::class, 'store'])->name('atk-kategori.store');
             Route::post('atk-kategori/update/{id}', [AtkKategoriController::class, 'update'])->name('atk-kategori.update');
