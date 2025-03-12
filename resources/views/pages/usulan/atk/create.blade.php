@@ -206,7 +206,7 @@ $usul = Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ? 'Stok Barang 
     <div class="modal fade" id="basket" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
             <div class="modal-content">
-                <input type="hidden" name="form_id" value="601">
+                <input type="hidden" name="form_id" value="3">
                 <div class="modal-header border-dark">
                     <h5 class="modal-title text-md">KERANJANG SAYA (<span id="cart-count-in">{{ Auth::user()->keranjang->count() }}</span> item)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

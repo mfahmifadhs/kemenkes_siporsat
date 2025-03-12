@@ -271,13 +271,7 @@ class UsulanController extends Controller
         $tambah->created_at     = Carbon::now();
 
         if ($request->cito == 'true') {
-            $klasifikasi = $form->klasifikasi;
-            $kodeSurat   = $user->pegawai->uker->kode_surat;
-            $nomorSurat  = Usulan::whereHas('pegawai', function ($query) use ($user) {
-                $query->where('status_persetujuan', 'true')->where('uker_id', $user->pegawai->uker_id)->whereYear('tanggal_usulan', Carbon::now()->format('Y'));
-            })->count() + 1;
-            $tahunSurat = Carbon::now()->format('Y');
-            $format     = $klasifikasi . '/' . $kodeSurat . '/' . $nomorSurat . '/' . $tahunSurat;
+            $format = $this->nomorNaskah($request);
 
             $tambah->verif_id           = $verif->pegawai_id;
             $tambah->nomor_usulan       = $format;
@@ -344,6 +338,39 @@ class UsulanController extends Controller
         }
 
         return;
+    }
+
+    public function nomorNaskah(Request $request)
+    {
+        // 2/OUT/41/3/2025
+        $form  = Form::where('id_form', $request->form_id)->first();
+        $user  = User::where('id', $request->pengusul)->first();
+        $nomor = Usulan::where('form_id', $request->form_id)->where('status_persetujuan')->count() + 1;
+        $uker  = UnitKerja::where('id_unit_kerja', $user->pegawai->uker_id)->first();
+        $bulan = Carbon::parse($request->tanggal)->isoFormat('MM');
+        $tahun = Carbon::parse($request->tanggal)->isoFormat('Y');
+
+        if ($form->id_form == 3) {
+            $format = $nomor . '/OUT/' . $uker->kode_atk . '/' . $bulan . '/' . $tahun;
+        }
+
+        if ($form->id_form != 3) {
+            $nomor  = Usulan::whereHas('pegawai', function ($query) use ($user) {
+                $query->where('status_persetujuan', 'true')->where('uker_id', $user->pegawai->uker_id)->whereYear('tanggal_usulan', Carbon::now()->format('Y'));
+            })->count() + 1;
+            $tahun = Carbon::now()->isoFormat('Y');
+
+            $format = $form->klasifikasi . '/' . $uker->kode_surat . '/' . $nomor . '/' . $tahun;
+        }
+
+        // $klasifikasi = $form->klasifikasi;
+        // $kodeSurat   = $user->pegawai->uker->kode_surat;
+        // $nomorSurat  = Usulan::whereHas('pegawai', function ($query) use ($user) {
+        //     $query->where('status_persetujuan', 'true')->where('uker_id', $user->pegawai->uker_id)->whereYear('tanggal_usulan', Carbon::now()->format('Y'));
+        // })->count() + 1;
+        // $tahunSurat = Carbon::now()->format('Y');
+        // $format     = $klasifikasi . '/' . $kodeSurat . '/' . $nomorSurat . '/' . $tahunSurat;
+        return $format;
     }
 
     // ===========================================================
