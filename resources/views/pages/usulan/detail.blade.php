@@ -119,6 +119,7 @@
                             <label class="w-25">Hal</label>
                             <span class="w-75">: {{ $data->form->nama_form }}</span>
                         </div>
+                        @if ($data->status_persetujuan == 'true')
                         <div class="input-group">
                             <label class="w-25">Surat Usulan</label>
                             <span class="w-75">:
@@ -127,6 +128,7 @@
                                 </a>
                             </span>
                         </div>
+                        @endif
                         <div class="input-group">
                             <label class="w-25">Nama</label>
                             <span class="w-75">: {{ $data->user->pegawai->nama_pegawai }}</span>
@@ -165,7 +167,7 @@
                         @if (!$data->tanggal_ambil)
                         <div class="input-group">
                             <label class="w-50">Tanggal Terima</label>
-                            <span class="w-50">: {{ Carbon\Carbon::parse($data->tanggal_ambil)->isoFormat('DD MMMM Y') }}</span>
+                            <span class="w-50">: {{ Carbon\Carbon::parse($data->tanggal_selesai)->isoFormat('DD MMMM Y') }}</span>
                         </div>
                         <div class="input-group">
                             <label class="w-50">Nama Penerima</label>

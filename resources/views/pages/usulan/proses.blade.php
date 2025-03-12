@@ -106,6 +106,7 @@
                             <label class="w-25">Hal</label>
                             <span class="w-75">: {{ $data->form->nama_form }}</span>
                         </div>
+                        @if ($data->status_persetujuan == 'true')
                         <div class="input-group">
                             <label class="w-25">Surat Usulan</label>
                             <span class="w-75">:
@@ -114,6 +115,7 @@
                                 </a>
                             </span>
                         </div>
+                        @endif
                         <div class="input-group">
                             <label class="w-25">Nama</label>
                             <span class="w-75">: {{ $data->user->pegawai->nama_pegawai }}</span>
@@ -152,7 +154,7 @@
                         @if (!$data->tanggal_ambil)
                         <div class="input-group">
                             <label class="w-50">Tanggal Terima</label>
-                            <span class="w-50">: {{ Carbon\Carbon::parse($data->tanggal_ambil)->isoFormat('DD MMMM Y') }}</span>
+                            <span class="w-50">: {{ Carbon\Carbon::parse($data->tanggal_selesai)->isoFormat('DD MMMM Y') }}</span>
                         </div>
                         <div class="input-group">
                             <label class="w-50">Nama Penerima</label>
@@ -166,6 +168,8 @@
                     </div>
                 </div>
             </div>
+            <!-- ========================= UKT & GDN ============================ -->
+            @if (in_array($data->form_id, [1,2]))
             <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
                 <label>Uraian Pekerjaan</label>
                 <div class="table-responsive">
@@ -191,6 +195,34 @@
                     </table>
                 </div>
             </div>
+            @endif
+            @if ($data->form_id == 3)
+            <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
+                <label>Uraian Permintaan</label>
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered border border-dark">
+                        <thead class="text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Barang</th>
+                                <th>Deskripsi</th>
+                                <th>Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data->detailAtk as $row)
+                            <tr class="bg-white">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $row->atk->nama_barang }}</td>
+                                <td>{{ $row->atk->deskripsi }}</td>
+                                <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </section>

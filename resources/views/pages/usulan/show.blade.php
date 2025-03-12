@@ -256,7 +256,7 @@
                                     columns: [0, 2, 3, 4, 5, 6, 7, 8],
                                 },
                             },
-                            (role == 4 ? [{
+                            (role == 4 && form != 'atk' ? [{
                                 text: ' Tambah',
                                 className: 'bg-primary',
                                 action: function(e, dt, button, config) {

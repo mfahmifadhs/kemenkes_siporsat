@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="content-header">
-    <div class="container-fluid col-md-10">
+    <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-12">
                 <h4 class="m-0">Usulan Alat Tulis Kantor</h4>
@@ -196,11 +196,6 @@
 </section>
 
 <!-- Modal -->
-@php
-$route = Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ? route('atk-stok.create') : route('usulan.store');
-$method = Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ? 'GET' : 'POST';
-$usul = Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ? 'Stok Barang Masuk' : 'Permintaan Snack Corner';
-@endphp
 <form id="form" action="{{ route('usulan.store', 'atk') }}" method="POST">
     @csrf
     <div class="modal fade" id="basket" role="dialog" aria-hidden="true">
@@ -224,7 +219,7 @@ $usul = Auth::user()->role_id == 1 || Auth::user()->role_id == 2 ? 'Stok Barang 
                                 </div>
                                 <div class="d-flex">
                                     <label class="w-25">Usulan</label>
-                                    <span class="w-75">: {{ $usul }}</span>
+                                    <span class="w-75">: Permintaan ATK</span>
                                 </div>
                                 <div class="d-flex">
                                     <label class="w-25">Unit Kerja</label>

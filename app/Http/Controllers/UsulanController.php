@@ -147,7 +147,7 @@ class UsulanController extends Controller
                     </a>';
             }
 
-            if (Auth::user()->akses_id == 2 && $row->status_proses == 'proses') {
+            if (in_array(Auth::user()->akses_id, [2,3]) && $row->status_proses == 'proses') {
                 $aksi .= '
                     <a href="' . route('usulan.proses', $row->id_usulan) . '" class="btn btn-default btn-xs bg-warning rounded border-dark">
                         <i class="fas fa-file-import p-1" style="font-size: 12px;"></i>
@@ -212,14 +212,8 @@ class UsulanController extends Controller
 
             // Mail::to($data->user->email)->send(new mailToken($dataMail));
 
-            $klasifikasi = $data->form->klasifikasi;
-            $kodeSurat   = $data->user->pegawai->uker->kode_surat;
-            $nomorSurat  = Usulan::whereHas('pegawai', function ($query) use ($data) {
-                $query->where('status_persetujuan', 'true')->where('uker_id', $data->pegawai->uker_id)->whereYear('tanggal_usulan', Carbon::now()->format('Y'));
-            })->count() + 1;
-            $tahunSurat  = Carbon::now()->format('Y');
 
-            $format = $klasifikasi . '/' . $kodeSurat . '/' . $nomorSurat . '/' . $tahunSurat;
+            $format = $this->nomorNaskah($request);
 
             Usulan::where('id_usulan', $id)->update([
                 'verif_id'           => Auth::user()->pegawai_id,
@@ -268,6 +262,7 @@ class UsulanController extends Controller
         $tambah->form_id        = $form->id_form;
         $tambah->kode_usulan    = $kode;
         $tambah->tanggal_usulan = $request->tanggal ?? Carbon::now();
+        $tambah->keterangan     = $request->keterangan;
         $tambah->otp_1          = $otp;
         $tambah->created_at     = Carbon::now();
 
@@ -343,13 +338,18 @@ class UsulanController extends Controller
 
     public function nomorNaskah(Request $request)
     {
+        $data     = Usulan::where('id_usulan', $request->usulan)->first();
+        $dataForm = $request->form_id ?? $data->form_id;
+        $pengusul = $request->user_id ?? $data->user_id;
+        $tanggal  = $request->tanggal ?? $data->tanggal_usulan;
+
         // 2/OUT/41/3/2025
-        $form  = Form::where('id_form', $request->form_id)->first();
-        $user  = User::where('id', $request->pengusul)->first();
-        $nomor = Usulan::where('form_id', $request->form_id)->where('status_persetujuan')->count() + 1;
+        $form  = Form::where('id_form', $dataForm)->first();
+        $user  = User::where('id', $pengusul)->first();
+        $nomor = Usulan::where('form_id', $form->id_form)->where('status_persetujuan', 'true')->count() + 1;
         $uker  = UnitKerja::where('id_unit_kerja', $user->pegawai->uker_id)->first();
-        $bulan = Carbon::parse($request->tanggal)->isoFormat('MM');
-        $tahun = Carbon::parse($request->tanggal)->isoFormat('Y');
+        $bulan = Carbon::parse($tanggal)->isoFormat('MM');
+        $tahun = Carbon::parse($tanggal)->isoFormat('Y');
 
         if ($form->id_form == 3) {
             $format = $nomor . '/OUT/' . $uker->kode_atk . '/' . $bulan . '/' . $tahun;
@@ -480,6 +480,10 @@ class UsulanController extends Controller
 
         if (!$request->all() && $cekData->status_proses != 'proses') {
             return redirect()->route('usulan.detail', $id)->with('failed', 'Permintaan tidak dapat di proses');
+        }
+
+        if ($cekData->form_id == 3 && Auth::user()->akses_id != 3) {
+            return redirect()->route('usulan', 'atk')->with('failed', 'Tidak memiliki akses');
         }
 
         if (!$request->all()) {

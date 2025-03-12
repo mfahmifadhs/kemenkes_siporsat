@@ -114,9 +114,8 @@
                             </a>
                         </li>
 
-                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
                         <li class="nav-header"><i>Menu</i></li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
                                 <p>
@@ -140,8 +139,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                        @endif
+                        </li> -->
                         <li class="nav-item">
                             <a href="{{ route('gdn') }}" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-city"></i>
