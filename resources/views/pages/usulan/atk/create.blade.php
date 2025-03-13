@@ -143,7 +143,7 @@
                         <div class="card card-psdia">
                             <div class="card-header">
                                 @if ($row->foto_barang)
-                                <img src="{{ asset('dist/img/foto_barang/'. $row->foto_barang) }}" class="img-fluid" alt="">
+                                <img src="{{ asset('dist/img/foto_atk/'. $row->foto_barang) }}" class="img-fluid" alt="">
                                 @else
                                 <img src="https://cdn-icons-png.flaticon.com/512/679/679821.png" class="img-fluid" alt="">
                                 @endif
@@ -295,7 +295,7 @@
                                     </td>
                                     <td class="align-middle">
                                         @if ($row->atk->foto_barang)
-                                        <img src="{{ asset('dist/img/foto_snaco/'. $row->atk->foto_barang) }}" class="img-fluid" alt="">
+                                        <img src="{{ asset('dist/img/foto_atk/'. $row->atk->foto_barang) }}" class="img-fluid" alt="">
                                         @else
                                         <img src="https://cdn-icons-png.flaticon.com/512/679/679821.png" class="img-fluid" alt="">
                                         @endif

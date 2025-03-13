@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atk;
 use App\Models\Review;
 use App\Models\Pegawai;
 use App\Models\Penilaian;
@@ -15,9 +16,10 @@ class DashboardController extends Controller
     {
         $role   = Auth::user()->role_id;
         $usulan = Usulan::get();
+        $atk    = Atk::where('status', 'true')->orderBy('nama_barang', 'asc')->get();
 
         if ($role != 4) {
-            return view('pages.index', compact('usulan'));
+            return view('pages.index', compact('usulan','atk'));
         } else {
             return view('pages.user');
         }

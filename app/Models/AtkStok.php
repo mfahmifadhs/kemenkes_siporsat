@@ -24,6 +24,6 @@ class AtkStok extends Model
     ];
 
     public function detail() {
-        return $this->hasMany(StokDetail::class, 'stok_id');
+        return $this->hasMany(AtkStokDetail::class, 'stok_id');
     }
 }

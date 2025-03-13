@@ -11,6 +11,7 @@
                     <div class="col-md-12">
                         <h4 class="font-weight-bold mb-4 text-capitalize">
                             Selamat Datang, {{ ucfirst(strtolower(Auth::user()->pegawai->nama_pegawai)) }}
+                            <small>({{ Auth::user()->pegawai->uker->unit_kerja }})</small>
                         </h4>
                     </div>
 
@@ -297,9 +298,72 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="card border border-dark" style="height: 93%;">
+                                <div class="card border border-dark" style="height: 94.5%;">
                                     <div class="card-body text-center">
                                         <canvas id="stokChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-box mb-3 border border-dark" style="background-color: #70d6ff;">
+                                    <span class="info-box-icon"><i class="fas fa-people-roof"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ $usulan->where('form_id', 1)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Kerumahtanggaan</h6>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <div class="info-box mb-3 border border-dark" style="background-color: #8093f1;">
+                                    <span class="info-box-icon"><i class="fas fa-city"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ $usulan->where('form_id', 2)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Gedung Bangunan</h6>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <div class="info-box mb-3 border border-dark" style="background-color: #fa7a6c;">
+                                    <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ $usulan->where('form_id', 3)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card border border-dark">
+                                    <div class="card-body">
+                                        <label for="stok">Stok Persediaan ATK</label>
+                                        <table id="table-data" class="table table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Barang</th>
+                                                    <th>Stok</th>
+                                                    <th>Permintaan</th>
+                                                    <th>Sisa Stok</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($atk as $row)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td class="text-left">{{ $row->nama_barang }}</td>
+                                                    <td>{{ $row->stokMasuk->sum('jumlah') }}</td>
+                                                    <td>{{ $row->stokKeluar->sum('jumlah') }}</td>
+                                                    <td>{{ $row->stok() }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer text-xs">
+                                        <span><label>Stok (Barang Masuk)</label> : Total Pembelian Barang</span> |
+                                        <span><label>Permintaan (Barang Masuk)</label> : Total Permintaan Unit Kerja</span> |
+                                        <span><label>Sisa Stok</label> : Stok Awal - Permintaan Barang</span>
                                     </div>
                                 </div>
                             </div>
@@ -330,7 +394,7 @@
                 labels: ['Usulan UKT', 'Usulan GDN', 'Usulan ATK'],
                 datasets: [{
                     data: [usulanUkt, usulanGdn, usulanAtk], // Data angka
-                    backgroundColor: ['#4CAF50', '#FF5733']
+                    backgroundColor: ['#70d6ff', '#8093f1', '#fa7a6c']
                 }]
             },
             options: {

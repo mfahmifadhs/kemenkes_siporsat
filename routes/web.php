@@ -6,6 +6,7 @@ use App\Http\Controllers\AtkKategoriController;
 use App\Http\Controllers\AtkKeranjang;
 use App\Http\Controllers\AtkKeranjangController;
 use App\Http\Controllers\AtkSatuanController;
+use App\Http\Controllers\AtkStokController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormController;
@@ -102,6 +103,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('atk-barang/store',             [AtkController::class, 'store'])->name('atk-barang.store');
             Route::post('atk-barang/upload',            [AtkController::class, 'upload'])->name('atk-barang.upload');
             Route::post('atk-barang/update',            [AtkController::class, 'update'])->name('atk-barang.update');
+
+            Route::get('atk-stok', [AtkStokController::class, 'show'])->name('atk-stok');
+            Route::get('atk-stok/detail/{id}', [AtkStokController::class, 'detail'])->name('atk-stok.detail');
+            Route::get('atk-stok/edit/{id}', [AtkStokController::class, 'edit'])->name('atk-stok.edit');
+            Route::get('atk-stok/delete/{id}', [AtkStokController::class, 'delete'])->name('atk-stok.delete');
+            Route::get('atk-stok/store', [AtkStokController::class, 'store'])->name('atk-stok.store');
+            Route::post('atk-stok/update/{id}', [AtkStokController::class, 'update'])->name('atk-stok.update');
+
+            Route::get('atk-stok/item-delete/{id}', [AtkStokController::class, 'itemDelete'])->name('atk-stok.item.delete');
+            Route::post('atk-stok/item-store', [AtkStokController::class, 'itemStore'])->name('atk-stok.item.store');
+            Route::post('atk-stok/item-update/{id}', [AtkStokController::class, 'itemUpdate'])->name('atk-stok.item.update');
 
             Route::get('atk-kategori', [AtkKategoriController::class, 'show'])->name('atk-kategori');
             Route::post('atk-kategori/store', [AtkKategoriController::class, 'store'])->name('atk-kategori.store');

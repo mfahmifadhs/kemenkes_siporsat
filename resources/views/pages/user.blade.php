@@ -335,8 +335,8 @@
             data: {
                 labels: ['Usulan UKT', 'Usulan GDN', 'Usulan ATK'],
                 datasets: [{
-                    data: [usulanUkt, usulanGdn, usulanAtk], // Data angka
-                    backgroundColor: ['#4CAF50', '#FF5733']
+                    data: [usulanUkt, usulanGdn, usulanAtk],
+                    backgroundColor: ['#70d6ff', '#8093f1', '#fa7a6c']
                 }]
             },
             options: {

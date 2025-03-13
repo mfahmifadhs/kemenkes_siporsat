@@ -115,7 +115,7 @@
                         </li>
 
                         <li class="nav-header"><i>Menu</i></li>
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
                                 <p>
@@ -139,7 +139,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li> -->
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('gdn') }}" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-city"></i>
@@ -182,6 +182,14 @@
                                     <a href="{{ Route('atk-satuan') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Satuan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('atk-stok') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Stok (Barang Masuk)</p>
                                     </a>
                                 </li>
                             </ul>
@@ -339,7 +347,7 @@
                 // Menghapus karakter selain angka (termasuk tanda titik koma sebelumnya)
                 var value = $(this).val().replace(/[^0-9]/g, '');
                 // Format dengan menambahkan titik koma setiap tiga digit
-                var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '');
+                var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
                 $(this).val(formattedValue);
             });

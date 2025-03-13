@@ -13,7 +13,6 @@ class AtkKeranjangController extends Controller
         if (!$request->uker) {
             return redirect()->route('usulan.store', 'atk');
         }
-        dd($request->all());
     }
 
     public function create(Request $request)
