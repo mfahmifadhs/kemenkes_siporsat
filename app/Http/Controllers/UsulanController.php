@@ -226,6 +226,13 @@ class UsulanController extends Controller
                 'otp_3'              => $otp3,
                 'tanggal_usulan'     => Carbon::parse($request->tanggal_selesai . ' ' . now()->toTimeString()) ?? Carbon::now()
             ]);
+
+            if ($data->form_id == 3) {
+                UsulanAtk::where('usulan_id', $id)->update([
+                    'status' => 'true'
+                ]);
+            }
+
             return redirect()->route('usulan.detail', $id)->with('success', 'Berhasil Melakukan Verifikasi');
         }
     }
