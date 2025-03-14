@@ -168,7 +168,7 @@ class AtkController extends Controller
                 'aksi'       => $aksi,
                 'foto'       => $foto,
                 'fileFoto'   => $row->foto_barang,
-                'kategori'   => $row->kategori?->nama_kategori,
+                'kategori'   => $row->kategori->nama_kategori,
                 'barang'     => $row->nama_barang,
                 'deskripsi'  => $row->deskripsi,
                 'harga'      => 'Rp' . number_format($row->harga, 0, '.'),
