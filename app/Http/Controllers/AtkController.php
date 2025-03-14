@@ -143,9 +143,9 @@ class AtkController extends Controller
             }
 
             if ($stok > 0) {
-                $status = '<span class="badge badge-success p-1 w-100"><i class="fas fa-check-circle"></i> Tersedia</span>';
+                $stokStatus = '<span class="badge badge-success p-1 w-100"><i class="fas fa-check-circle"></i> Tersedia</span>';
             } else {
-                $status = '<span class="badge badge-danger p-1 w-100"><i class="fas fa-times-circle"></i> Tidak Tersedia</span>';
+                $stokStatus = '<span class="badge badge-danger p-1 w-100"><i class="fas fa-times-circle"></i> Tidak Tersedia</span>';
             }
 
             if ($role != 4) {
@@ -154,6 +154,12 @@ class AtkController extends Controller
                         <i class="fas fa-info-circle p-1" style="font-size: 12px;"></i>
                     </a>
                 ';
+            }
+
+            if ($row->status == 'true') {
+                $status = '<i class="fas fa-check-circle text-success"></i>';
+            } else {
+                $status = '<i class="fas fa-times-circle text-danger"></i>';
             }
 
             $response[] = [
@@ -170,6 +176,7 @@ class AtkController extends Controller
                 'maksimal'   => $row->jumlah_maks,
                 'stok'       => $stok,
                 'keterangan' => $row->keterangan ?? '',
+                'stokStatus' => $stokStatus,
                 'status'     => $status,
                 'role'       => $role
             ];

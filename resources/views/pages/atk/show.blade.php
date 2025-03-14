@@ -46,7 +46,7 @@
                                         <th>Harga</th>
                                         <th>Stok</th>
                                         <th>Satuan</th>
-                                        <th>Status</th>
+                                        <th>Stok</th>
                                         <th class="d-none">ID</th>
                                         <th class="d-none">Foto</th>
                                     </tr>
@@ -54,11 +54,11 @@
                                 <tbody>
                                     @if ($data->count() == 0)
                                     <tr class="text-center">
-                                        <td colspan="9">Tidak ada data</td>
+                                        <td colspan="12">Tidak ada data</td>
                                     </tr>
                                     @else
                                     <tr>
-                                        <td colspan="9">Sedang mengambil data ...</td>
+                                        <td colspan="12">Sedang mengambil data ...</td>
                                     </tr>
                                     @endif
                                 </tbody>
@@ -331,7 +331,9 @@
                             }
                             tbody.append(`
                                 <tr>
-                                    <td class="align-middle">${item.no}</td>
+                                    <td class="align-middle">
+                                        ${item.no} ${item.status}
+                                    </td>
                                     <td class="align-middle">${item.aksi} ${actionButton}</td>
                                     <td class="align-middle">${item.foto}</td>
                                     <td class="align-middle">${item.kategori}</td>
@@ -340,7 +342,7 @@
                                     <td class="align-middle">${item.harga}</td>
                                     <td class="align-middle">${item.stok}</td>
                                     <td class="align-middle">${item.satuan}</td>
-                                    <td class="align-middle">${item.status}</td>
+                                    <td class="align-middle">${item.stokStatus}</td>
                                     <td class="align-middle d-none">${item.id}</td>
                                     <td class="align-middle d-none">${item.fileFoto}</td>
                                 </tr>

@@ -114,8 +114,8 @@
                                             <div class="col-md-1 col-form-label my-1">:</div>
                                             <div class="col-md-8 my-1">
                                                 <select name="status" id="input-status" class="form-control">
-                                                    <option value="true" <?= $row->status == 'true' ? 'selected' : '';  ?>>Tersedia</option>
-                                                    <option value="false" <?= $row->status == 'false' ? 'selected' : '';  ?>>Tidak Tersedia</option>
+                                                    <option value="true" <?= $data->status == 'true' ? 'selected' : '';  ?>>Tersedia</option>
+                                                    <option value="false" <?= $data->status == 'false' ? 'selected' : '';  ?>>Tidak Tersedia</option>
                                                 </select>
                                             </div>
                                         </div>
