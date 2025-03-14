@@ -369,7 +369,9 @@
                                     className: 'bg-success',
                                     title: 'show',
                                     exportOptions: {
-                                        columns: [0, 12, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                                        columns: $('th:not(:eq(1))').map(function() {
+                                            return $(this).index();
+                                        }).get()
                                     },
                                 },
                                 userRole == 1 || userRole == 2 ? {

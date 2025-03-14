@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Auth;
 
 class Atk extends Model
 {
@@ -27,11 +28,13 @@ class Atk extends Model
         'status',
     ];
 
-    public function kategori() {
+    public function kategori()
+    {
         return $this->belongsTo(AtkKategori::class, 'kategori_id');
     }
 
-    public function satuan() {
+    public function satuan()
+    {
         return $this->belongsTo(AtkSatuan::class, 'satuan_id');
     }
 
@@ -104,5 +107,27 @@ class Atk extends Model
         }
 
         return $totalMasuk - $totalKeluar;
+    }
+
+    public function stokUkers()
+    {
+        $ukerId = Auth::user()->pegawai->uker_id;
+        // Ambil stok masuk
+        $dataMasuk = UsulanAtk::whereHas('usulan.user.pegawai', function ($query) use ($ukerId) {
+            $query->where('status_persetujuan', 'true');
+            if ($ukerId) {
+                $query->where('uker_id', $ukerId);
+            }
+        })->where('atk_id', $this->id)->sum('jumlah');
+
+
+        // Ambil stok keluar
+        $dataKeluar = AtkDistribusiDetail::whereHas('distribusi.user.pegawai', function ($query) use ($ukerId) {
+            if ($ukerId) {
+                $query->where('uker_id', $ukerId);
+            }
+        })->where('atk_id', $this->id)->where('status', 'true')->sum('jumlah');
+
+        return $dataMasuk - $dataKeluar;
     }
 }

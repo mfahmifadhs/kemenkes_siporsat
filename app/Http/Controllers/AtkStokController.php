@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atk;
 use App\Models\AtkKategori;
 use App\Models\AtkKeranjang;
 use App\Models\AtkStok;
 use App\Models\AtkStokDetail;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Auth;
 use Str;
 
 class AtkStokController extends Controller
@@ -137,5 +139,24 @@ class AtkStokController extends Controller
         AtkStokDetail::where('id_detail', $id)->delete();
 
         return redirect()->back()->with('success', 'Berhasil Menghapus');
+    }
+
+
+    // ===========================================================
+    //                         STOK READY
+    // ===========================================================
+
+    public function ready()
+    {
+        $role = Auth::user()->role_id;
+        $data = Atk::all()->map(function ($item) {
+            return [
+                'id'           => $item->id_atk,
+                'nama_barang'  => $item->nama_barang,
+                'stok_tersedia'=> $item->stokUkers()
+            ];
+        });
+
+        return response()->json($data);
     }
 }

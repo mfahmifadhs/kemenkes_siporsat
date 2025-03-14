@@ -185,9 +185,9 @@
                 <input type="hidden" name="stok_id" value="{{ $data->id_stok }}">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="w-25 col-form-label">Pilih Barang</label>
+                        <label class="w-25 col-form-label">Pilih Kategori</label>
                         <select name="" id="kategori-add" class="form-control kategori" style="width: 100%;" required>
-                            <option value="">-- Pilih Barang --</option>
+                            <option value="">-- Pilih Kategori --</option>
                             @foreach ($kategori as $subRow)
                             <option value="{{ $subRow->id_kategori }}">
                                 {{ $subRow->nama_kategori }}
@@ -195,7 +195,7 @@
                             @endforeach
                         </select>
 
-                        <label class="col-form-label">Pilih Merk</label>
+                        <label class="col-form-label">Pilih Barang</label>
                         <select name="id_atk" id="barang-add" class="form-control barang" style="width: 100%;" required>
                             <option value="">-- Pilih Barang --</option>
                         </select>
