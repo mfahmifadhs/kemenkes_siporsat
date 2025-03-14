@@ -14,7 +14,7 @@ class AtkController extends Controller
     public function index()
     {
         $kategori = AtkKategori::where('status', 'true')->orderBy('nama_kategori', 'asc')->get();
-        $atk      = Atk::where('status', 'true')->orderBy('nama_barang', 'asc')->get();
+        $atk      = Atk::where('status', 'true')->get();
         $user     = Auth::user();
         $data     = Usulan::where('form_id', '3');
 
