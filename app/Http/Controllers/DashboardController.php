@@ -16,12 +16,12 @@ class DashboardController extends Controller
     {
         $role   = Auth::user()->role_id;
         $usulan = Usulan::get();
-        $atk    = Atk::where('status', 'true')->orderBy('nama_barang', 'asc')->get();
+        $atk    = Atk::where('status', 'true')->get();
 
         if ($role != 4) {
             return view('pages.index', compact('usulan','atk'));
         } else {
-            return view('pages.user');
+            return view('pages.user', compact('atk'));
         }
     }
 }

@@ -30,52 +30,6 @@
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <!-- Total Barang -->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="info-box border border-dark">
-                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-box"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="p-0" style="margin-top: 0%;">Total Usulan
-                                            <h6 class="text-xs">Kerumahtanggaan</h6>
-                                        </span>
-                                        <span class="info-box-number">
-                                            {{ $usulan->where('form_id', 1)->count() }}
-                                            <small>usulan</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="info-box border border-dark">
-                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-file-signature"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="p-0" style="margin-top: 0%;">Total Usulan
-                                            <h6 class="text-xs">Gedung Bangunan</h6>
-                                        </span>
-                                        <span class="info-box-number">
-                                            {{ $usulan->where('form_id', 2)->count() }}
-                                            <small>usulan</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="info-box border border-dark">
-                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-pencil"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="p-0" style="margin-top: 0%;">Total Usulan
-                                            <h6 class="text-xs">Alat Tulis Kantor</h6>
-                                        </span>
-                                        <span class="info-box-number">
-                                            {{ $usulan->where('form_id', 3)->count() }}
-                                            <small>usulan</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Usulan -->
                         <div class="row">
                             <div class="col-md-4">

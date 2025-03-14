@@ -76,43 +76,31 @@ class Atk extends Model
 
     public function stokMasukUker()
     {
-        return $this->hasMany(UsulanAtk::class, 'atk_id')->where('t_usulan_atk.status', 'true')
-            ->join('t_usulan', 'id_usulan', 'usulan_id')
-            ->join('users', 'id', 'user_id')
-            ->join('t_pegawai', 'id_pegawai', 'pegawai_id')
-            ->where('uker_id', Auth::user()->pegawai->uker_id);
+        $ukerId = Auth::user()->pegawai->uker_id;
+
+        return UsulanAtk::whereHas('usulan.user.pegawai', function ($query) use ($ukerId) {
+            $query->where('status_persetujuan', 'true');
+            if ($ukerId) {
+                $query->where('uker_id', $ukerId);
+            }
+        })->where('atk_id', $this->id_atk)->sum('jumlah');
     }
 
     public function stokKeluarUker()
     {
-        return $this->hasMany(KegiatanDetail::class, 'snc_id')
-            ->join('t_kegiatan', 'id_kegiatan', 'kegiatan_id')
-            ->join('users', 'id', 'user_id')
-            ->join('t_pegawai', 'id_pegawai', 'pegawai_id')
-            ->where('t_kegiatan_detail.status', 'true')
-            ->where('uker_id', Auth::user()->pegawai->uker_id);
+        $ukerId = Auth::user()->pegawai->uker_id;
+
+        return AtkDistribusiDetail::whereHas('distribusi.user.pegawai', function ($query) use ($ukerId) {
+            if ($ukerId) {
+                $query->where('uker_id', $ukerId);
+            }
+        })->where('atk_id', $this->id_atk)->where('status', 'true')->sum('jumlah');
+
     }
 
-    public function stokUker($ukerId)
-    {
-        $dataMasuk  = $this->stokMasukUker();
-        $dataKeluar = $this->stokKeluarUker();
-
-        if ($ukerId) {
-            $totalMasuk  = $dataMasuk->where('uker_id', $ukerId)->sum('jumlah_permintaan');
-            $totalKeluar = $dataKeluar->where('uker_id', $ukerId)->sum('jumlah');
-        } else {
-            $totalMasuk  = $dataMasuk->sum('jumlah_permintaan');
-            $totalKeluar = $dataKeluar->sum('jumlah');
-        }
-
-        return $totalMasuk - $totalKeluar;
-    }
-
-    public function stokUkers()
+    public function stokUker()
     {
         $ukerId = Auth::user()->pegawai->uker_id;
-        // Ambil stok masuk
         $dataMasuk = UsulanAtk::whereHas('usulan.user.pegawai', function ($query) use ($ukerId) {
             $query->where('status_persetujuan', 'true');
             if ($ukerId) {
@@ -120,7 +108,6 @@ class Atk extends Model
             }
         })->where('atk_id', $this->id_atk)->sum('jumlah');
 
-        // Ambil stok keluar
         $dataKeluar = AtkDistribusiDetail::whereHas('distribusi.user.pegawai', function ($query) use ($ukerId) {
             if ($ukerId) {
                 $query->where('uker_id', $ukerId);

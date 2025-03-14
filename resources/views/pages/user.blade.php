@@ -16,7 +16,7 @@
 
                     <div class="col-md-3">
                         <div class="card border border-dark">
-                            <div class="card-body">
+                            <div class="card-body p-3">
                                 <label>Verifikasi Email</label>
                                 @if (!Auth::user()->email)
                                 <p class="text-xs">Anda belum melakukan verifikasi email</p>
@@ -27,60 +27,9 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="card border border-dark">
-                            <div class="card-body">
-                                <label>Usulan</label>
-                                <p class="text-xs">Tambah Usulan</p>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="col-md-9">
-                        <!-- Total Barang -->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="info-box border border-dark">
-                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-box"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="p-0" style="margin-top: 0%;">Total Usulan
-                                            <h6 class="text-xs">Kerumahtanggaan</h6>
-                                        </span>
-                                        <span class="info-box-number">
-                                            {{ Auth::user()->usulan->where('form_id', 1)->count() }}
-                                            <small>usulan</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="info-box border border-dark">
-                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-file-signature"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="p-0" style="margin-top: 0%;">Total Usulan
-                                            <h6 class="text-xs">Gedung Bangunan</h6>
-                                        </span>
-                                        <span class="info-box-number">
-                                            {{ Auth::user()->usulan->where('form_id', 2)->count() }}
-                                            <small>usulan</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="info-box border border-dark">
-                                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-pencil"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="p-0" style="margin-top: 0%;">Total Usulan
-                                            <h6 class="text-xs">Alat Tulis Kantor</h6>
-                                        </span>
-                                        <span class="info-box-number">
-                                            {{ Auth::user()->usulan->where('form_id', 3)->count() }}
-                                            <small>usulan</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Usulan -->
                         <div class="row">
                             <div class="col-md-4">
@@ -303,9 +252,73 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="card border border-dark" style="height: 93%;">
+                                <div class="card border border-dark">
+                                    <label class="p-2 text-center">Total Usulan</label>
                                     <div class="card-body text-center">
-                                        <canvas id="stokChart"></canvas>
+                                        <canvas id="stokChart" style="height: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-box mb-3 border border-dark p-0" style="background-color: #70d6ff;">
+                                    <span class="info-box-icon"><i class="fas fa-people-roof"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 1)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Kerumahtanggaan</h6>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <div class="info-box mb-3 border border-dark p-0" style="background-color: #8093f1;">
+                                    <span class="info-box-icon"><i class="fas fa-city"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 2)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Gedung Bangunan</h6>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <div class="info-box mb-3 border border-dark p-0" style="background-color: #fa7a6c;">
+                                    <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 3)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card border border-dark">
+                                    <div class="card-body">
+                                        <label for="stok">Stok Persediaan ATK</label>
+                                        <table id="table-data" class="table table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Barang</th>
+                                                    <th>Permintaan</th>
+                                                    <th>Distribusi</th>
+                                                    <th>Sisa Stok</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($atk as $row)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td class="text-left">{{ $row->nama_barang }}</td>
+                                                    <td>{{ $row->stokMasukUker() }}</td>
+                                                    <td>{{ $row->stokKeluarUker() }}</td>
+                                                    <td>{{ $row->stokUker() }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer text-xs">
+                                        <span><label>Stok (Barang Masuk)</label> : Total Pembelian Barang</span> |
+                                        <span><label>Permintaan (Barang Masuk)</label> : Total Permintaan Unit Kerja</span> |
+                                        <span><label>Sisa Stok</label> : Stok Awal - Permintaan Barang</span>
                                     </div>
                                 </div>
                             </div>
