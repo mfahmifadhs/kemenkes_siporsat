@@ -153,7 +153,7 @@ class AtkStokController extends Controller
             return [
                 'id'            => $item->id_atk,
                 'nama_barang'   => $item->nama_barang,
-                'stok_tersedia' => $item->stokUkers(),
+                'stok_tersedia' => $item->stokUker(),
                 'satuan'        => $item->satuan->nama_satuan
             ];
         })->filter(function ($item) {

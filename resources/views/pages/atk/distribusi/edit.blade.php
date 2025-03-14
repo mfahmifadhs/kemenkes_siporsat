@@ -185,13 +185,13 @@
 
                         <label class="col-form-label">Stok</label>
                         <div class="input-group">
-                            <input type="text" class="form-control rounded text-center ml-1 stok" name="stok" placeholder="stok" value="{{ $row->atk->stokUkers() }}" readonly>
+                            <input type="text" class="form-control rounded text-center ml-1 stok" name="stok" placeholder="stok" value="{{ $row->atk->stokUker() }}" readonly>
                             <input type="text" class="form-control rounded text-center ml-2 satuan" value="{{ $row->satuan->nama_satuan }}" placeholder="satuan" readonly>
                         </div>
 
                         <label class="col-form-label">Jumlah</label>
                         <div class="input-group">
-                            <input type="number" class="form-control rounded text-center ml-1" name="jumlah" value="{{ $row->jumlah }}" min="1" max="{{ $row->atk->stokUkers() }}" required>
+                            <input type="number" class="form-control rounded text-center ml-1" name="jumlah" value="{{ $row->jumlah }}" min="1" max="{{ $row->atk->stokUker() }}" required>
                             <input type="text" class="form-control rounded text-center ml-2 satuan" value="{{ $row->satuan->nama_satuan }}" readonly>
                         </div>
 
