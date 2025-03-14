@@ -8,6 +8,7 @@ use App\Models\AtkDistribusiDetail;
 use App\Models\AtkKategori;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Auth;
 use Str;
 
@@ -101,7 +102,7 @@ class AtkDistribusiController extends Controller
                 'aksi'       => $aksi,
                 'uker'       => $row->user->pegawai->uker->unit_kerja,
                 'kode'       => $row->kode,
-                'tanggal'    => $row->tanggal,
+                'tanggal'    => Carbon::parse($row->tanggal)->isoFormat('DD MMM Y'),
                 'keterangan' => $row->keterangan,
                 'total'      => $row->detail->count().' barang',
                 'detail'     => $row->detail->map(function ($item) {

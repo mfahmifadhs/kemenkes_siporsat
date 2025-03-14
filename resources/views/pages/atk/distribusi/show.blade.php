@@ -41,7 +41,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Aksi</th>
-                                        <th>Unit Kerja</th>
+                                        <th class="{{ Auth::user()->role_id == 4 ? 'd-none' : '' }}">Unit Kerja</th>
                                         <th>Kode</th>
                                         <th>Tanggal</th>
                                         <th>Total</th>
@@ -263,7 +263,7 @@
                                 <tr>
                                     <td class="align-middle">${item.no}</td>
                                     <td class="align-middle">${item.aksi}</td>
-                                    <td class="align-middle">${item.uker}</td>
+                                    <td class="align-middle ${ userRole == 4 ? 'd-none' : ''}">${item.uker}</td>
                                     <td class="align-middle">${item.kode}</td>
                                     <td class="align-middle">${item.tanggal}</td>
                                     <td class="align-middle">${item.total}</td>
