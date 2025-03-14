@@ -103,6 +103,7 @@ class AtkDistribusiController extends Controller
                 'kode'       => $row->kode,
                 'tanggal'    => $row->tanggal,
                 'keterangan' => $row->keterangan,
+                'total'      => $row->detail->count().' barang',
                 'detail'     => $row->detail->map(function ($item) {
                     return $item->atk->nama_barang . ', ' . $item->jumlah . $item->satuan->nama_satuan;
                 }),

@@ -44,6 +44,7 @@
                                         <th>Unit Kerja</th>
                                         <th>Kode</th>
                                         <th>Tanggal</th>
+                                        <th>Total</th>
                                         <th>Keterangan</th>
                                         <th class="d-none">Detail</th>
                                     </tr>
@@ -263,6 +264,7 @@
                                     <td class="align-middle">${item.uker}</td>
                                     <td class="align-middle">${item.kode}</td>
                                     <td class="align-middle">${item.tanggal}</td>
+                                    <td class="align-middle">${item.total}</td>
                                     <td class="align-middle text-left">${item.keterangan}</td>
                                     <td class="align-middle text-left d-none">${item.detail}</td>
                                 </tr>
@@ -291,7 +293,9 @@
                                 className: 'bg-success',
                                 title: 'kegiatan',
                                 exportOptions: {
-                                    columns: [0, 2, 3, 4, 5, 6, 7, 8],
+                                    columns: $('th:not(:eq(1))').map(function() {
+                                        return $(this).index();
+                                    }).get()
                                 },
                             }, userRole == 4 ? {
                                 text: ' Tambah',
