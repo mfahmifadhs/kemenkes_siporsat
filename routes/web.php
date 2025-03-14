@@ -45,16 +45,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('atk-stok/ready',   [AtkStokController::class, 'ready'])->name('atk-stok.ready');
     Route::get('atk-distribusi',   [AtkDistribusiController::class, 'show'])->name('atk-distribusi');
+
     Route::group(['prefix' => 'atk-distribusi', 'as' => 'atk-distribusi.'], function () {
         Route::get('select',       [AtkDistribusiController::class, 'select'])->name('select');
         Route::get('detail/{id}',  [AtkDistribusiController::class, 'detail'])->name('detail');
-        Route::get('edit/{id}',    [AtkDistribusiController::class, 'edit'])->name('edit');
-        Route::post('store',       [AtkDistribusiController::class, 'store'])->name('store');
-        Route::post('update/{id}', [AtkDistribusiController::class, 'update'])->name('update');
-
-        Route::get('item-delete/{id}',  [AtkDistribusiController::class, 'itemDelete'])->name('item.delete');
-        Route::post('item-store',       [AtkDistribusiController::class, 'itemStore'])->name('item.store');
-        Route::post('item-update/{id}', [AtkDistribusiController::class, 'itemUpdate'])->name('item.update');
     });
 
     Route::post('atk-stok/store',         [AtkKeranjangController::class, 'keranjang'])->name('atk-stok.create');
@@ -91,6 +85,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => ['access:user']], function () {
 
         Route::get('usulan/tambah/{id}',  [UsulanController::class, 'create'])->name('usulan.create');
+
+        Route::group(['prefix' => 'atk-distribusi', 'as' => 'atk-distribusi.'], function () {
+            Route::get('edit/{id}',    [AtkDistribusiController::class, 'edit'])->name('edit');
+            Route::post('store',       [AtkDistribusiController::class, 'store'])->name('store');
+            Route::post('update/{id}', [AtkDistribusiController::class, 'update'])->name('update');
+
+            Route::get('item-delete/{id}',  [AtkDistribusiController::class, 'itemDelete'])->name('item.delete');
+            Route::post('item-store',       [AtkDistribusiController::class, 'itemStore'])->name('item.store');
+            Route::post('item-update/{id}', [AtkDistribusiController::class, 'itemUpdate'])->name('item.update');
+        });
 
     });
 

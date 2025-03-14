@@ -255,7 +255,7 @@ class UsulanController extends Controller
         }
 
         $form = Form::where('kode_form', $id)->first();
-        $kode = Str::random(6);
+        $kode = strtoupper(Str::random(6));
         $otp  = rand(111111, 999999);
         $verif = User::where('akses_id', 1)->first();
         $user  = User::where('id', $request->pengusul)->first();

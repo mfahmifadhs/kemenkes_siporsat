@@ -224,7 +224,7 @@
                                 <th>Jumlah</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-xs">
                             @foreach ($data->detailAtk as $row)
                             <tr class="bg-white">
                                 <td class="text-center">{{ $loop->iteration }}</td>

@@ -53,6 +53,32 @@
             </div>
             <div class="card-body border-bottom border-dark">
                 <label class="text-secondary text-sm"><i>Detail Distribusi</i></label>
+                <table id="table-data" class="table table-bordered text-center small">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Barang</th>
+                            <th>Deskripsi</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($data->detail->where('status','true') as $row)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-left">{{ $row->atk->nama_barang }}</td>
+                            <td class="text-left">{{ $row->atk->deskripsi }}</td>
+                            <td>{{ $row->jumlah.$row->satuan->nama_satuan }}</td>
+                        </tr>
+                        @endforeach
+
+                        @if($data->count())
+                        <tr>
+                            <td colspan="4">Tidak ada data</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
             </div>
             <div class="card-footer text-right">
                 <a href="{{ route('atk-distribusi.edit', $data->id_distribusi) }}" class="btn btn-warning bg-main btn-sm">

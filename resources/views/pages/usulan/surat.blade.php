@@ -189,6 +189,7 @@
                         <h3>{{ $data->pegawai->nama_pegawai }}</h3>
                     </div>
                 </div>
+                @if ($data->form_id == 3)
                 <div class="row mt-5">
                     @if ($data->nama_penerima)
                     <div class="col-5">
@@ -206,6 +207,7 @@
                     </div>
                     @endif
                 </div>
+                @endif
             </div>
         </div>
 

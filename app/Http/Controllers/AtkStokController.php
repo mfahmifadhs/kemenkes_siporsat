@@ -151,11 +151,14 @@ class AtkStokController extends Controller
         $role = Auth::user()->role_id;
         $data = Atk::all()->map(function ($item) {
             return [
-                'id'           => $item->id_atk,
-                'nama_barang'  => $item->nama_barang,
-                'stok_tersedia'=> $item->stokUkers()
+                'id'            => $item->id_atk,
+                'nama_barang'   => $item->nama_barang,
+                'stok_tersedia' => $item->stokUkers(),
+                'satuan'        => $item->satuan->nama_satuan
             ];
-        });
+        })->filter(function ($item) {
+            return $item['stok_tersedia'] > 0;
+        })->values();
 
         return response()->json($data);
     }

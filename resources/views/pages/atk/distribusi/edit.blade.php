@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="content-header">
-    <div class="container-fluid col-md-8">
+    <div class="container-fluid col-md-9">
         <div class="row mb-2">
             <div class="col-sm-12">
                 <h4 class="m-0">Edit Distribusi ATK</h4>
@@ -29,6 +29,7 @@
             </div>
             <form id="form-submit" action="{{ route('atk-distribusi.update', $id) }}" method="POST">
                 @csrf
+                <input type="hidden" name="user" value="{{ $data->user_id }}">
                 <div class="card-body text-capitalize">
                     <div class="d-flex">
                         <div class="w-50 text-left">
@@ -40,7 +41,7 @@
                             <div class="input-group">
                                 <label class="w-25 col-form-label">Kode</label>
                                 <span class="w-75 input-group"><span class="col-form-label mx-2">:</span>
-                                    <input type="text" class="form-control rounded" value="{{ $data->kode }}" readonly>
+                                    <input type="text" class="form-control rounded" name="kode" value="{{ $data->kode }}" readonly>
                                 </span>
                             </div>
 
@@ -89,9 +90,11 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
+                                        @if($row->status != 'true')
                                         <a href="#" class="btn btn-default btn-xs bg-primary rounded" data-toggle="modal" data-target="#editItem-{{ $row->id_detail }}">
                                             <i class="fas fa-edit p-1" style="font-size: 12px;"></i>
                                         </a>
+                                        @endif
                                         <a href="#" class="btn btn-default btn-xs bg-danger rounded" onclick="confirmRemove(event, `{{ route('atk-distribusi.item.delete', $row->id_detail) }}`)">
                                             <i class="fas fa-trash-alt p-1" style="font-size: 12px;"></i>
                                         </a>
@@ -137,16 +140,6 @@
                 <input type="hidden" name="distribusi_id" value="{{ $data->id_distribusi }}">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="w-25 col-form-label">Pilih Kategori</label>
-                        <select name="" id="kategori-add" class="form-control kategori" style="width: 100%;" required>
-                            <option value="">-- Pilih Kategori --</option>
-                            @foreach ($kategori as $subRow)
-                            <option value="{{ $subRow->id_kategori }}">
-                                {{ $subRow->nama_kategori }}
-                            </option>
-                            @endforeach
-                        </select>
-
                         <label class="col-form-label">Pilih Barang</label>
                         <select name="id_atk" id="barang-add" class="form-control barang" style="width: 100%;" required>
                             <option value="">-- Pilih Barang --</option>
@@ -154,7 +147,7 @@
 
                         <label class="col-form-label">Jumlah</label>
                         <div class="input-group">
-                            <input type="number" class="form-control text-center w-50 number" name="jumlah" value="1" min="1" required>
+                            <input type="number" class="form-control text-center w-50 number jumlah" name="jumlah" required>
                             <input type="text" class="form-control text-center w-25 ml-2 satuan" placeholder="satuan" readonly>
                         </div>
                     </div>
@@ -172,7 +165,7 @@
 @foreach($data->detail as $index => $row)
 <div class="modal fade text-left" id="editItem-{{ $row->id_detail }}" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content text-sm">
+        <div class="modal-content   ">
             <div class="modal-header">
                 <h5 class="modal-title">Edit Barang</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -183,42 +176,30 @@
                 @csrf
                 <input type="hidden" name="distribusi_id" value="{{ $row->distribusi_id }}">
                 <div class="modal-body">
-                    <div class="d-flex">
-                        <label class="w-25 col-form-label">Pilih Kategori</label>
-                        <select name="" id="kategori-{{ $index }}" class="w-75 form-control kategori" style="width: 75%;" disabled>
-                            <option value="">-- Pilih Kategori --</option>
-                            @foreach ($kategori as $subRow)
-                            <option value="{{ $subRow->id_kategori }}" {{ $subRow->id_kategori == $row->snc->snc_kategori ? 'selected' : '' }}>
-                                {{ $subRow->nama_kategori }}
-                            </option>
-                            @endforeach
+
+                    <div class="form-group mt-2">
+                        <label class="col-form-label">Nama Barang</label>
+                        <select name="id_atk" id="barang-add" class="form-control" style="width: 100%;" disabled>
+                            <option value="{{ $row->atk_id }}">{{ $row->atk->nama_barang }}</option>
                         </select>
-                    </div>
 
-                    <div class="d-flex mt-2">
-                        <label class="w-25 col-form-label">Pilih Barang</label>
-                        <select name="id_snc" id="barang-{{ $index }}" class="w-75 form-control barang" style="width: 75%;" disabled>
-                            <option value="{{ $row->snc_id }}">
-                                {{ $row->snc->snc_nama }} {{ $row->snc->snc_deskripsi }}
-                            </option>
-                        </select>
-                    </div>
+                        <label class="col-form-label">Stok</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control rounded text-center ml-1 stok" name="stok" placeholder="stok" value="{{ $row->atk->stokUkers() }}" readonly>
+                            <input type="text" class="form-control rounded text-center ml-2 satuan" value="{{ $row->satuan->nama_satuan }}" placeholder="satuan" readonly>
+                        </div>
 
-                    <div class="d-flex mt-2">
-                        <label class="w-25 col-form-label">Stok</label>
-                        <input type="text" class="form-control text-center w-50 ml-1 stok" name="stok" placeholder="stok" value="{{ $row->snc->stokUker(Auth::user()->pegawai->uker_id) }}" readonly>
-                        <input type="text" class="form-control text-center w-25 ml-2 satuan" value="{{ $row->snc->satuan->satuan }}" placeholder="satuan" readonly>
-                    </div>
+                        <label class="col-form-label">Jumlah</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control rounded text-center ml-1" name="jumlah" value="{{ $row->jumlah }}" min="1" max="{{ $row->atk->stokUkers() }}" required>
+                            <input type="text" class="form-control rounded text-center ml-2 satuan" value="{{ $row->satuan->nama_satuan }}" readonly>
+                        </div>
 
-                    <div class="d-flex mt-2">
-                        <label class="w-25 col-form-label">Jumlah</label>
-                        <input type="number" class="form-control text-center w-50 ml-1 jumlah" name="jumlah" value="{{ $row->jumlah }}" min="1" required>
-                        <input type="text" class="form-control text-center w-25 ml-2 satuan" value="{{ $row->snc->satuan->satuan }}" readonly>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary" onclick="confirmSubmit(event, 'form-edit-{{ $row->id_detail }}')">Update</button>
+                    <button type="submit" class="btn btn-primary" onclick="confirmDistribusi(event, 'form-edit-{{ $row->id_detail }}')">Update</button>
                 </div>
             </form>
         </div>
@@ -233,7 +214,7 @@
     $(document).ready(function() {
         let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content')
         $(".barang").select2({
-            placeholder: "Cari Pegawai...",
+            placeholder: "Cari Barang...",
             allowClear: true,
             ajax: {
                 url: "{{ route('atk-stok.ready') }}",
@@ -251,7 +232,9 @@
                         results: response.map(function(item) {
                             return {
                                 id: item.id,
-                                text: item.nama_barang + ' - ' + item.nama
+                                text: item.nama_barang + " - " + item.stok_tersedia + item.satuan,
+                                stok: item.stok_tersedia,
+                                satuan: item.satuan
                             };
                         })
                     };
@@ -260,13 +243,31 @@
             }
         })
 
-        $(".pegawai").each(function() {
+        $(".barang").each(function() {
             let selectedId = $(this).find("option:selected").val();
             let selectedText = $(this).find("option:selected").text();
 
             if (selectedId) {
                 let newOption = new Option(selectedText, selectedId, true, true);
                 $(this).append(newOption).trigger('change');
+            }
+        });
+
+        $(document).on("change", ".barang", function() {
+            var selectedOption = $(".barang").select2("data")[0];
+            var stokTersedia = selectedOption ? selectedOption.stok : 1;
+            var satuan = selectedOption ? selectedOption.satuan : "";
+
+            $(".jumlah").attr("max", stokTersedia); // Atur max jumlah sesuai stok
+            $(".jumlah").val(stokTersedia); // Reset jumlah ke 1 saat ganti barang
+            $(".satuan").val(satuan);
+        });
+
+        $(document).on("input", ".jumlah", function() {
+            var max = parseInt($(this).attr("max"), 10); // Ambil max stok
+            var val = parseInt($(this).val(), 10) || 1; // Ambil nilai input, default ke 1
+            if (val > max) {
+                $(this).val(max); // Paksa nilai max jika melebihi stok
             }
         });
     });
@@ -299,7 +300,7 @@
         });
     }
 
-    function confirmSubmit(event, formId) {
+    function confirmDistribusi(event, formId) {
         event.preventDefault();
 
         const form = document.getElementById(formId);

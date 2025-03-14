@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Atk;
 use App\Models\AtkDistribusi;
 use App\Models\AtkDistribusiDetail;
 use App\Models\AtkKategori;
@@ -17,7 +18,7 @@ class AtkDistribusiController extends Controller
         $uker     = $request->uker;
         $bulan    = $request->bulan;
         $tahun    = $request->tahun;
-        $data     = AtkDistribusi::orderBy('id_distribusi','asc');
+        $data     = AtkDistribusi::orderBy('id_distribusi', 'asc');
         $listUker = UnitKerja::where('utama_id', '46593')->orderBy('unit_kerja', 'asc')->get();
 
         if (Auth::user()->role_id == 4) {
@@ -84,17 +85,21 @@ class AtkDistribusiController extends Controller
                 <a href="' . route('atk-distribusi.detail', $row->id_distribusi) . '" class="btn btn-default btn-xs bg-primary rounded border-dark">
                     <i class="fas fa-info-circle p-1" style="font-size: 12px;"></i>
                 </a>
-
-                <a href="' . route('atk-distribusi.edit', $row->id_distribusi) . '" class="btn btn-default btn-xs bg-warning rounded border-dark">
-                    <i class="fas fa-edit p-1" style="font-size: 12px;"></i>
-                </a>
             ';
+
+            if ($role == 4) {
+                $aksi .= '
+                    <a href="' . route('atk-distribusi.edit', $row->id_distribusi) . '" class="btn btn-default btn-xs bg-warning rounded border-dark">
+                        <i class="fas fa-edit p-1" style="font-size: 12px;"></i>
+                    </a>
+                ';
+            }
 
             $response[] = [
                 'no'         => $no,
                 'id'         => $row->id_distribusi,
                 'aksi'       => $aksi,
-                'uker'       => $row->uker->unit_kerja,
+                'uker'       => $row->user->pegawai->uker->unit_kerja,
                 'kode'       => $row->kode,
                 'tanggal'    => $row->tanggal,
                 'keterangan' => $row->keterangan,
@@ -134,6 +139,10 @@ class AtkDistribusiController extends Controller
 
     public function update(Request $request, $id)
     {
+        AtkDistribusiDetail::where('distribusi_id', $id)->update([
+            'status' => 'true',
+        ]);
+
         AtkDistribusi::where('id_distribusi', $id)->update([
             'user_id'    => $request->user,
             'kode'       => $request->kode,
@@ -156,45 +165,37 @@ class AtkDistribusiController extends Controller
         $qty  = (int)str_replace('.', '', $request->jumlah);
 
         if ($atk) {
-            $total = $atk->jumlah + $qty;
-            AtkDistribusiDetail::where('id_detail', $atk->id_detail)->update([
-                'jumlah' => $total
-            ]);
-        } else {
-            $atk = Atk::where('id_atk', $request->id_atk)->first();
-            $id_detail = AtkDistribusiDetail::withTrashed()->count() + 1;
-            $tambah = new AtkDistribusiDetail();
-            $tambah->id_detail     = $id_detail;
-            $tambah->distribusi_id = $distribusi;
-            $tambah->atk_id        = $request->id_atk;
-            $tambah->jumlah        = $qty;
-            $tambah->satuan        = $atk->satuan_id;
-            $tambah->save();
+            return back()->with('failed', 'Barang Terdaftar');
         }
+
+        $atk = Atk::where('id_atk', $request->id_atk)->first();
+        $id_detail = AtkDistribusiDetail::withTrashed()->count() + 1;
+        $tambah = new AtkDistribusiDetail();
+        $tambah->id_detail     = $id_detail;
+        $tambah->distribusi_id = $distribusi;
+        $tambah->atk_id        = $request->id_atk;
+        $tambah->jumlah        = $qty;
+        $tambah->satuan_id     = $atk->satuan_id;
+        $tambah->save();
 
         return redirect()->back()->with('success', 'Berhasil Menyimpan');
     }
 
     public function itemUpdate(Request $request, $id)
     {
-        $distribusi = $request->distribusi_id;
-
-        $detail = AtkDistribusiDetail::where('atk_id', $request->id_atk)->where('distribusi_id', $distribusi)->first();
+        $detail = AtkDistribusiDetail::where('id_detail', $id)->first();
+        $atk    = Atk::where('id_atk', $detail->atk_id)->first();
         $qty    = (int)str_replace('.', '', $request->jumlah);
 
-        if ($detail) {
-            AtkDistribusiDetail::where('id_detail', $detail->id_detail)->update([
-                'jumlah'    => $qty,
-                'satuan_id' => $detail->satuan_id,
-            ]);
-        } else {
-            $atk = Atk::where('id_atk', $request->id_atk)->first();
-            AtkDistribusiDetail::where('id_detail', $id)->update([
-                'atk_id'    => $request->id_atk,
-                'jumlah'    => $qty,
-                'satuan_id' => $atk->satuan_id
-            ]);
+        if ($request->jumlah > $request->stok) {
+            return back()->with('failed', 'Melebihi Stok');
         }
+
+        AtkDistribusiDetail::where('id_detail', $id)->update([
+            'atk_id'    => $atk->id_atk,
+            'jumlah'    => $qty,
+            'satuan_id' => $atk->satuan_id
+        ]);
 
         return redirect()->back()->with('success', 'Berhasil Menyimpan');
     }

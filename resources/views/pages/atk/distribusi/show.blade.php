@@ -218,9 +218,10 @@
 
 <script>
     $(document).ready(function() {
-        let uker  = $('[name="uker"]').val();
+        let uker = $('[name="uker"]').val();
         let bulan = $('[name="bulan"]').val();
         let tahun = $('[name="tahun"]').val();
+        let userRole = '{{ Auth::user()->role_id }}';
 
         loadTable(uker, bulan, tahun);
 
@@ -292,13 +293,13 @@
                                 exportOptions: {
                                     columns: [0, 2, 3, 4, 5, 6, 7, 8],
                                 },
-                            }, {
+                            }, userRole == 4 ? {
                                 text: ' Tambah',
                                 className: 'bg-primary',
                                 action: function(e, dt, button, config) {
                                     $('#createModal').modal('show');
                                 }
-                            }, ],
+                            } : null].filter(Boolean),
                             "bDestroy": true
                         }).buttons().container().appendTo('#table-data_wrapper .col-md-6:eq(0)');
                     }

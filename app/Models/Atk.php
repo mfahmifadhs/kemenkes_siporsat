@@ -118,16 +118,14 @@ class Atk extends Model
             if ($ukerId) {
                 $query->where('uker_id', $ukerId);
             }
-        })->where('atk_id', $this->id)->sum('jumlah');
-
+        })->where('atk_id', $this->id_atk)->sum('jumlah');
 
         // Ambil stok keluar
         $dataKeluar = AtkDistribusiDetail::whereHas('distribusi.user.pegawai', function ($query) use ($ukerId) {
             if ($ukerId) {
                 $query->where('uker_id', $ukerId);
             }
-        })->where('atk_id', $this->id)->where('status', 'true')->sum('jumlah');
-
+        })->where('atk_id', $this->id_atk)->where('status', 'true')->sum('jumlah');
         return $dataMasuk - $dataKeluar;
     }
 }
