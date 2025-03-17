@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AadbController;
+use App\Http\Controllers\AadbKategoriController;
 use App\Http\Controllers\AtkController;
 use App\Http\Controllers\AtkDistribusiController;
 use App\Http\Controllers\AtkKategori;
@@ -43,21 +45,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('email/delete/{id}',  [AuthController::class, 'emailDelete'])->name('email.delete');
     Route::get('users/select',       [UserController::class, 'select'])->name('users.select');
 
-    Route::get('atk-stok/ready',   [AtkStokController::class, 'ready'])->name('atk-stok.ready');
-    Route::get('atk-distribusi',   [AtkDistribusiController::class, 'show'])->name('atk-distribusi');
-
-    Route::group(['prefix' => 'atk-distribusi', 'as' => 'atk-distribusi.'], function () {
-        Route::get('select',       [AtkDistribusiController::class, 'select'])->name('select');
-        Route::get('detail/{id}',  [AtkDistribusiController::class, 'detail'])->name('detail');
-    });
-
-    Route::post('atk-stok/store',         [AtkKeranjangController::class, 'keranjang'])->name('atk-stok.create');
-
-    Route::get('atk-bucket/update/{aksi}/{id}', [AtkKeranjangController::class, 'update'])->name('atk-bucket.update');
-    Route::get('atk-bucket/remove/{id}',        [AtkKeranjangController::class, 'remove'])->name('atk-bucket.remove');
-    Route::get('atk-bucket/store',              [AtkKeranjangController::class, 'store'])->name('atk-bucket.store');
-    Route::post('atk-bucket/create',            [AtkKeranjangController::class, 'create'])->name('atk-bucket.create');
-
     Route::get('usulan-atk/hapus/{id}', [UsulanAtkController::class, 'delete'])->name('usulan-atk.delete');
     Route::post('usulan-atk/store',     [UsulanAtkController::class, 'store'])->name('usulan-atk.store');
     Route::post('usulan-atk/update',    [UsulanAtkController::class, 'update'])->name('usulan-atk.update');
@@ -74,12 +61,35 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('usulan/delete/{id}',  [UsulanController::class, 'delete'])->name('usulan.delete');
     Route::post('usulan/store/{id}',  [UsulanController::class, 'store'])->name('usulan.store');
     Route::post('usulan/update/{id}', [UsulanController::class, 'update'])->name('usulan.update');
-
     Route::get('usulan/delete-item/{id}',  [UsulanController::class, 'deleteItem'])->name('usulan.deleteItem');
+
 
     Route::get('gdn', [GdnController::class, 'index'])->name('gdn');
     Route::get('ukt', [UktController::class, 'index'])->name('ukt');
+
+    // ATK ====================================================================================================
     Route::get('atk', [AtkController::class, 'index'])->name('atk');
+    Route::get('atk-stok/ready',   [AtkStokController::class, 'ready'])->name('atk-stok.ready');
+    Route::post('atk-stok/store',  [AtkKeranjangController::class, 'keranjang'])->name('atk-stok.create');
+    Route::get('atk-distribusi',   [AtkDistribusiController::class, 'show'])->name('atk-distribusi');
+
+    Route::group(['prefix' => 'atk-distribusi', 'as' => 'atk-distribusi.'], function () {
+        Route::get('select',       [AtkDistribusiController::class, 'select'])->name('select');
+        Route::get('detail/{id}',  [AtkDistribusiController::class, 'detail'])->name('detail');
+    });
+
+    Route::group(['prefix' => 'atk-bucket', 'as' => 'atk-bucket.'], function () {
+        Route::get('update/{aksi}/{id}', [AtkKeranjangController::class, 'update'])->name('update');
+        Route::get('remove/{id}',        [AtkKeranjangController::class, 'remove'])->name('remove');
+        Route::get('store',              [AtkKeranjangController::class, 'store'])->name('store');
+        Route::post('create',            [AtkKeranjangController::class, 'create'])->name('create');
+    });
+    // ========================================================================================================
+
+
+    Route::get('aadb', [AadbController::class, 'index'])->name('aadb');
+    Route::get('aadb/select', [AadbController::class, 'select'])->name('aadb.select');
+
 
     // Akses Super User
     Route::group(['middleware' => ['access:user']], function () {
@@ -142,6 +152,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('atk-satuan/store', [AtkSatuanController::class, 'store'])->name('atk-satuan.store');
             Route::post('atk-satuan/update/{id}', [AtkSatuanController::class, 'update'])->name('atk-satuan.update');
         });
+
+
+        Route::group(['middleware' => ['access:admin-aadb']], function () {
+
+            Route::get('aadb-kategori', [AadbKategoriController::class, 'show'])->name('aadb-kategori');
+            Route::group(['prefix' => 'aadb-kategori', 'as' => 'aadb-kategori.'], function () {
+                Route::post('store',       [AadbKategoriController::class, 'store'])->name('store');
+                Route::post('update/{id}', [AadbKategoriController::class, 'update'])->name('update');
+            });
+        });
+
 
     });
 

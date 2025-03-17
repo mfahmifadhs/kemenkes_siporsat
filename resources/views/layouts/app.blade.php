@@ -161,8 +161,9 @@
                             </a>
                         </li>
 
-                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
+                        @if (Auth::user()->role_id == 1)
                         <li class="nav-header"><i>Master Data</i></li>
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
@@ -202,6 +203,32 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 4)
+                        <li class="nav-item">
+                            <a href="#" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-car"></i>
+                                <p>
+                                Master AADB
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('aadb') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Kendaraan</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('aadb-kategori') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Kategori</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
                         @endif
 
                         @if (Auth::user()->role_id == 1)

@@ -45,6 +45,15 @@ class Access
             }
         }
 
+        if ($status == 'admin-aadb')
+        {
+            if ($role == 1 || $akses == 4) {
+                return $next($request);
+            } else {
+                return back()->with('failed','Anda tidak memiliki akses!');
+            }
+        }
+
         if ($status == 'monitor')
         {
             if ($role != 4) {
