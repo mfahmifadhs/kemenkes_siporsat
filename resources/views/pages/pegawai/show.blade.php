@@ -159,7 +159,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="nip" class="col-form-label">NIP:</label>
-                            <input type="text" class="form-control number" id="nip" name="nip" required>
+                            <input type="number" class="form-control" id="nip" name="nip" required>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="jabatan" class="col-form-label">Jabatan:</label>

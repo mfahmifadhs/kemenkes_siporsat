@@ -178,6 +178,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (Auth::user()->pegawai->uker->utama_id == '46593')
                             <div class="col-md-4">
                                 <div class="card card-widget widget-user-2 border border-dark">
                                     <div class="bg-primary p-3">
@@ -251,6 +252,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-md-8">
                                 <div class="card border border-dark">
                                     <label class="p-2 text-center">Total Usulan</label>
@@ -278,6 +280,7 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
+                                @if (Auth::user()->pegawai->uker->utama_id == '46593')
                                 <div class="info-box mb-3 border border-dark p-0" style="background-color: #fa7a6c;">
                                     <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
 
@@ -287,7 +290,9 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
+                                @endif
                             </div>
+                            @if (Auth::user()->pegawai->uker->utama_id == '46593')
                             <div class="col-md-12">
                                 <div class="card border border-dark">
                                     <div class="card-body">
@@ -322,6 +327,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

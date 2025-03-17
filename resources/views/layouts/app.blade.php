@@ -115,6 +115,7 @@
                         </li>
 
                         <li class="nav-header"><i>Menu</i></li>
+                        @if (Auth::user()->pegawai->uker->utama_id == '46593')
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
@@ -148,6 +149,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
                         <li class="nav-item">
                             <a href="{{ route('gdn') }}" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-city"></i>
