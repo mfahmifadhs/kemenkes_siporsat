@@ -280,7 +280,6 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                @if (Auth::user()->pegawai->uker->utama_id == '46593')
                                 <div class="info-box mb-3 border border-dark p-0" style="background-color: #fa7a6c;">
                                     <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
 
@@ -290,7 +289,6 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                @endif
                             </div>
                             @if (Auth::user()->pegawai->uker->utama_id == '46593')
                             <div class="col-md-12">
