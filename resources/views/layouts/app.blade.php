@@ -118,6 +118,31 @@
                         @if (Auth::user()->pegawai->uker->utama_id == '46593')
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-car"></i>
+                                <p>
+                                    AADB
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <!-- <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('usulan','aadb') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Daftar Usulan</p>
+                                    </a>
+                                </li>
+                            </ul> -->
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('aadb') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Kendaraan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
                                 <p>
                                 Alat Tulis Kantor
@@ -163,9 +188,8 @@
                             </a>
                         </li>
 
-                        @if (Auth::user()->role_id == 1)
-                        <li class="nav-header"><i>Master Data</i></li>
                         @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
+                        <li class="nav-header"><i>Master Data</i></li>
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
@@ -207,6 +231,7 @@
                         </li>
                         @endif
                         @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 4)
+                        <li class="nav-header"><i>Master Data</i></li>
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-car"></i>
@@ -230,7 +255,6 @@
                                 </li>
                             </ul>
                         </li>
-                        @endif
                         @endif
 
                         @if (Auth::user()->role_id == 1)

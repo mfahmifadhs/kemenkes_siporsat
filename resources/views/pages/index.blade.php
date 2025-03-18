@@ -28,6 +28,24 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="text-muted text-sm"><i>Alat Angkutan Darat Bermotor</i></label>
+                            <a href="{{ route('aadb') }}">
+                                <div class="info-box text-dark border border-dark">
+                                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-car"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text"><b>Total AADB</b></span>
+                                        <span class="info-box-number">
+                                            {{ $aadb->count() }}
+                                            <small>kendaraan</small>
+                                        </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                            </a>
+                        </div>
                     </div>
                     <div class="col-md-9">
                         <!-- Usulan -->
@@ -178,9 +196,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Usulan ATK -->
                             <div class="col-md-4">
                                 <div class="card card-widget widget-user-2 border border-dark">
-                                    <div class="bg-primary p-3">
+                                    <div class="bg-atk p-3">
                                         <h6 class="my-auto font-weight-bold">
                                             <i class="fas fa-pencil-ruler"></i> Usulan ATK
                                         </h6>
@@ -191,7 +210,7 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
-                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                    <button type="submit" class="nav-link btn btn-atk py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
                                                         </span>
@@ -206,7 +225,7 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
-                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                    <button type="submit" class="nav-link btn btn-atk py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
                                                         </span>
@@ -221,7 +240,7 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
-                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                    <button type="submit" class="nav-link btn btn-atk py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
                                                         </span>
@@ -236,7 +255,7 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
-                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                    <button type="submit" class="nav-link btn btn-atk py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
                                                         </span>
@@ -251,14 +270,156 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8">
-                                <div class="card border border-dark" style="height: 94.5%;">
-                                    <div class="card-body text-center">
-                                        <canvas id="stokChart"></canvas>
+                            <!-- Usulan Service -->
+                            <div class="col-md-4">
+                                <div class="card card-widget widget-user-2 border border-dark">
+                                    <div class="bg-servis p-3">
+                                        <h6 class="my-auto font-weight-bold">
+                                            <i class="fas fa-car-on"></i> Usulan Pemeliharaan AADB
+                                        </h6>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <ul class="nav flex-column font-weight-bold">
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="verif">
+                                                    <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-file-signature"></i> Persetujuan
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->whereNull('status_persetujuan')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="proses">
+                                                    <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-clock"></i> Proses
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'proses')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="selesai">
+                                                    <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-check-circle"></i> Selesai
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'selesai')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="false">
+                                                    <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-times-circle"></i> Ditolak
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->where('status_persetujuan', 'false')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Usulan BBM -->
+                            <div class="col-md-4">
+                                <div class="card card-widget widget-user-2 border border-dark">
+                                    <div class="bg-bbm p-3">
+                                        <h6 class="my-auto font-weight-bold">
+                                            <i class="fas fa-gas-pump"></i> Usulan Voucher BBM
+                                        </h6>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <ul class="nav flex-column font-weight-bold">
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="verif">
+                                                    <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-file-signature"></i> Persetujuan
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->whereNull('status_persetujuan')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="proses">
+                                                    <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-clock"></i> Proses
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'proses')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="selesai">
+                                                    <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-check-circle"></i> Selesai
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'selesai')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="false">
+                                                    <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-times-circle"></i> Ditolak
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ $usulan->where('form_id', 3)->where('status_persetujuan', 'false')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
+                                <label class="text-sm text-muted"><i>Total Usulan</i></label>
                                 <div class="info-box mb-3 border border-dark" style="background-color: #70d6ff;">
                                     <span class="info-box-icon"><i class="fas fa-people-roof"></i></span>
 
@@ -277,14 +438,38 @@
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
-                                <div class="info-box mb-3 border border-dark" style="background-color: #fa7a6c;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card border border-dark" style="height: 94.5%;">
+                                    <div class="card-body text-center">
+                                        <canvas id="stokChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-box mb-3 border border-dark" style="background-color: #4ed59a;">
                                     <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
 
                                     <div class="info-box-content">
                                         <h3 class="info-box-number">{{ $usulan->where('form_id', 3)->count() }}</h3>
                                         <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
                                     </div>
-                                    <!-- /.info-box-content -->
+                                </div>
+                                <div class="info-box mb-3 border border-dark" style="background-color: #ff8a76;">
+                                    <span class="info-box-icon"><i class="fas fa-car-on"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ $usulan->where('form_id', 4)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan Servis</h6>
+                                    </div>
+                                </div>
+                                <div class="info-box mb-3 border border-dark" style="background-color: #ec5a61;">
+                                    <span class="info-box-icon"><i class="fas fa-gas-pump"></i></span>
+
+                                    <div class="info-box-content">
+                                        <h3 class="info-box-number">{{ $usulan->where('form_id', 5)->count() }}</h3>
+                                        <h6 class="info-box-text text-sm">Usulan BBM</h6>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -345,10 +530,10 @@
         var stokChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Usulan UKT', 'Usulan GDN', 'Usulan ATK'],
+                labels: ['Usulan UKT', 'Usulan GDN', 'Usulan ATK', 'Usulan BBM', 'Usulan Servis'],
                 datasets: [{
                     data: [usulanUkt, usulanGdn, usulanAtk], // Data angka
-                    backgroundColor: ['#70d6ff', '#8093f1', '#fa7a6c']
+                    backgroundColor: ['#70d6ff', '#8093f1', '#4ed59a', '#ec5a61', '#ff8a76']
                 }]
             },
             options: {

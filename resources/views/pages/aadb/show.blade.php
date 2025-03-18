@@ -86,6 +86,7 @@
                 @csrf
                 <div class="modal-body">
 
+                    @if (Auth::user()->role_id != 4)
                     <div class="form-group">
                         <label class="col-form-label">Pilih Unit Kerja</label>
                         <select id="uker" name="uker" class="form-control" style="width: 100%;">
@@ -97,6 +98,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
 
                     <div class="form-group">
                         <label class="col-form-label">Pilih Kategori</label>

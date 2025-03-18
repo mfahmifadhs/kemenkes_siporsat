@@ -30,7 +30,7 @@ class AadbController extends Controller
             $data = $data->count();
         }
 
-        return view('pages.aadb.show', compact('kategori', 'data', 'uker', 'kondisi', 'status', 'listUker', 'listKategori','listKondisi'));
+        return view('pages.aadb.show', compact('kategori', 'data', 'uker', 'kondisi', 'status', 'listUker', 'listKategori', 'listKondisi'));
     }
 
     public function detail($id)
@@ -44,7 +44,7 @@ class AadbController extends Controller
         $uker     = UnitKerja::where('utama_id', '46593')->get();
         $kategori = AadbKategori::where('status', 'true')->get();
         $kondisi  = AadbKondisi::get();
-        return view('pages.aadb.create', compact('uker','kategori','kondisi'));
+        return view('pages.aadb.create', compact('uker', 'kategori', 'kondisi'));
     }
 
     public function store(Request $request)
@@ -83,7 +83,7 @@ class AadbController extends Controller
         $kategori = AadbKategori::where('status', 'true')->get();
         $kondisi  = AadbKondisi::get();
         $data     = Aadb::where('id_aadb', $id)->first();
-        return view('pages.aadb.edit', compact('id','uker','kategori','kondisi','data'));
+        return view('pages.aadb.edit', compact('id', 'uker', 'kategori', 'kondisi', 'data'));
     }
 
     public function update(Request $request, $id)
@@ -171,13 +171,11 @@ class AadbController extends Controller
                 $foto = '<img src="https://cdn-icons-png.flaticon.com/128/7571/7571054.png" class="img-fluid" alt="">';
             }
 
-            if ($role != 4) {
-                $aksi .= '
-                    <a href="' . route('aadb.detail', $row->id_aadb) . '" class="btn btn-default btn-xs bg-primary rounded border-dark">
-                        <i class="fas fa-info-circle p-1" style="font-size: 12px;"></i>
-                    </a>
-                ';
-            }
+            $aksi .= '
+                <a href="' . route('aadb.detail', $row->id_aadb) . '" class="btn btn-default btn-xs bg-primary rounded border-dark">
+                    <i class="fas fa-info-circle p-1" style="font-size: 12px;"></i>
+                </a>
+            ';
 
             if ($row->status == 'true') {
                 $status = '<i class="fas fa-check-circle text-success"></i>';
