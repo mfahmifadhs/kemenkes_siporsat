@@ -18,6 +18,7 @@ class Aadb extends Model
     protected $fillable = [
         'uker_id',
         'kategori_id',
+        'nup',
         'jenis_aadb',
         'kualifikasi',
         'merk_tipe',
@@ -25,16 +26,21 @@ class Aadb extends Model
         'no_bpkp',
         'tanggal_perolehan',
         'nilai_perolehan',
+        'kondisi_id',
         'keterangan',
         'foto_barang',
         'status'
     ];
 
     public function uker() {
-        return $this->hasMany(UnitKerja::class, 'uker_id');
+        return $this->belongsTo(UnitKerja::class, 'uker_id');
     }
 
     public function kategori() {
-        return $this->hasMany(AadbKategori::class, 'kategori_id');
+        return $this->belongsTo(AadbKategori::class, 'kategori_id');
+    }
+
+    public function kondisi() {
+        return $this->belongsTo(AadbKondisi::class, 'kondisi_id');
     }
 }

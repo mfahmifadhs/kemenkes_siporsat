@@ -40,13 +40,16 @@
                                 <thead class="text-uppercase text-center">
                                     <tr>
                                         <th style="width: 0%;">No</th>
-                                        <th style="width: 10%;">Aksi</th>
+                                        <th style="width: auto;">Aksi</th>
                                         <th style="width: auto;">Unit Kerja</th>
-                                        <th style="width: 10%;">NIP</th>
-                                        <th style="width: auto;">Nama</th>
-                                        <th style="width: auto;">Jabatan</th>
-                                        <th style="width: auto;">Tim Kerja</th>
-                                        <th style="width: 0%;">Status</th>
+                                        <th style="width: auto;">Jenis</th>
+                                        <th style="width: auto;">Kendaraan</th>
+                                        <th style="width: auto;">Merk/Tipe</th>
+                                        <th style="width: auto;">Kualifikasi</th>
+                                        <th style="width: auto;">No.Polisi</th>
+                                        <th style="width: auto;">Tanggal</th>
+                                        <th style="width: auto;">Nilai</th>
+                                        <th style="width: auto;">Kondisi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,7 +82,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="GET" action="{{ route('pegawai') }}">
+            <form method="GET" action="{{ route('aadb') }}">
                 @csrf
                 <div class="modal-body">
 
@@ -101,7 +104,19 @@
                             <option value="">-- Pilih Kategori --</option>
                             @foreach ($listKategori as $row)
                             <option value="{{ $row->id_kategori }}" <?php echo $row->id_kategori == $kategori ? 'selected' : ''; ?>>
-                                {{ $row->kategori }}
+                                {{ $row->nama_kategori }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Pilih Kondisi</label>
+                        <select name="kondisi" class="form-control">
+                            <option value="">-- Pilih Kondisi --</option>
+                            @foreach ($listKondisi as $row)
+                            <option value="{{ $row->id_kondisi }}" <?php echo $row->id_kondisi == $kondisi ? 'selected' : ''; ?>>
+                                {{ $row->nama_kondisi }}
                             </option>
                             @endforeach
                         </select>
@@ -117,7 +132,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route('pegawai') }}" class="btn btn-danger btn-sm">
+                    <a href="{{ route('aadb') }}" class="btn btn-danger btn-sm">
                         <i class="fas fa-undo"></i> Muat
                     </a>
                     <button class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Cari</button>
@@ -234,24 +249,23 @@
 
 <script>
     $(document).ready(function() {
-        let uker        = $('[name="uker"]').val();
-        let kategori    = $('[name="kategori"]').val();
-        let jenis       = $('[name="jenis"]').val();
-        let kualifikasi = $('[name="kualifikasi"]').val();
-        let status      = $('[name="status"]').val();
+        let uker     = $('[name="uker"]').val();
+        let kategori = $('[name="kategori"]').val();
+        let status   = $('[name="status"]').val();
+        let kondisi  = $('[name="kondisi"]').val();
+        let userRole = '{{ Auth::user()->role_id }}';
 
-        loadTable(uker, kategori, jenis, kualifikasi, status);
+        loadTable(uker, kategori, status, kondisi);
 
-        function loadTable(uker, kategori, jenis, kualifikasi, status) {
+        function loadTable(uker, kategori, status, kondisi) {
             $.ajax({
                 url: `{{ route('aadb.select') }}`,
                 method: 'GET',
                 data: {
                     uker: uker,
                     kategori: kategori,
-                    jenis: jenis,
-                    kualifikasi: kualifikasi,
-                    status: status
+                    status: status,
+                    kondisi: kondisi
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -277,14 +291,17 @@
                              `;
                             tbody.append(`
                                 <tr>
-                                    <td class="align-middle">${item.no}</td>
+                                    <td class="align-middle">${item.no} ${item.status}</td>
                                     <td class="align-middle">${item.aksi}</td>
-                                    <td class="align-middle">${item.uker}</td>
-                                    <td class="align-middle">${item.nip}</td>
-                                    <td class="align-middle text-left">${item.nama}</td>
-                                    <td class="align-middle text-left">${item.jabatan}</td>
-                                    <td class="align-middle text-left">${item.timker}</td>
-                                    <td class="align-middle">${item.status}</td>
+                                    <td class="align-middle text-left">${item.uker}</td>
+                                    <td class="align-middle">${item.jenis}</td>
+                                    <td class="align-middle text-left">${item.kategori}</td>
+                                    <td class="align-middle text-left">${item.merktipe}</td>
+                                    <td class="align-middle">${item.kualifikasi}</td>
+                                    <td class="align-middle">${item.nopolisi}</td>
+                                    <td class="align-middle">${item.tanggal}</td>
+                                    <td class="align-middle text-left">${item.nilai}</td>
+                                    <td class="align-middle">${item.kondisi}</td>
                                 </tr>
                             `);
                         });
@@ -297,29 +314,31 @@
                             "paging": true,
                             "searching": true,
                             buttons: [{
-                                extend: 'pdf',
-                                text: ' PDF',
-                                pageSize: 'A4',
-                                className: 'bg-danger',
-                                title: 'kegiatan',
-                                exportOptions: {
-                                    columns: [0, 2, 3, 4],
+                                    extend: 'pdf',
+                                    text: ' PDF',
+                                    pageSize: 'A4',
+                                    className: 'bg-danger',
+                                    title: 'kegiatan',
+                                    exportOptions: {
+                                        columns: [0, 2, 3, 4],
+                                    },
+                                }, {
+                                    extend: 'excel',
+                                    text: ' Excel',
+                                    className: 'bg-success',
+                                    title: 'kegiatan',
+                                    exportOptions: {
+                                        columns: [0, 2, 3, 4, 5, 6, 7, 8],
+                                    },
                                 },
-                            }, {
-                                extend: 'excel',
-                                text: ' Excel',
-                                className: 'bg-success',
-                                title: 'kegiatan',
-                                exportOptions: {
-                                    columns: [0, 2, 3, 4, 5, 6, 7, 8],
-                                },
-                            }, {
-                                text: ' Tambah',
-                                className: 'bg-primary',
-                                action: function(e, dt, button, config) {
-                                    $('#createModal').modal('show');
-                                }
-                            }, ],
+                                userRole == 1 || userRole == 2 ? {
+                                    text: ' Tambah',
+                                    className: 'bg-primary',
+                                    action: function(e, dt, button, config) {
+                                        window.location.href = `{{ route('aadb.create') }}`;
+                                    }
+                                } : null
+                            ],
                             "bDestroy": true
                         }).buttons().container().appendTo('#table-data_wrapper .col-md-6:eq(0)');
                     }

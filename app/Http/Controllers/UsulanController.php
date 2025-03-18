@@ -259,7 +259,6 @@ class UsulanController extends Controller
         $otp  = rand(111111, 999999);
         $verif = User::where('akses_id', 1)->first();
         $user  = User::where('id', $request->pengusul)->first();
-
         $id_usulan = Usulan::withTrashed()->count() + 1;
 
         $tambah = new Usulan();
@@ -269,7 +268,7 @@ class UsulanController extends Controller
         $tambah->form_id        = $form->id_form;
         $tambah->kode_usulan    = $kode;
         $tambah->tanggal_usulan = $request->tanggal ?? Carbon::now();
-        $tambah->keterangan     = $request->keterangan;
+        $tambah->keterangan     = !in_array($form->kode_form, ['ukt', 'gdn']) ? $request->keterangan : null;
         $tambah->otp_1          = $otp;
         $tambah->created_at     = Carbon::now();
 

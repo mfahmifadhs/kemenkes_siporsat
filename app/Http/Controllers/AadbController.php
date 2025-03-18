@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aadb;
 use App\Models\AadbKategori;
+use App\Models\AadbKondisi;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Auth;
@@ -17,11 +18,11 @@ class AadbController extends Controller
 
         $uker         = $request->uker;
         $kategori     = $request->kategori;
-        $jenis        = $request->jenis;
-        $kualifikasi  = $request->kualifikasi;
+        $kondisi      = $request->kondisi;
         $status       = $request->status;
         $listUker     = UnitKerja::where('utama_id', 46593)->get();
         $listKategori = AadbKategori::where('status', 'true')->orderBy('nama_kategori', 'asc')->get();
+        $listKondisi  = AadbKondisi::get();
 
         if ($user->role_id == 4) {
             $data = $data->where('uker_id', $user->pegawai->uker_id)->count();
@@ -29,7 +30,53 @@ class AadbController extends Controller
             $data = $data->count();
         }
 
-        return view('pages.aadb.show', compact('kategori', 'data', 'uker', 'jenis', 'kualifikasi', 'status', 'listUker', 'listKategori'));
+        return view('pages.aadb.show', compact('kategori', 'data', 'uker', 'kondisi', 'status', 'listUker', 'listKategori','listKondisi'));
+    }
+
+    public function detail($id)
+    {
+        $data = Aadb::where('id_aadb', $id)->first();
+        return view('pages.aadb.detail', compact('data'));
+    }
+
+    public function create()
+    {
+        $uker     = UnitKerja::where('utama_id', '46593')->get();
+        $kategori = AadbKategori::where('status', 'true')->get();
+        $kondisi  = AadbKondisi::get();
+        return view('pages.aadb.create', compact('uker','kategori','kondisi'));
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $fileName = $file->getClientOriginalName();
+            $request->foto->move(public_path('dist/img/foto_aadb'), $fileName);
+        }
+
+        $id_aadb = Aadb::withTrashed()->count() + 1;
+        $tambah  = new Aadb();
+        $tambah->id_aadb           = $id_aadb;
+        $tambah->uker_id           = $request->uker;
+        $tambah->kategori_id       = $request->kategori;
+        $tambah->nup               = $request->nup;
+        $tambah->jenis_aadb        = $request->jenis;
+        $tambah->kualifikasi       = $request->kualifikasi;
+        $tambah->merk_tipe         = $request->merktipe;
+        $tambah->no_polisi         = $request->nopolisi;
+        $tambah->no_bpkp           = $request->nobpkp;
+        $tambah->tanggal_perolehan = $request->tanggal;
+        $tambah->nilai_perolehan   = (int)str_replace('.', '', $request->nilai);
+        $tambah->kondisi_id        = $request->kondisi;
+        $tambah->keterangan        = $request->keterangan;
+        $tambah->foto_barang       = $fileName ?? null;
+        $tambah->status            = $request->status;
+        $tambah->save();
+
+        return redirect()->route('aadb.detail', $id_aadb)->with('success', 'Berhasil Menambah');
     }
 
     public function select(Request $request)
@@ -37,9 +84,8 @@ class AadbController extends Controller
         $role         = Auth::user()->role_id;
         $uker         = $request->uker;
         $kategori     = $request->kategori;
-        $jenis        = $request->jenis;
-        $kualifikasi  = $request->kualifikasi;
         $status       = $request->status;
+        $kondisi      = $request->kondisi;
         $search       = $request->search;
 
         $data     = Aadb::orderBy('id_aadb', 'asc')->orderBy('status', 'desc');
@@ -50,7 +96,7 @@ class AadbController extends Controller
             $data = $data->where('uker_id', Auth::user()->pegawai->uker_id);
         }
 
-        if ($uker || $kategori || $jenis || $kualifikasi || $status || $search) {
+        if ($uker || $kategori || $kondisi || $status || $search) {
             if ($uker) {
                 $res = $data->whereHas('uker', function ($query) use ($uker) {
                     $query->where('id_unit_kerja', $uker);
@@ -61,12 +107,8 @@ class AadbController extends Controller
                 $res = $data->where('kategori_id', $kategori);
             }
 
-            if ($jenis) {
-                $res = $data->where('jenis_aadb', $jenis);
-            }
-
-            if ($kualifikasi) {
-                $res = $data->where('kualifikasi', $kualifikasi);
+            if ($kondisi) {
+                $res = $data->where('kondisi_id', $kondisi);
             }
 
             if ($status) {
@@ -112,6 +154,7 @@ class AadbController extends Controller
                 'aksi'        => $aksi,
                 'foto'        => $foto,
                 'fileFoto'    => $row->foto_barang,
+                'uker'        => $row->uker->unit_kerja,
                 'kategori'    => $row->kategori->nama_kategori,
                 'jenis'       => $row->jenis_aadb,
                 'kualifikasi' => $row->kualifikasi,
@@ -121,7 +164,9 @@ class AadbController extends Controller
                 'nobpkp'      => $row->no_bpkp,
                 'tanggal'     => $row->tanggal_perolehan,
                 'nilai'       => 'Rp' . number_format($row->nilai_perolehan, 0, '.'),
-                'keterangan'  => $row->keterangan ?? ''
+                'keterangan'  => $row->keterangan ?? '',
+                'status'      => $status,
+                'kondisi'     => $row->kondisi->nama_kondisi
             ];
 
             $no++;
