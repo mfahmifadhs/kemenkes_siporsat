@@ -87,11 +87,13 @@ Route::group(['middleware' => 'auth'], function () {
     // ========================================================================================================
 
 
-    Route::get('aadb',             [AadbController::class, 'index'])->name('aadb');
-    Route::get('aadb/select',      [AadbController::class, 'select'])->name('aadb.select');
-    Route::get('aadb/create',      [AadbController::class, 'create'])->name('aadb.create');
-    Route::get('aadb/detail/{id}', [AadbController::class, 'detail'])->name('aadb.detail');
-    Route::post('aadb/store',      [AadbController::class, 'store'])->name('aadb.store');
+    Route::get('aadb',              [AadbController::class, 'index'])->name('aadb');
+    Route::get('aadb/select',       [AadbController::class, 'select'])->name('aadb.select');
+    Route::get('aadb/create',       [AadbController::class, 'create'])->name('aadb.create');
+    Route::get('aadb/detail/{id}',  [AadbController::class, 'detail'])->name('aadb.detail');
+    Route::get('aadb/edit/{id}',    [AadbController::class, 'edit'])->name('aadb.edit');
+    Route::post('aadb/store',       [AadbController::class, 'store'])->name('aadb.store');
+    Route::post('aadb/update/{id}', [AadbController::class, 'update'])->name('aadb.update');
 
 
     // Akses Super User

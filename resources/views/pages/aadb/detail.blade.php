@@ -23,14 +23,14 @@
     <div class="container-fluid col-md-9">
         <div class="row">
             <div class="col-md-12 form-group">
-                <div class="card card-primary">
-                    <div class="card-header border border-dark">
+                <div class="card card-primary border border-dark">
+                    <div class="card-header border-bottom border-dark">
                         <label class="card-title">
                             Detail AADB
                         </label>
                     </div>
                     <div class="table-responsive">
-                        <div class="card-body border border-dark" style="overflow-y: auto; max-height: 70vh;">
+                        <div class="card-body" style="overflow-y: auto; max-height: 65vh;">
                             <div class="row">
                                 <div class="col-md-3 text-center">
                                     <label class="text-secondary">Informasi AADB</label>
@@ -129,6 +129,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-footer text-right border-top border-dark">
+                            <a href="{{ route('aadb.edit', $data->id_aadb) }}" class="btn btn-warning btn-sm border-dark">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
                         </div>
                     </div>
                 </div>

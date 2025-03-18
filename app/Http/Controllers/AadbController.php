@@ -49,8 +49,6 @@ class AadbController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
-
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $fileName = $file->getClientOriginalName();
@@ -77,6 +75,45 @@ class AadbController extends Controller
         $tambah->save();
 
         return redirect()->route('aadb.detail', $id_aadb)->with('success', 'Berhasil Menambah');
+    }
+
+    public function edit($id)
+    {
+        $uker     = UnitKerja::where('utama_id', '46593')->get();
+        $kategori = AadbKategori::where('status', 'true')->get();
+        $kondisi  = AadbKondisi::get();
+        $data     = Aadb::where('id_aadb', $id)->first();
+        return view('pages.aadb.edit', compact('id','uker','kategori','kondisi','data'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = Aadb::where('id_aadb', $id)->first();
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $fileName = $file->getClientOriginalName();
+            $request->foto->move(public_path('dist/img/foto_aadb'), $fileName);
+        }
+
+        Aadb::where('id_aadb', $id)->update([
+            'uker_id'           => $request->uker,
+            'kategori_id'       => $request->kategori,
+            'nup'               => $request->nup,
+            'jenis_aadb'        => $request->jenis,
+            'kualifikasi'       => $request->kualifikasi,
+            'merk_tipe'         => $request->merktipe,
+            'no_polisi'         => $request->nopolisi,
+            'no_bpkp'           => $request->nobpkp,
+            'tanggal_perolehan' => $request->tanggal,
+            'nilai_perolehan'   => (int)str_replace('.', '', $request->nilai),
+            'kondisi_id'        => $request->kondisi,
+            'keterangan'        => $request->keterangan,
+            'foto_barang'       => $fileName ?? $data->foto_barang,
+            'status'            => $request->status
+        ]);
+
+        return redirect()->route('aadb.detail', $id)->with('success', 'Berhasil Menyimpan');
     }
 
     public function select(Request $request)
