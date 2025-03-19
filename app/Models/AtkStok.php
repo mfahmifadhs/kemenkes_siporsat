@@ -17,7 +17,7 @@ class AtkStok extends Model
 
     protected $fillable = [
         'kode_stok',
-        'tanggal_masuk',
+        'tanggal_beli',
         'no_kwitansi',
         'total_harga',
         'keterangan'

@@ -281,7 +281,6 @@ class UsulanController extends Controller
             // return redirect()->route('atk-stok.store', http_build_query($request->all()));
             $id_stok = AtkStok::withTrashed()->count() + 1;
 
-            dd($request->all());
             $detail = $request->id_keranjang;
             foreach ($detail as $i => $keranjang_id) {
                 $id_detail = AtkStokDetail::withTrashed()->count() + 1;
@@ -299,7 +298,7 @@ class UsulanController extends Controller
             $stok = new AtkStok();
             $stok->id_stok       = $id_stok;
             $stok->kode_stok     = strtoupper(Str::random(6));
-            $stok->tanggal_masuk = $request->tanggal;
+            $stok->tanggal_beli  = $request->tanggal;
             $stok->keterangan    = $request->keterangan;
             $stok->created_at    = Carbon::now();
             $stok->save();
