@@ -142,7 +142,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('atk-stok/detail/{id}', [AtkStokController::class, 'detail'])->name('atk-stok.detail');
             Route::get('atk-stok/edit/{id}', [AtkStokController::class, 'edit'])->name('atk-stok.edit');
             Route::get('atk-stok/delete/{id}', [AtkStokController::class, 'delete'])->name('atk-stok.delete');
-            Route::get('atk-stok/store', [AtkStokController::class, 'store'])->name('atk-stok.store');
+            Route::post('atk-stok/store', [AtkStokController::class, 'store'])->name('atk-stok.store');
             Route::post('atk-stok/update/{id}', [AtkStokController::class, 'update'])->name('atk-stok.update');
 
             Route::get('atk-stok/item-delete/{id}', [AtkStokController::class, 'itemDelete'])->name('atk-stok.item.delete');

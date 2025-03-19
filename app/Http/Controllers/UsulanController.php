@@ -274,7 +274,8 @@ class UsulanController extends Controller
     {
         $akses = Auth::user()->akses_id;
         if (!$request->pengusul && $akses == 3) {
-            return redirect()->route('atk-stok.store', http_build_query($request->all()));
+            // return redirect()->route('atk-stok.store', http_build_query($request->all()));
+            return redirect()->route('atk-stok.store')->with('form_data', $request->all());
         }
 
         if ($id == 'servis') {
