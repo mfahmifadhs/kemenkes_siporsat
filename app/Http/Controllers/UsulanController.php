@@ -281,6 +281,7 @@ class UsulanController extends Controller
             // return redirect()->route('atk-stok.store', http_build_query($request->all()));
             $id_stok = AtkStok::withTrashed()->count() + 1;
 
+            dd($request->all());
             $detail = $request->id_keranjang;
             foreach ($detail as $i => $keranjang_id) {
                 $id_detail = AtkStokDetail::withTrashed()->count() + 1;
