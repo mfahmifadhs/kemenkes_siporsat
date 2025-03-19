@@ -7,6 +7,8 @@ use App\Models\Aadb;
 use App\Models\Atk;
 use App\Models\AtkKategori;
 use App\Models\AtkKeranjang;
+use App\Models\AtkStok;
+use App\Models\AtkStokDetail;
 use App\Models\Form;
 use App\Models\GdnPerbaikan;
 use App\Models\UnitKerja;
