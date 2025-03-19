@@ -28,7 +28,6 @@ class AtkStokController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         $id_stok = AtkStok::withTrashed()->count() + 1;
 
         $detail = $request->id_keranjang;

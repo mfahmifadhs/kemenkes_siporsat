@@ -150,7 +150,7 @@ class UsulanController extends Controller
                     </a>';
             }
 
-            if (in_array(Auth::user()->akses_id, [2,3]) && $row->status_proses == 'proses') {
+            if (in_array(Auth::user()->akses_id, [2, 3]) && $row->status_proses == 'proses') {
                 $aksi .= '
                     <a href="' . route('usulan.proses', $row->id_usulan) . '" class="btn btn-default btn-xs bg-warning rounded border-dark">
                         <i class="fas fa-file-import p-1" style="font-size: 12px;"></i>
@@ -159,7 +159,7 @@ class UsulanController extends Controller
 
             if ($row->form_id == 3) {
                 $hal = $row->keterangan;
-            } else if (in_array($row->form_id, [4,5])) {
+            } else if (in_array($row->form_id, [4, 5])) {
                 $hal = $row->form->nama_form;
             } else {
                 $hal = $row->detail->map(function ($item) {
@@ -273,10 +273,37 @@ class UsulanController extends Controller
     public function store(Request $request, $id)
     {
         $akses = Auth::user()->akses_id;
+
+        // INPUT STOK ATK ====================================================================
         if (!$request->pengusul && $akses == 3) {
             // return redirect()->route('atk-stok.store', http_build_query($request->all()));
-            return redirect()->route('atk-stok.store')->with('form_data', $request->all());
+            $id_stok = AtkStok::withTrashed()->count() + 1;
+
+            $detail = $request->id_keranjang;
+            foreach ($detail as $i => $keranjang_id) {
+                $id_detail = AtkStokDetail::withTrashed()->count() + 1;
+                $detail = new AtkStokDetail();
+                $detail->id_detail  = $id_detail;
+                $detail->stok_id    = $id_stok;
+                $detail->atk_id     = $request->id_atk[$i];
+                $detail->jumlah     = $request->jumlah[$i];
+                $detail->created_at = Carbon::now();
+                $detail->save();
+
+                AtkKeranjang::where('id_keranjang', $keranjang_id)->delete();
+            }
+
+            $stok = new AtkStok();
+            $stok->id_stok       = $id_stok;
+            $stok->kode_stok     = strtoupper(Str::random(6));
+            $stok->tanggal_masuk = $request->tanggal;
+            $stok->keterangan    = $request->keterangan;
+            $stok->created_at    = Carbon::now();
+            $stok->save();
+
+            return redirect()->route('atk-stok.detail', $id_stok)->with('success', 'Berhasil Menambahkan');
         }
+        // =================================================================================
 
         if ($id == 'servis') {
             $form = Form::where('id_form', 4)->first();
