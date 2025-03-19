@@ -272,7 +272,6 @@ class UsulanController extends Controller
 
     public function store(Request $request, $id)
     {
-        dd($request->all());
         $akses = Auth::user()->akses_id;
         if (!$request->pengusul && $akses == 3) {
             return redirect()->route('atk-stok.store', http_build_query($request->all()));
