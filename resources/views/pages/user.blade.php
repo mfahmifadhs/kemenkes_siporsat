@@ -11,6 +11,7 @@
                     <div class="col-md-12">
                         <h4 class="font-weight-bold mb-4 text-capitalize">
                             Selamat Datang, {{ ucfirst(strtolower(Auth::user()->pegawai->nama_pegawai)) }}
+                            <small>({{ Auth::user()->pegawai->uker->unit_kerja }})</small>
                         </h4>
                     </div>
 
