@@ -30,4 +30,8 @@ class UnitKerja extends Model
     public function pegawai() {
         return $this->hasMany(Pegawai::class, 'uker_id');
     }
+
+    public function aadb() {
+        return $this->hasMany(Aadb::class, 'uker_id');
+    }
 }

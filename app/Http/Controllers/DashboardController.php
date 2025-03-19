@@ -23,7 +23,7 @@ class DashboardController extends Controller
         if ($role != 4) {
             return view('pages.index', compact('usulan','atk','aadb'));
         } else {
-            return view('pages.user', compact('atk'));
+            return view('pages.user', compact('aadb','atk'));
         }
     }
 }
