@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\mailToken;
+use App\Models\Aadb;
 use App\Models\Atk;
 use App\Models\AtkKategori;
 use App\Models\AtkKeranjang;
@@ -12,7 +13,9 @@ use App\Models\UnitKerja;
 use App\Models\User;
 use App\Models\Usulan;
 use App\Models\UsulanAtk;
+use App\Models\UsulanBbm;
 use App\Models\UsulanDetail;
+use App\Models\UsulanServis;
 use Illuminate\Http\Request;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -154,6 +157,16 @@ class UsulanController extends Controller
                     </a>';
             }
 
+            if ($row->form_id == 3) {
+                $hal = $row->keterangan;
+            } else if (in_array($row->form_id, [4,5])) {
+                $hal = $row->form->nama_form;
+            } else {
+                $hal = $row->detail->map(function ($item) {
+                    return Str::limit(' ' . $item->judul, 150);
+                });
+            }
+
             $response[] = [
                 'no'        => $no,
                 'id'        => $row->id_usulan,
@@ -163,9 +176,7 @@ class UsulanController extends Controller
                 'uker'      => ucwords(strtolower($row->user?->pegawai->uker->unit_kerja)),
                 'nosurat'   => $row->nomor_usulan ?? '-',
                 'totalItem' => $row->detail->count(),
-                'hal'       => $row->form_id == 3 ? $row->keterangan : $row->detail->map(function ($item) {
-                    return Str::limit(' ' . $item->judul, 150);
-                }),
+                'hal'       => $hal,
                 'deskripsi' => $row->detail->map(function ($item) {
                     return $item->uraian . ', ' . $item->keterangan;
                 }),
@@ -243,18 +254,38 @@ class UsulanController extends Controller
 
     public function create($id)
     {
+        if ($id == 'servis') {
+            $uker = Auth::user()->pegawai->uker_id;
+            $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('merk_tipe', 'asc')->get();
+            return view('pages.usulan.aadb.servis.create', compact('aadb'));
+        }
+
+        if ($id == 'bbm') {
+            $uker = Auth::user()->pegawai->uker_id;
+            $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('kualifikasi', 'desc')->orderBy('kategori_id', 'asc')->get();
+            return view('pages.usulan.aadb.bbm.create', compact('aadb'));
+        }
+
         $gdn = GdnPerbaikan::orderBy('jenis_perbaikan', 'asc')->get();
         return view('pages.usulan.' . $id . '.create', compact('gdn'));
     }
 
     public function store(Request $request, $id)
     {
+        dd($request->all());
         $akses = Auth::user()->akses_id;
         if (!$request->pengusul && $akses == 3) {
             return redirect()->route('atk-stok.store', http_build_query($request->all()));
         }
 
-        $form = Form::where('kode_form', $id)->first();
+        if ($id == 'servis') {
+            $form = Form::where('id_form', 4)->first();
+        } else if ($id == 'bbm') {
+            $form = Form::where('id_form', 5)->first();
+        } else {
+            $form = Form::where('kode_form', $id)->first();
+        }
+
         $kode = strtoupper(Str::random(6));
         $otp  = rand(111111, 999999);
         $verif = User::where('akses_id', 1)->first();
@@ -262,15 +293,16 @@ class UsulanController extends Controller
         $id_usulan = Usulan::withTrashed()->count() + 1;
 
         $tambah = new Usulan();
-        $tambah->id_usulan      = $id_usulan;
-        $tambah->user_id        = $request->cito == 'true' ? $user->id : Auth::user()->id;
-        $tambah->pegawai_id     = $request->cito == 'true' ? $user->pegawai_id : Auth::user()->pegawai_id;
-        $tambah->form_id        = $form->id_form;
-        $tambah->kode_usulan    = $kode;
-        $tambah->tanggal_usulan = $request->tanggal ?? Carbon::now();
-        $tambah->keterangan     = !in_array($form->kode_form, ['ukt', 'gdn']) ? $request->keterangan : null;
-        $tambah->otp_1          = $otp;
-        $tambah->created_at     = Carbon::now();
+        $tambah->id_usulan       = $id_usulan;
+        $tambah->user_id         = $request->cito == 'true' ? $user->id : Auth::user()->id;
+        $tambah->pegawai_id      = $request->cito == 'true' ? $user->pegawai_id : Auth::user()->pegawai_id;
+        $tambah->form_id         = $form->id_form;
+        $tambah->kode_usulan     = $kode;
+        $tambah->tanggal_usulan  = $request->tanggal ?? Carbon::now();
+        $tambah->keterangan      = !in_array($form->kode_form, ['ukt', 'gdn', 'aadb']) ? $request->keterangan : null;
+        $tambah->otp_1           = $otp;
+        $tambah->tanggal_selesai = $form->id_form == 5 ? Carbon::parse($request->bulan_permintaan . '-01') : null;
+        $tambah->created_at      = Carbon::now();
 
         if ($request->cito == 'true') {
             $format = $this->nomorNaskah($request);
@@ -294,6 +326,14 @@ class UsulanController extends Controller
 
         if ($form->id_form == 3) {
             $this->storeAtk($request, $id_usulan);
+        }
+
+        if ($form->id_form == 4) {
+            $this->storeServis($request, $id_usulan);
+        }
+
+        if ($form->id_form == 5) {
+            $this->storeBbm($request, $id_usulan);
         }
 
         return redirect()->route('usulan.detail', $id_usulan)->with('success', 'Berhasil Menambahkan');
@@ -337,6 +377,39 @@ class UsulanController extends Controller
             $detail->save();
 
             AtkKeranjang::where('id_keranjang', $request->id_keranjang[$i])->delete();
+        }
+
+        return;
+    }
+
+    public function storeServis(Request $request, $id)
+    {
+        $aadb = $request->aadb;
+        foreach ($aadb as $i => $aadb_id) {
+            $id_detail = UsulanServis::withTrashed()->count() + 1;
+            $detail = new UsulanServis();
+            $detail->id_detail   = $id_detail;
+            $detail->usulan_id   = $id;
+            $detail->aadb_id     = $aadb_id;
+            $detail->uraian      = $request->uraian[$i];
+            $detail->keterangan  = $request->keterangan[$i];
+            $detail->created_at  = Carbon::now();
+            $detail->save();
+        }
+
+        return;
+    }
+
+    public function storeBbm(Request $request, $id)
+    {
+        $aadb = $request->aadb;
+        foreach ($aadb as $aadb_id) {
+            $id_detail = UsulanBbm::withTrashed()->count() + 1;
+            $detail = new UsulanBbm();
+            $detail->id_detail   = $id_detail;
+            $detail->usulan_id   = $id;
+            $detail->aadb_id     = $aadb_id;
+            $detail->save();
         }
 
         return;

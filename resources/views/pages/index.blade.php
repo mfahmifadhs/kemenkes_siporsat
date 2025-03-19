@@ -281,7 +281,7 @@
                                     <div class="card-body p-0">
                                         <ul class="nav flex-column font-weight-bold">
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
                                                     <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
@@ -289,14 +289,14 @@
                                                             <i class="fas fa-file-signature"></i> Persetujuan
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->whereNull('status_persetujuan')->count() }}
+                                                            {{ $usulan->where('form_id', 4)->whereNull('status_persetujuan')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
                                                     <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
@@ -304,14 +304,14 @@
                                                             <i class="fas fa-clock"></i> Proses
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'proses')->count() }}
+                                                            {{ $usulan->where('form_id', 4)->where('status_proses', 'proses')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
                                                     <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
@@ -319,14 +319,14 @@
                                                             <i class="fas fa-check-circle"></i> Selesai
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'selesai')->count() }}
+                                                            {{ $usulan->where('form_id', 4)->where('status_proses', 'selesai')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
                                                     <button type="submit" class="nav-link btn btn-servis py-2 font-weight-bold text-left btn-block">
@@ -334,7 +334,7 @@
                                                             <i class="fas fa-times-circle"></i> Ditolak
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->where('status_persetujuan', 'false')->count() }}
+                                                            {{ $usulan->where('form_id', 4)->where('status_persetujuan', 'false')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
@@ -355,7 +355,7 @@
                                     <div class="card-body p-0">
                                         <ul class="nav flex-column font-weight-bold">
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
                                                     <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
@@ -363,14 +363,14 @@
                                                             <i class="fas fa-file-signature"></i> Persetujuan
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->whereNull('status_persetujuan')->count() }}
+                                                            {{ $usulan->where('form_id', 5)->whereNull('status_persetujuan')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
                                                     <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
@@ -378,14 +378,14 @@
                                                             <i class="fas fa-clock"></i> Proses
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'proses')->count() }}
+                                                            {{ $usulan->where('form_id', 5)->where('status_proses', 'proses')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
                                                     <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
@@ -393,14 +393,14 @@
                                                             <i class="fas fa-check-circle"></i> Selesai
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->where('status_proses', 'selesai')->count() }}
+                                                            {{ $usulan->where('form_id', 5)->where('status_proses', 'selesai')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>
                                                 </form>
                                             </li>
                                             <li class="nav-item">
-                                                <form action="{{ route('usulan', 'atk') }}" method="GET">
+                                                <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
                                                     <button type="submit" class="nav-link btn btn-bbm py-2 font-weight-bold text-left btn-block">
@@ -408,7 +408,7 @@
                                                             <i class="fas fa-times-circle"></i> Ditolak
                                                         </span>
                                                         <span class="float-right">
-                                                            {{ $usulan->where('form_id', 3)->where('status_persetujuan', 'false')->count() }}
+                                                            {{ $usulan->where('form_id', 5)->where('status_persetujuan', 'false')->count() }}
                                                             usulan
                                                         </span>
                                                     </button>

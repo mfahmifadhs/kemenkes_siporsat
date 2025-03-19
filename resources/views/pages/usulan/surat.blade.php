@@ -162,6 +162,65 @@
             </div>
         </div>
         @endif
+
+        <!-- ========================== AADB SERVIS ================================= -->
+        @if ($data->form_id == 4)
+        <div class="card-body h4" style="overflow-y: auto; max-height: 50vh;">
+            <label>Uraian Pemeliharaan</label>
+            <div class="table-responsive">
+                <table id="table" class="table table-bordered border border-dark h4">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="th">No</th>
+                            <th class="th">Nama Kendaraan</th>
+                            <th class="th">Uraian</th>
+                            <th class="th">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data->detailServis as $row)
+                        <tr class="bg-white">
+                            <td class="td text-center">{{ $loop->iteration }}</td>
+                            <td class="td">{{ $row->aadb->no_polisi ? $row->aadb->no_polisi .' - ' : '' }} {{ $row->aadb->merk_tipe }}</td>
+                            <td class="td">{!! nl2br($row->uraian) !!}</td>
+                            <td class="td">{!! nl2br($row->keterangan) !!}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
+        <!-- ========================== AADB BBM ================================= -->
+        @if ($data->form_id == 5)
+        <div class="card-body h4" style="overflow-y: auto; max-height: 50vh;">
+            <label>Uraian Permintaan BBM <u>{{ Carbon\Carbon::parse($data->tanggal_selesai)->isoFormat('MMMM Y') }}</u></label>
+            <div class="table-responsive">
+                <table id="table" class="table table-bordered border border-dark h4">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="th">No</th>
+                            <th class="th">No. Polisi</th>
+                            <th class="th">Kendaraan</th>
+                            <th class="th">Merk/Tipe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data->detailBbm as $row)
+                        <tr class="bg-white">
+                            <td class="td text-center">{{ $loop->iteration }}</td>
+                            <td class="td">{{ $row->aadb->no_polisi }}</td>
+                            <td class="td">{{ $row->aadb->kategori->nama_kategori }}</td>
+                            <td class="td">{{ $row->aadb->merk_tipe }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
         <div class="card-body">
             <div class="footer-container">
                 <div class="row">

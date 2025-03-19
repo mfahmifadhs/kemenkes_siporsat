@@ -58,4 +58,12 @@ class Usulan extends Model
     public function detailAtk() {
         return $this->hasMany(UsulanAtk::class, 'usulan_id');
     }
+
+    public function detailServis() {
+        return $this->hasMany(UsulanServis::class, 'usulan_id');
+    }
+
+    public function detailBbm() {
+        return $this->hasMany(UsulanBbm::class, 'usulan_id');
+    }
 }

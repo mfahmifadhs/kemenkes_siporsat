@@ -123,6 +123,12 @@
                             <label class="w-25">Hal</label>
                             <span class="w-75">: {{ $data->form->nama_form }}</span>
                         </div>
+                        @if ($data->form_id == 5)
+                        <div class="input-group">
+                            <label class="w-25">Bulan Permintaan</label>
+                            <span class="w-75">: {{ Carbon\Carbon::parse($data->tanggal_selesai)->isoFormat('MMMM Y') }}</span>
+                        </div>
+                        @endif
                         @if ($data->status_persetujuan == 'true')
                         <div class="input-group">
                             <label class="w-25">Surat Usulan</label>
@@ -167,6 +173,7 @@
                         </div>
                         @endif
                     </div>
+                    @if ($data->form_id == 3)
                     <div class="col-md-4">
                         @if (!$data->tanggal_ambil)
                         <div class="input-group">
@@ -183,6 +190,7 @@
                         </div>
                         @endif
                     </div>
+                    @endif
                 </div>
             </div>
             <!-- ========================= UKT & GDN ============================ -->
@@ -213,6 +221,8 @@
                 </div>
             </div>
             @endif
+
+            <!-- ========================== ATK ================================= -->
             @if ($data->form_id == 3)
             <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
                 <label>Uraian Permintaan</label>
@@ -240,6 +250,64 @@
                 </div>
             </div>
             @endif
+
+            <!-- ========================== AADB SERVIS ================================= -->
+            @if ($data->form_id == 4)
+            <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
+                <label>Uraian Pemeliharaan</label>
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered border border-dark">
+                        <thead class="text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kendaraan</th>
+                                <th>Uraian</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs">
+                            @foreach ($data->detailServis as $row)
+                            <tr class="bg-white">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $row->aadb->no_polisi ? $row->aadb->no_polisi .' - ' : '' }} {{ $row->aadb->merk_tipe }}</td>
+                                <td>{!! nl2br($row->uraian) !!}</td>
+                                <td>{!! nl2br($row->keterangan)  !!}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
+            <!-- ========================== AADB BBM ================================= -->
+            @if ($data->form_id == 5)
+            <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
+                <label>Uraian Pemeliharaan</label>
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered border border-dark">
+                        <thead class="text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>No. Polisi</th>
+                                <th>Kendaraan</th>
+                                <th>Merk/Tipe</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs">
+                            @foreach ($data->detailBbm as $row)
+                            <tr class="bg-white">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $row->aadb->no_polisi }}</td>
+                                <td>{{ $row->aadb->kategori->nama_kategori }}</td>
+                                <td>{{ $row->aadb->merk_tipe }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </secti>
@@ -257,7 +325,7 @@
             text: 'Pilih tanggal pengambilan',
             icon: 'question',
             html: `
-                <h6>Tanggal Pengambilan</h6>
+                <h6></h6>
                 <input type="date" id="tanggal" class="swal2-input ml-0 mt-0 w-100 border border-dark text-center" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" placeholder="Tanggal Ambil">
             `,
             preConfirm: () => {
