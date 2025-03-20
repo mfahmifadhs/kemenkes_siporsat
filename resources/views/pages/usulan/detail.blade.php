@@ -169,7 +169,7 @@
                         </div>
                         @endif
                     </div>
-                    @if ($data->form_id == 3)
+                    @if ($data->form_id == 3 && $data->status_proses == 'selesai')
                     <div class="col-md-4">
                         @if (!$data->tanggal_ambil)
                         <div class="input-group">
@@ -239,6 +239,37 @@
                                 <td>{{ $row->atk->nama_barang }}</td>
                                 <td>{{ $row->atk->deskripsi }}</td>
                                 <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
+            <!-- ========================== AADB SERVIS ================================= -->
+            @if ($data->form_id == 4)
+            <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
+                <label>Uraian Pemeliharaan</label>
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered border border-dark">
+                        <thead class="text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>No. Polisi</th>
+                                <th>Kendaraan</th>
+                                <th>Uraian</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-xs">
+                            @foreach ($data->detailServis as $row)
+                            <tr class="bg-white">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $row->aadb->no_polisi }}</td>
+                                <td>{{ $row->aadb->kategori->nama_kategori.' '.$row->aadb->merk_tipe }}</td>
+                                <td>{{ $row->uraian }}</td>
+                                <td>{{ $row->keterangan }}</td>
                             </tr>
                             @endforeach
                         </tbody>

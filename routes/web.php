@@ -61,7 +61,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('usulan/delete/{id}',  [UsulanController::class, 'delete'])->name('usulan.delete');
     Route::post('usulan/store/{id}',  [UsulanController::class, 'store'])->name('usulan.store');
     Route::post('usulan/update/{id}', [UsulanController::class, 'update'])->name('usulan.update');
+
     Route::get('usulan/delete-item/{id}',  [UsulanController::class, 'deleteItem'])->name('usulan.deleteItem');
+    Route::get('usulan/delete-servis/{id}',  [UsulanController::class, 'deleteServis'])->name('usulan.deleteServis');
 
 
     Route::get('gdn', [GdnController::class, 'index'])->name('gdn');
@@ -85,7 +87,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('create',            [AtkKeranjangController::class, 'create'])->name('create');
     });
     // ========================================================================================================
-
 
     Route::get('aadb',              [AadbController::class, 'index'])->name('aadb');
     Route::get('aadb/select',       [AadbController::class, 'select'])->name('aadb.select');

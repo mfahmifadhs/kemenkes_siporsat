@@ -494,6 +494,18 @@ class UsulanController extends Controller
         $gdn  = GdnPerbaikan::orderBy('jenis_perbaikan', 'asc')->get();
         $kategori = AtkKategori::where('status', 'true')->get();
 
+        if ($data->form_id == 4) {
+            $uker = Auth::user()->pegawai->uker_id;
+            $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('merk_tipe', 'asc')->get();
+            return view('pages.usulan.aadb.servis.edit', compact('id', 'aadb', 'data'));
+        }
+
+        if ($data->form_id == 5) {
+            $uker = Auth::user()->pegawai->uker_id;
+            $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('kualifikasi', 'desc')->orderBy('kategori_id', 'asc')->get();
+            return view('pages.usulan.aadb.bbm.edit', compact('aadb', 'data'));
+        }
+
         return view('pages.usulan.' . $form . '.edit', compact('id', 'data', 'gdn', 'kategori'));
     }
 
@@ -502,10 +514,10 @@ class UsulanController extends Controller
         $usulan = Usulan::where('id_usulan', $id)->first();
 
         Usulan::where('id_usulan', $id)->update([
-            'tanggal_usulan'  => $request->tanggal_usulan,
-            'nama_penerima'   => $request->nama_penerima,
-            'tanggal_selesai' => $request->tanggal_ambil,
-            'keterangan'      => $request->keterangan
+            'tanggal_usulan'  => $request->tanggal_usulan ?? $usulan->tanggal_usulan,
+            'nama_penerima'   => $request->nama_penerima ?? $usulan->nama_penerima,
+            'tanggal_selesai' => $request->tanggal_ambil ?? $usulan->tanggal_selesai,
+            'keterangan'      => $request->keterangan ?? $usulan->keterangan
         ]);
 
         if (in_array($usulan->form_id, [1, 2])) {
@@ -514,10 +526,11 @@ class UsulanController extends Controller
                 $id_detail = $request->id_detail[$i];
                 if ($id_detail) {
                     UsulanDetail::where('id_detail', $id_detail)->update([
+                        'usulan_id'   => $id,
                         'kategori_id' => $request->kategori[$i] ?? null,
                         'judul'       => $judul,
                         'uraian'      => $request->uraian[$i],
-                        'keterangan'  => $request->keterangan[$i],
+                        'keterangan'  => $request->keterangan_detail[$i],
                     ]);
                 } else {
                     $id_detail = UsulanDetail::withTrashed()->count() + 1;
@@ -527,8 +540,32 @@ class UsulanController extends Controller
                     $detail->kategori_id = $request->kategori[$i] ?? null;
                     $detail->judul       = $request->judul[$i];
                     $detail->uraian      = $request->uraian[$i];
-                    $detail->keterangan  = $request->keterangan[$i];
+                    $detail->keterangan  = $request->keterangan_detail[$i];
                     $detail->created_at  = Carbon::now();
+                    $detail->save();
+                }
+            }
+        }
+
+        if ($usulan->form_id == 4) {
+            $aadb = $request->aadb;
+            foreach ($aadb as $i => $aadb) {
+                $id_detail = $request->id_detail[$i];
+                if ($id_detail) {
+                    UsulanServis::where('id_detail', $id_detail)->update([
+                        'usulan_id'   => $id,
+                        'aadb_id'     => $aadb,
+                        'uraian'      => $request->uraian[$i] ?? null,
+                        'keterangan'  => $request->keterangan_detail[$i] ?? null,
+                    ]);
+                } else {
+                    $id_detail = UsulanServis::withTrashed()->count() + 1;
+                    $detail = new UsulanServis();
+                    $detail->id_detail   = $id_detail;
+                    $detail->usulan_id   = $id;
+                    $detail->aadb_id     = $aadb;
+                    $detail->uraian      = $request->uraian[$i] ?? null;
+                    $detail->keterangan  = $request->keterangan_detail[$i] ?? null;
                     $detail->save();
                 }
             }
@@ -561,6 +598,14 @@ class UsulanController extends Controller
     {
         $data = UsulanDetail::where('id_detail', $id)->first();
         UsulanDetail::where('id_detail', $id)->delete();
+
+        return redirect()->route('usulan.edit', $data->usulan_id)->with('success', 'Berhasil Menghapus');
+    }
+
+    public function deleteServis($id)
+    {
+        $data = UsulanServis::where('id_detail', $id)->first();
+        UsulanServis::where('id_detail', $id)->delete();
 
         return redirect()->route('usulan.edit', $data->usulan_id)->with('success', 'Berhasil Menghapus');
     }

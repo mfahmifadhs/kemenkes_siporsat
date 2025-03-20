@@ -173,7 +173,7 @@
                         </div>
                         @endif
                     </div>
-                    @if ($data->form_id == 3)
+                    @if ($data->form_id == 3 && $data->status_proses == 'selesai')
                     <div class="col-md-4">
                         @if (!$data->tanggal_ambil)
                         <div class="input-group">
@@ -260,7 +260,8 @@
                         <thead class="text-center">
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kendaraan</th>
+                                <th>No. Polisi</th>
+                                <th>Kendaraan</th>
                                 <th>Uraian</th>
                                 <th>Keterangan</th>
                             </tr>
@@ -269,9 +270,10 @@
                             @foreach ($data->detailServis as $row)
                             <tr class="bg-white">
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td>{{ $row->aadb->no_polisi ? $row->aadb->no_polisi .' - ' : '' }} {{ $row->aadb->merk_tipe }}</td>
-                                <td>{!! nl2br($row->uraian) !!}</td>
-                                <td>{!! nl2br($row->keterangan)  !!}</td>
+                                <td>{{ $row->aadb->no_polisi }}</td>
+                                <td>{{ $row->aadb->kategori->nama_kategori.' '.$row->aadb->merk_tipe }}</td>
+                                <td>{{ $row->uraian }}</td>
+                                <td>{{ $row->keterangan }}</td>
                             </tr>
                             @endforeach
                         </tbody>

@@ -6,7 +6,7 @@
     <div class="container-fluid col-md-10">
         <div class="row mb-2">
             <div class="col-sm-12">
-                <h4 class="m-0">Usulan Pemeliharaan AADB</h4>
+                <h4 class="m-0">Tambah Usulan</h4>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard') }}"> Dashboard</a></li>
                     <li class="breadcrumb-item active"><a href="{{ route('usulan','aadb') }}"> Daftar</a></li>
@@ -111,7 +111,7 @@
         var templateRow = $('.section-item').first().clone();
         templateRow.find(':input').val('');
         templateRow.find('.jumlah').val('1');
-        templateRow.find('.title').text('Pekerjaan ' + (container.length + 1));
+        templateRow.find('.title').text('Kendaraan ' + (container.length + 1));
         $('.section-item:last').after(templateRow);
         toggleHapusBarisButton();
 
