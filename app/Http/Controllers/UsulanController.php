@@ -503,7 +503,7 @@ class UsulanController extends Controller
         if ($data->form_id == 5) {
             $uker = Auth::user()->pegawai->uker_id;
             $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('kualifikasi', 'desc')->orderBy('kategori_id', 'asc')->get();
-            return view('pages.usulan.aadb.bbm.edit', compact('aadb', 'data'));
+            return view('pages.usulan.aadb.bbm.edit', compact('id', 'aadb', 'data'));
         }
 
         return view('pages.usulan.' . $form . '.edit', compact('id', 'data', 'gdn', 'kategori'));
@@ -568,6 +568,19 @@ class UsulanController extends Controller
                     $detail->keterangan  = $request->keterangan_detail[$i] ?? null;
                     $detail->save();
                 }
+            }
+        }
+
+        if ($usulan->form_id == 5) {
+            UsulanBbm::where('usulan_id', $id)->delete();
+            $aadb = $request->aadb;
+            foreach ($aadb as $aadb_id) {
+                $id_detail = UsulanBbm::withTrashed()->count() + 1;
+                $detail = new UsulanBbm();
+                $detail->id_detail   = $id_detail;
+                $detail->usulan_id   = $id;
+                $detail->aadb_id     = $aadb_id;
+                $detail->save();
             }
         }
 

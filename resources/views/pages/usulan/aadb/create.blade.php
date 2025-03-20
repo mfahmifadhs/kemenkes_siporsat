@@ -29,7 +29,7 @@
                         <div class="col-md-9 text-justify">
                             <h6 class="font-weight-bold">Usulan Pemeliharaan</h6>
                             <span class="small">
-                                Usulan Pemeliharaan Alat Angkutan Darat Bermotor
+                                Usulan Pemeliharaan Alat Angkutan Darat Bermotor berupa servis atau perbaikan kendaraan
                             </span>
                         </div>
                         <div class="col-md-12 mt-3 text-right">
@@ -47,7 +47,7 @@
                         <div class="col-md-9 text-justify">
                             <h6 class="font-weight-bold">Usulan BBM</h6>
                             <span class="small">
-                                Usulan Permintaan Voucher BBM, dapat diusulan setiap tanggal 20 bulan berjalan.
+                                Usulan Permintaan BBM, dapat diusulkan maksimal tanggal 20 bulan berjalan untuk bulan berikutnya.
                             </span>
                         </div>
                         <div class="col-md-12 mt-3 text-right">
