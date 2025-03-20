@@ -155,6 +155,11 @@
                                 <h6 class="text-secondary">{{ $row->deskripsi ? $row->deskripsi : $row->satuan->nama_satuan }}</h6>
                             </div>
                             <div class="card-footer">
+                                @if ($row->jumlah_pcs)
+                                <center class="text-xs">
+                                    <label class="text-secondary" id="jumlahPcs-{{ $row->id_atk }}">Total: 0 <small>pcs</small></label>
+                                </center>
+                                @endif
                                 <form id="form-{{ $row->id_atk }}" action="{{ route('atk-bucket.create') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="atk_id" value="{{ $row->id_atk }}">
@@ -168,7 +173,14 @@
                                             </div>
                                         </a>
                                         <input type="hidden" class="form-control">
-                                        <input type="text" class="form-control form-control-sm text-center bg-white number" id="data-{{ $row->id_atk }}" name="qty" value="0" min="1" @if(Auth::user()->role_id == 4) max="{{ $row->jumlah_maks }}" @endif>
+                                        <input type="text" class="form-control form-control-sm text-center bg-white number qty-input"
+                                            id="data-{{ $row->id_atk }}"
+                                            name="qty"
+                                            value="0"
+                                            min="1"
+                                            data-jumlah-pcs="{{ $row->jumlah_pcs }}"
+                                            oninput="updateTotal('{{ $row->id_atk }}')"
+                                            @if(Auth::user()->role_id == 4) max="{{ $row->jumlah_maks }}" @endif>
 
                                         <a type="button" class="add-button" data-id="data-{{ $row->id_atk }}">
                                             <div class="input-group-append">
@@ -809,6 +821,31 @@
                 let newOption = new Option(selectedText, selectedId, true, true);
                 $(this).append(newOption).trigger('change');
             }
+        });
+    });
+</script>
+
+<script>
+    function updateTotal(atkId) {
+        let qtyInput = document.getElementById("data-" + atkId);
+        let jumlahPcs = qtyInput.getAttribute("data-jumlah-pcs");
+        let totalPcs = parseInt(qtyInput.value) * parseInt(jumlahPcs);
+
+        // Pastikan total tidak NaN (jika input kosong)
+        if (isNaN(totalPcs)) {
+            totalPcs = 0;
+        }
+
+        document.getElementById("jumlahPcs-" + atkId).textContent = "Total: " + totalPcs + " pcs";
+    }
+
+    // Tambahkan event listener untuk tombol + dan -
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".min-button, .add-button").forEach(function(button) {
+            button.addEventListener("click", function() {
+                let dataId = this.getAttribute("data-id");
+                setTimeout(() => updateTotal(dataId.replace("data-", "")), 100); // Delay untuk menangkap perubahan nilai input
+            });
         });
     });
 </script>
