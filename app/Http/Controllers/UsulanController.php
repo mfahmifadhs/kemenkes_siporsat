@@ -162,7 +162,7 @@ class UsulanController extends Controller
             if ($row->form_id == 3) {
                 $hal = $row->keterangan;
             } else if (in_array($row->form_id, [4, 5])) {
-                $hal = $row->form->nama_form;
+                $hal = 'Permintaan BBM ' . Carbon::parse($row->tanggal_selesai)->isoFormat('MMMM Y');
             } else {
                 $hal = $row->detail->map(function ($item) {
                     return Str::limit(' ' . $item->judul, 150);
@@ -447,8 +447,9 @@ class UsulanController extends Controller
     public function nomorNaskah(Request $request)
     {
         $data     = Usulan::where('id_usulan', $request->usulan)->first();
+
         $dataForm = $request->form_id ?? $data->form_id;
-        $pengusul = $request->user_id ?? $data->user_id;
+        $pengusul = $request->pengusul ?? $data->user_id;
         $tanggal  = $request->tanggal ?? $data->tanggal_usulan;
 
         // 2/OUT/41/3/2025
