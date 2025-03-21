@@ -115,4 +115,13 @@ class Atk extends Model
         })->where('atk_id', $this->id_atk)->where('status', 'true')->sum('jumlah');
         return $dataMasuk - $dataKeluar;
     }
+
+    public function distribusiAtk($id)
+    {
+        return $this->hasMany(AtkDistribusiDetail::class, 'atk_id')->whereHas('distribusi.user.pegawai', function ($query) use ($id) {
+            if ($id) {
+                $query->where('uker_id', $id);
+            }
+        });
+    }
 }
