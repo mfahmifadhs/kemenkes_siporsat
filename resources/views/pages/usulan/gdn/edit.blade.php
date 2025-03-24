@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-md-3 mb-3">
                             <label class="col-form-label">Keterangan</label>
-                            <textarea class="form-control" name="keterangan[]" rows="10" placeholder="Keterangan Tambahan">{{ $row->keterangan }}</textarea>
+                            <textarea class="form-control" name="keterangan_detail[]" rows="10" placeholder="Keterangan Tambahan">{{ $row->keterangan }}</textarea>
                         </div>
                         <div class="col-md-12">
                             <hr>
@@ -156,7 +156,7 @@
         templateRow.find('.kategori').attr('required', true).attr("name", "kategori[]");        ;
         templateRow.find('.judul').attr('required', true).attr("name", "judul[]");        ;
         templateRow.find('.uraian').attr('required', true).attr("name", "uraian[]");
-        templateRow.find('.keterangan').attr("name", "keterangan[]");
+        templateRow.find('.keterangan').attr("name", "keterangan_detail[]");
         templateRow.removeClass('d-none');
         $('.section-item:last').after(templateRow);
         toggleHapusBarisButton();
