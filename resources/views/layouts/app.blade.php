@@ -563,6 +563,34 @@
             });
         }
     </script>
+
+    <script>
+        function confirmReusul(event, url) {
+            event.preventDefault(); // Prevent the default link behavior
+            Swal.fire({
+                title: 'Usulkan Kembali',
+                text: 'Barang akan ditambahkan ke dalam keranjang, silahkan periksa keranjang',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya!',
+                cancelButtonText: 'Batal!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Proses...',
+                        text: 'Mohon menunggu.',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    window.location.href = url;
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

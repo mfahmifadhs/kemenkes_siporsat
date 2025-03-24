@@ -26,6 +26,13 @@
                     Detail Usulan
                 </label>
                 <div class="card-tools">
+                    @if ($data->form_id == 3)
+                    <a href="#" onclick="confirmReusul(event, `{{ route('atk-bucket.reusul', $data->id_usulan) }}`)">
+                        <span class="btn btn-default badge mt-2 p-2 border border-dark">
+                            <i class="fas fa-basket-shopping"></i> Usulkan Kembali
+                        </span>
+                    </a>
+                    @endif
                     @if ((!$data->status_persetujuan && Auth::user()->role_id == 4) || in_array(Auth::user()->role_id, [1, 2]))
                     <a href="{{ route('usulan.edit', $data->id_usulan) }}" class="btn btn-warning border-dark btn-xs mt-0 p-1">
                         <i class="fas fa-edit"></i> Edit

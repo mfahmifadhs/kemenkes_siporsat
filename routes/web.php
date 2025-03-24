@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'atk-bucket', 'as' => 'atk-bucket.'], function () {
         Route::get('update/{aksi}/{id}', [AtkKeranjangController::class, 'update'])->name('update');
         Route::get('remove/{id}',        [AtkKeranjangController::class, 'remove'])->name('remove');
+        Route::get('reusul/{id}',        [AtkKeranjangController::class, 'reusul'])->name('reusul');
         Route::get('store',              [AtkKeranjangController::class, 'store'])->name('store');
         Route::post('create',            [AtkKeranjangController::class, 'create'])->name('create');
     });

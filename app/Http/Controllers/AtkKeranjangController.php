@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AtkKeranjang;
+use App\Models\UsulanAtk;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -13,6 +14,24 @@ class AtkKeranjangController extends Controller
         if (!$request->uker) {
             return redirect()->route('usulan.store', 'atk');
         }
+    }
+
+    public function reusul($id)
+    {
+        $data = UsulanAtk::where('usulan_id', $id)->get();
+        foreach ($data as $atk) {
+            $id_keranjang = AtkKeranjang::withTrashed()->count() + 1;
+            $tambah = new AtkKeranjang();
+            $tambah->id_keranjang = $id_keranjang;
+            $tambah->user_id      = Auth::user()->id;
+            $tambah->atk_id       = $atk->atk_id;
+            $tambah->jumlah       = (int) str_replace('.', '', $atk->jumlah);
+            $tambah->status       = 'false';
+            $tambah->save();
+        }
+
+        return redirect()->route('atk')->with('success', 'Berhasil Menambahkan');
+
     }
 
     public function create(Request $request)
