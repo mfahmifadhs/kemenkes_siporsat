@@ -69,6 +69,7 @@
 
                                                 @if(in_array($row->id_aadb, $selectedAadb))
                                                 <input type="hidden" name="aadb[]" value="{{ $row->id_aadb }}" id="hidden-aadb-{{ $row->id_aadb }}">
+                                                <div id="hidden-container"></div>
                                                 @endif
                                             </td>
                                         </tr>
@@ -92,37 +93,46 @@
 @section('js')
 
 <script>
-    $('#selectAll').click(function() {
-        if ($(this).prop('checked')) {
-            $('.confirm-check').prop('checked', true);
-        } else {
-            $('.confirm-check').prop('checked', false);
-        }
-    })
-
     document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".confirm-check").forEach(function(checkbox) {
-            checkbox.addEventListener("change", function() {
-                let aadbId = this.getAttribute("data-id");
-                let hiddenContainer = this.closest("td"); // Tempat input hidden
+        let selectAllCheckbox = document.getElementById("selectAll");
+        let checkboxes = document.querySelectorAll(".confirm-check");
+        let hiddenContainer = document.getElementById("hidden-container");
 
-                if (this.checked) {
-                    // Jika dicentang, tambahkan input hidden
+        // Select All Checkbox
+        selectAllCheckbox.addEventListener("change", function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+                toggleHiddenInput(checkbox);
+            });
+        });
+
+        // Event Listener untuk Checkbox Individu
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+                toggleHiddenInput(checkbox);
+            });
+        });
+
+        // Fungsi Menambah/Menghapus Input Hidden
+        function toggleHiddenInput(checkbox) {
+            let aadbId = checkbox.getAttribute("data-id");
+            let existingInput = document.getElementById("hidden-aadb-" + aadbId);
+
+            if (checkbox.checked) {
+                if (!existingInput) {
                     let hiddenInput = document.createElement("input");
                     hiddenInput.type = "hidden";
                     hiddenInput.name = "aadb[]";
                     hiddenInput.value = aadbId;
                     hiddenInput.id = "hidden-aadb-" + aadbId;
                     hiddenContainer.appendChild(hiddenInput);
-                } else {
-                    // Jika tidak dicentang, hapus input hidden
-                    let existingInput = document.getElementById("hidden-aadb-" + aadbId);
-                    if (existingInput) {
-                        existingInput.remove();
-                    }
                 }
-            });
-        });
+            } else {
+                if (existingInput) {
+                    existingInput.remove();
+                }
+            }
+        }
     });
 </script>
 @endsection
