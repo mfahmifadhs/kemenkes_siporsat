@@ -51,12 +51,16 @@
                                             <div class="col-md-1 col-form-label my-1">:</div>
                                             <div class="col-md-8 my-1">
                                                 <select name="uker" class="form-control" required>
+                                                    @if (Auth::user()->role_id != 4)
                                                     <option value="">-- Pilih Unit Kerja --</option>
                                                     @foreach ($uker as $row)
                                                     <option value="{{ $row->id_unit_kerja }}">
                                                         {{ $row->unit_kerja }}
                                                     </option>
                                                     @endforeach
+                                                    @else
+                                                    <option value="{{ Auth::user()->pegawai->uker_id }}">{{ Auth::user()->pegawai->uker->unit_kerja }}</option>
+                                                    @endif
                                                 </select>
                                             </div>
 

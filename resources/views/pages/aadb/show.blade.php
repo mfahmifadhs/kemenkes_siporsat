@@ -333,7 +333,7 @@
                                         columns: [0, 2, 3, 4, 5, 6, 7, 8],
                                     },
                                 },
-                                userRole == 1 || userRole == 2 ? {
+                                userRole == 1 || userRole == 2 || userRole == 4 ? {
                                     text: ' Tambah',
                                     className: 'bg-primary',
                                     action: function(e, dt, button, config) {

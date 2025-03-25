@@ -250,6 +250,11 @@
                 </div>
                 @if ($data->form_id == 3)
                 <div class="row mt-5">
+                    <div class="col-md-12">
+                        <h3 class="lh-base">
+                            {{ Carbon\Carbon::parse($data->tanggal_selesai)->isoFormat('DD MMMM Y') }}
+                        </h3>
+                    </div>
                     @if ($data->nama_penerima)
                     <div class="col-5">
                         <h3>Diserahkan oleh,</h3>
