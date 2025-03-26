@@ -349,7 +349,7 @@
                                 <div class="card card-widget widget-user-2 border border-dark">
                                     <div class="bg-primary p-3">
                                         <h6 class="my-auto font-weight-bold">
-                                            <i class="fas fa-gas-pump"></i> Usulan Voucher BBM
+                                            <i class="fas fa-gas-pump"></i> Usulan BBM
                                         </h6>
                                     </div>
                                     <div class="card-body p-0">
