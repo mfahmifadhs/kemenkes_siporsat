@@ -24,7 +24,14 @@
                 <div class="card card-primary">
                     <div class="card-header">
                         <label class="card-title">
-                            Daftar Usulan {{ $form->nama_form }}
+                            Daftar Usulan
+                            @if ($formId == 4)
+                            Pemeliharaan AADB
+                            @elseif ($formId == 5)
+                            Permintaan BBM
+                            @else
+                            {{ $form->nama_form }}
+                            @endif
                         </label>
 
                         <div class="card-tools">
