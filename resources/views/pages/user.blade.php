@@ -284,6 +284,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
+                                                    <input type="hidden" name="form" value="4">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -299,6 +300,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
+                                                    <input type="hidden" name="form" value="4">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -314,6 +316,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
+                                                    <input type="hidden" name="form" value="4">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -329,6 +332,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
+                                                    <input type="hidden" name="form" value="4">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
@@ -358,6 +362,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
+                                                    <input type="hidden" name="form" value="5">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -373,6 +378,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
+                                                    <input type="hidden" name="form" value="5">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -388,6 +394,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
+                                                    <input type="hidden" name="form" value="5">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -403,6 +410,7 @@
                                                 <form action="{{ route('usulan', 'aadb') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
+                                                    <input type="hidden" name="form" value="5">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
