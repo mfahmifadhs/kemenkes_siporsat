@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="text-sm">Pilih Bulan</label>
+                        <label class="col-form-label">Pilih Bulan</label>
                         <select name="bulan" class="form-control border-dark rounded">
                             <option value="">Semua Bulan</option>
                             @foreach(range(1, 12) as $monthNumber)
@@ -107,7 +107,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="text-sm">Pilih Tahun</label>
+                        <label class="col-form-label">Pilih Tahun</label>
                         <select name="tahun" class="form-control border-dark rounded">
                             <option value="">Semua Tahun</option>
                             @foreach(range(2025,2026) as $yearNumber)
@@ -177,18 +177,20 @@
     $(document).ready(function() {
         let role    = '{{ auth()->user()->role_id }}';
         let form    = '{{ $form->kode_form }}';
+        let formId  = '{{ $formId }}';
         let bulan   = $('[name="bulan"]').val();
         let tahun   = $('[name="tahun"]').val();
         let uker    = $('[name="uker"]').val();
         let status  = $('[name="status"]').val();
 
-        loadTable(bulan, tahun, uker, status);
+        loadTable(formId, bulan, tahun, uker, status);
 
-        function loadTable(bulan, tahun, uker, status) {
+        function loadTable(formId, bulan, tahun, uker, status) {
             $.ajax({
                 url: `{{ route('usulan.select', ':form') }}`.replace(':form', form),
                 method: 'GET',
                 data: {
+                    formId: formId,
                     bulan: bulan,
                     tahun: tahun,
                     uker: uker,

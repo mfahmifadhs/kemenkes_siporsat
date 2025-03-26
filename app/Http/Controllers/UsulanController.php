@@ -39,6 +39,7 @@ class UsulanController extends Controller
         $listUker = UnitKerja::get();
 
         $form   = Form::where('kode_form', $id)->first();
+        $formId = $request->form;
         $bulan  = $request->bulan;
         $tahun  = $request->tahun;
         $uker   = $request->uker;
@@ -50,7 +51,7 @@ class UsulanController extends Controller
             $data = $data->count();
         }
 
-        return view('pages.usulan.show', compact('form', 'bulan', 'tahun', 'uker', 'status', 'data', 'uker', 'listUker'));
+        return view('pages.usulan.show', compact('form', 'formId', 'bulan', 'tahun', 'uker', 'status', 'data', 'uker', 'listUker'));
     }
 
     public function detail($id)
@@ -66,6 +67,7 @@ class UsulanController extends Controller
         $tahun   = $request->tahun;
         $uker    = $request->uker;
         $status  = $request->status;
+        $form    = $request->formId;
 
         $aksi    = $request->aksi;
         $id      = $request->id;
@@ -75,13 +77,17 @@ class UsulanController extends Controller
         $no       = 1;
         $response = [];
 
-        if ($bulan || $tahun || $uker || $status) {
+        if ($form || $bulan || $tahun || $uker || $status) {
+            if ($form) {
+                $res = $data->where('form_id', $form);
+            }
+
             if ($bulan) {
-                $res = $data->whereMonth('tanggal_usulan', $request->bulan);
+                $res = $data->whereMonth('tanggal_usulan', $bulan);
             }
 
             if ($tahun) {
-                $res = $data->whereYear('tanggal_usulan', $request->tahun);
+                $res = $data->whereYear('tanggal_usulan', $tahun);
             }
 
             if ($uker) {
@@ -161,8 +167,12 @@ class UsulanController extends Controller
 
             if ($row->form_id == 3) {
                 $hal = $row->keterangan;
-            } else if (in_array($row->form_id, [4, 5])) {
+            } else if ($row->form_id == 5) {
                 $hal = 'Permintaan BBM ' . Carbon::parse($row->tanggal_selesai)->isoFormat('MMMM Y');
+            } else if ($row->form_id == 4) {
+                $hal = $row->detailServis->map(function ($item) {
+                    return Str::limit(' ' . $item->uraian, 150);
+                });
             } else {
                 $hal = $row->detail->map(function ($item) {
                     return Str::limit(' ' . $item->judul, 150);
