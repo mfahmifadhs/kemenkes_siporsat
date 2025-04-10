@@ -318,6 +318,12 @@ class UsulanController extends Controller
         // =================================================================================
 
         if ($id == 'servis') {
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileName = $file->getClientOriginalName();
+                $file->move(public_path('dist/file/dakung/servis'), $fileName);
+            }
+
             $form = Form::where('id_form', 4)->first();
         } else if ($id == 'bbm') {
             $form = Form::where('id_form', 5)->first();
@@ -338,6 +344,7 @@ class UsulanController extends Controller
         $tambah->form_id         = $form->id_form;
         $tambah->kode_usulan     = $kode;
         $tambah->tanggal_usulan  = $request->tanggal ?? Carbon::now();
+        $tambah->file_pendukung  = $fileName ?? null;
         $tambah->keterangan      = !in_array($form->kode_form, ['ukt', 'gdn', 'aadb']) ? $request->keterangan : null;
         $tambah->otp_1           = $otp;
         $tambah->tanggal_selesai = $form->id_form == 5 ? Carbon::parse($request->bulan_permintaan . '-01') : null;
@@ -681,5 +688,12 @@ class UsulanController extends Controller
 
             return redirect()->route('usulan.detail', $id)->with('success', 'Berhasil Melakukan Serah Terima');
         }
+    }
+
+    public function viewPdf($id)
+    {
+        $data = Usulan::where('id_usulan', $id)->first();
+
+        return view('pages.usulan.pdf', compact('id', 'data'));
     }
 }

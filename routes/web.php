@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('usulan/surat/{id}',   [UsulanController::class, 'surat'])->name('usulan.surat');
     Route::get('usulan/edit/{id}',    [UsulanController::class, 'edit'])->name('usulan.edit');
     Route::get('usulan/delete/{id}',  [UsulanController::class, 'delete'])->name('usulan.delete');
+    Route::get('usulan/viewPdf/{id}',  [UsulanController::class, 'viewPdf'])->name('usulan.viewPdf');
     Route::post('usulan/store/{id}',  [UsulanController::class, 'store'])->name('usulan.store');
     Route::post('usulan/update/{id}', [UsulanController::class, 'update'])->name('usulan.update');
 

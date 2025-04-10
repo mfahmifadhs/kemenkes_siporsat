@@ -23,6 +23,7 @@ class Usulan extends Model
         'kode_usulan',
         'tanggal_usulan',
         'nomor_usulan',
+        'file_pendukung',
         'keterangan',
         'keterangan_tolak',
         'tanggal_selesai',

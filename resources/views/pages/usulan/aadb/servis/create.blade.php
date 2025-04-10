@@ -21,7 +21,7 @@
 <section class="content">
     <div class="container-fluid col-md-10">
         <div class="card border border-dark">
-            <form id="form" action="{{ route('usulan.store', 'servis') }}" method="POST">
+            <form id="form" action="{{ route('usulan.store', 'servis') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-header font-weight-bold mt-2">
                     Tambah Usulan Pemeliharaan AADB
@@ -30,41 +30,47 @@
                     </h6>
                 </div>
                 <div class="card-body" style="overflow-y: auto; max-height: 60vh;">
-                    <div class="form-group row section-item">
-                        <label class="col-md-12 mb-2 title font-weight-bold">Kendaraan 1</label>
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <label class="col-form-label">Kendaraan</label>
-                                <select name="aadb[]" class="form-control" required>
-                                    <option value="">-- Pilih Kendaraan --</option>
-                                    @foreach($aadb as $row)
-                                    <option value="{{ $row->id_aadb }}">
-                                        {{ $row->no_polisi && $row->no_polisi != '-' ? $row->no_polisi.' - '.$row->merk_tipe : $row->merk_tipe }}
-                                    </option>
-                                    @endforeach
-                                </select>
-
-                                <label class="col-form-label">Uraian</label>
-                                <textarea name="uraian[]" class="form-control" rows="10" placeholder="Contoh : Uraian Perbaikan Kendaraan" required></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="col-form-label">Keterangan</label>
-                            <textarea class="form-control" name="keterangan[]" rows="13" placeholder="Keterangan Tambahan"></textarea>
-                        </div>
+                    <div class="row">
                         <div class="col-md-12">
-                            <hr>
-                        </div>
-                    </div>
+                            <div class="input-group">
+                                <label class="w-25 col-form-label">Kendaraan</label>
+                                <span class="w-75 input-group">
+                                    <select name="aadb[]" class="form-control rounded aadb" required>
+                                        <option value="">-- Pilih Kendaraan --</option>
+                                        @foreach($aadb as $row)
+                                        <option value="{{ $row->id_aadb }}">
+                                            {{ $row->no_polisi && $row->no_polisi != '-' ? $row->no_polisi.' - '.$row->merk_tipe : $row->merk_tipe }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </span>
+                            </div>
 
-                    <div class="form-group row">
-                        <div class="col-md-5 mt-2">
-                            <a href="" class="small btn btn-primary btn-xs btn-tambah-baris">
-                                <i class="fas fa-plus"></i> Tambah Baris
-                            </a>
-                            <a href="" class="small btn btn-danger btn-xs btn-hapus-baris">
-                                <i class="fas fa-times"></i> Hapus Baris
-                            </a>
+                            <div class="input-group mt-2">
+                                <label class="w-25 col-form-label">Uraian</label>
+                                <span class="w-75 input-group">
+                                    <textarea name="uraian[]" class="form-control rounded" rows="8" placeholder="Contoh : Uraian Perbaikan Kendaraan" required></textarea>
+                                </span>
+                            </div>
+
+                            <div class="input-group mt-2">
+                                <label class="w-25 col-form-label">Keterangan</label>
+                                <span class="w-75 input-group">
+                                    <textarea class="form-control rounded" name="keterangan[]" rows="2" placeholder="Keterangan Tambahan"></textarea>
+                                </span>
+                            </div>
+
+                            <div class="input-group mt-3">
+                                <label class="w-25 col-form-label">Data Pendukung</label>
+                                <span class="w-75 input-group">
+                                    <div class="btn btn-default btn-file w-75 border border-dark p-2">
+                                        <i class="fas fa-upload"></i> Upload PDF <br>
+                                        <small>Data Pendukung Foto Kerusakan/Lainnya dalam 1 file PDF</small> <br>
+                                        <input type="file" class="form-control image" name="file" onchange="displaySelectedFile(this)" accept=".pdf" required>
+                                        <span id="selected-file-name"></span>
+                                    </div>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

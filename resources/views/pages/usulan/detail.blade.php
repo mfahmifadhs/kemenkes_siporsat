@@ -162,6 +162,17 @@
                                 {{ ucwords(strtolower($data->user->pegawai->uker->utama->unit_utama)) }}
                             </span>
                         </div>
+
+                        @if ($data->file_pendukung)
+                        <div class="input-group">
+                            <label class="w-25">Data Pendukung</label>
+                            <span class="w-75">:
+                                <a href="{{ route('usulan.viewPdf', $data->id_usulan) }}" class="btn btn-danger btn-xs" target="_blank">
+                                    <i class="fas fa-file-pdf"></i> <small>{{ $data->file_pendukung }}</small>
+                                </a>
+                            </span>
+                        </div>
+                        @endif
                         @if ($data->keterangan)
                         <div class="input-group">
                             <label class="w-25">Keterangan</label>
