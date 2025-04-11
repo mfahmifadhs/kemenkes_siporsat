@@ -166,6 +166,17 @@
                         </div>
                         @endif
 
+                        @if ($data->file_pendukung)
+                        <div class="input-group">
+                            <label class="w-25">Data Pendukung</label>
+                            <span class="w-75">:
+                                <a href="{{ route('usulan.viewPdf', $data->id_usulan) }}" class="btn btn-danger btn-xs" target="_blank">
+                                    <i class="fas fa-file-pdf"></i> <small>{{ $data->file_pendukung }}</small>
+                                </a>
+                            </span>
+                        </div>
+                        @endif
+
                         @if ($data->status_persetujuan == 'false')
                         <div class="input-group">
                             <label class="w-25">Alasan Ditolak</label>
