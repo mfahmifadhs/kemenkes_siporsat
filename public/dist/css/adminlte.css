@@ -44,11 +44,18 @@
 @font-face {
     font-family: 'VAGRounded';
     src: url('/dist_admin/fonts/VAGRounded.ttf') format('truetype');
+
+
 }
 
 @font-face {
     font-family: 'Segoeui';
     src: url('/dist_admin/fonts/segoeui.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Aptos';
+    src: url('/dist/fonts/Aptos-Regular.ttf') format('truetype');
 }
 
 *,
@@ -79,7 +86,7 @@ section {
 
 body {
     margin: 0;
-    font-family: 'Arial';
+    font-family: 'Aptos';
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;

@@ -29,7 +29,9 @@
                         <div class="col-md-9 text-justify">
                             <h6 class="font-weight-bold">Usulan Pemeliharaan</h6>
                             <span class="small">
-                                Usulan Pemeliharaan Alat Angkutan Darat Bermotor berupa servis atau perbaikan kendaraan
+                                Ketentuan : <br>
+                                1. Menjelaskan secara detail terkait kerusakan atau usulan pemeliharaan yang dilakukan. <br>
+                                2. Melampirkan data dukung berupa foto bagian kerusakan atau bagian yang perlu diperbaiki, dengan melampirkan foto dalam bentuk PDF.
                             </span>
                         </div>
                         <div class="col-md-12 mt-3 text-right">
@@ -47,7 +49,9 @@
                         <div class="col-md-9 text-justify">
                             <h6 class="font-weight-bold">Usulan BBM</h6>
                             <span class="small">
-                                Usulan Permintaan BBM, dapat diusulkan maksimal tanggal 20 bulan berjalan untuk bulan berikutnya.
+                                Ketentuan : <br>
+                                1. Usulan BBM dapat diusulkan maksimal tanggal 20 bulan berjalan untuk bulan berikutnya <br>
+                                2. Kendaraan Jabatan : Rp 2.000.000, Kendaraan Operasional, Rp 1.500.000, dan <br> Sepeda Motor : Rp 150.000
                             </span>
                         </div>
                         <div class="col-md-12 mt-3 text-right">
