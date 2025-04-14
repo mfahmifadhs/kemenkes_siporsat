@@ -235,8 +235,9 @@ class UsulanController extends Controller
 
             // Mail::to($data->user->email)->send(new mailToken($dataMail));
 
-
-            $format = $this->nomorNaskah($request);
+            if ($request->persetujuan == 'true') {
+                $format = $this->nomorNaskah($request);
+            }
 
             Usulan::where('id_usulan', $id)->update([
                 'verif_id'           => Auth::user()->pegawai_id,
