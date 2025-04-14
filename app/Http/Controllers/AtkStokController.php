@@ -64,7 +64,6 @@ class AtkStokController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
         AtkStok::where('id_stok', $id)->update([
             'tanggal_beli'  => $request->tanggal_masuk,
             'no_kwitansi'   => $request->no_kwitansi,

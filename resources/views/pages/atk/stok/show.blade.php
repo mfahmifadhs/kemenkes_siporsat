@@ -57,7 +57,7 @@
                                                 <i class="fas fa-trash-alt p-1" style="font-size: 12px;"></i>
                                             </a>'
                                         </td>
-                                        <td>{{ Carbon\Carbon::parse($row->tanggal_masuk)->isoFormat('DD MMMM Y') }}</td>
+                                        <td>{{ Carbon\Carbon::parse($row->tanggal_beli)->isoFormat('DD MMMM Y') }}</td>
                                         <td>{{ $row->no_kwitansi }}</td>
                                         <td>{{ $row->detail->count() }} barang</td>
                                         <td>Rp {{ number_format($row->total_harga, 0, '.') }}</td>

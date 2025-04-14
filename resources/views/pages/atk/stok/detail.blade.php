@@ -48,7 +48,7 @@
                     <div class="col-md-12">
                         <div class="input-group">
                             <label class="w-25">Tanggal Masuk</label>
-                            <span class="w-75">: {{ Carbon\Carbon::parse($data->tanggal_masuk)->isoFormat('DD MMMM Y') }}</span>
+                            <span class="w-75">: {{ Carbon\Carbon::parse($data->tanggal_beli)->isoFormat('DD MMMM Y') }}</span>
                         </div>
 
                         <div class="input-group">
