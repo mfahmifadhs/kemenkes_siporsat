@@ -9,6 +9,9 @@ use App\Models\AtkKategori;
 use App\Models\AtkKeranjang;
 use App\Models\AtkStok;
 use App\Models\AtkStokDetail;
+use App\Models\Bmhp;
+use App\Models\BmhpKategori;
+use App\Models\BmhpKeranjang;
 use App\Models\Form;
 use App\Models\GdnPerbaikan;
 use App\Models\UnitKerja;
@@ -16,6 +19,7 @@ use App\Models\User;
 use App\Models\Usulan;
 use App\Models\UsulanAtk;
 use App\Models\UsulanBbm;
+use App\Models\UsulanBmhp;
 use App\Models\UsulanDetail;
 use App\Models\UsulanServis;
 use Illuminate\Http\Request;
@@ -165,7 +169,7 @@ class UsulanController extends Controller
                     </a>';
             }
 
-            if ($row->form_id == 3) {
+            if ($row->form_id == 3 || $row->form_id == 6) {
                 $hal = $row->keterangan;
             } else if ($row->form_id == 5) {
                 $hal = 'Permintaan BBM ' . Carbon::parse($row->tanggal_selesai)->isoFormat('MMMM Y');
@@ -253,6 +257,12 @@ class UsulanController extends Controller
 
             if ($data->form_id == 3) {
                 UsulanAtk::where('usulan_id', $id)->update([
+                    'status' => 'true'
+                ]);
+            }
+
+            if ($data->form_id == 6) {
+                UsulanBmhp::where('usulan_id', $id)->update([
                     'status' => 'true'
                 ]);
             }
@@ -383,6 +393,10 @@ class UsulanController extends Controller
             $this->storeBbm($request, $id_usulan);
         }
 
+        if ($form->id_form == 6) {
+            $this->storeBmhp($request, $id_usulan);
+        }
+
         return redirect()->route('usulan.detail', $id_usulan)->with('success', 'Berhasil Menambahkan');
     }
 
@@ -424,6 +438,30 @@ class UsulanController extends Controller
             $detail->save();
 
             AtkKeranjang::where('id_keranjang', $request->id_keranjang[$i])->delete();
+        }
+
+        return;
+    }
+
+    public function storeBmhp(Request $request, $id)
+    {
+        $bmhp = $request->id_bmhp;
+        foreach ($bmhp as $i => $bmhp_id) {
+            $bmhpSelect = Bmhp::where('id_bmhp', $bmhp_id)->first();
+            $id_detail = UsulanBmhp::withTrashed()->count() + 1;
+            $detail = new UsulanBmhp();
+            $detail->id_detail  = $id_detail;
+            $detail->usulan_id  = $id;
+            $detail->bmhp_id    = $bmhp_id;
+            $detail->jumlah     = $request->jumlah[$i];
+            $detail->satuan_id  = $bmhpSelect->satuan_id;
+            $detail->harga      = $bmhpSelect->harga;
+            $detail->jumlah     = $request->jumlah[$i];
+            $detail->keterangan = $request->keterangan_permintaan[$i];
+            $detail->created_at = Carbon::now();
+            $detail->save();
+
+            BmhpKeranjang::where('id_keranjang', $request->id_keranjang[$i])->delete();
         }
 
         return;
@@ -522,6 +560,10 @@ class UsulanController extends Controller
             $uker = Auth::user()->pegawai->uker_id;
             $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('kualifikasi', 'desc')->orderBy('kategori_id', 'asc')->get();
             return view('pages.usulan.aadb.bbm.edit', compact('id', 'aadb', 'data'));
+        }
+
+        if ($data->form_id == 6) {
+            $kategori = BmhpKategori::where('status', 'true')->get();
         }
 
         return view('pages.usulan.' . $form . '.edit', compact('id', 'data', 'gdn', 'kategori'));

@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function keranjang() {
         return $this->hasMany(AtkKeranjang::class, 'user_id');
     }
+
+    public function keranjangBmhp() {
+        return $this->hasMany(BmhpKeranjang::class, 'user_id');
+    }
 }

@@ -46,6 +46,60 @@
                                 </div>
                             </a>
                         </div>
+
+                        <div class="form-group">
+                            <label class="text-muted text-sm"><i>Total Usulan</i></label>
+                            <div class="info-box mb-3 border border-dark" style="background-color: #70d6ff;">
+                                <span class="info-box-icon"><i class="fas fa-people-roof"></i></span>
+
+                                <div class="info-box-content">
+                                    <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 1)->count() }}</h3>
+                                    <h6 class="info-box-text text-sm">Usulan Kerumahtanggaan</h6>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <div class="info-box mb-3 border border-dark" style="background-color: #8093f1;">
+                                <span class="info-box-icon"><i class="fas fa-city"></i></span>
+
+                                <div class="info-box-content">
+                                    <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 2)->count() }}</h3>
+                                    <h6 class="info-box-text text-sm">Usulan Gedung Bangunan</h6>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <div class="info-box mb-3 border border-dark" style="background-color: #4ed59a;">
+                                <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
+
+                                <div class="info-box-content">
+                                    <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 3)->count() }}</h3>
+                                    <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
+                                </div>
+                            </div>
+                            <div class="info-box mb-3 border border-dark" style="background-color: #ff8a76;">
+                                <span class="info-box-icon"><i class="fas fa-car-on"></i></span>
+
+                                <div class="info-box-content">
+                                    <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 4)->count() }}</h3>
+                                    <h6 class="info-box-text text-sm">Usulan Servis</h6>
+                                </div>
+                            </div>
+                            <div class="info-box mb-3 border border-dark" style="background-color: #ec5a61;">
+                                <span class="info-box-icon"><i class="fas fa-gas-pump"></i></span>
+
+                                <div class="info-box-content">
+                                    <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 5)->count() }}</h3>
+                                    <h6 class="info-box-text text-sm">Usulan BBM</h6>
+                                </div>
+                            </div>
+                            <div class="info-box mb-3 border border-dark" style="background-color: #F0A04B;">
+                                <span class="info-box-icon"><i class="fas fa-laptop-medical"></i></span>
+
+                                <div class="info-box-content">
+                                    <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 6)->count() }}</h3>
+                                    <h6 class="info-box-text text-sm">Usulan BMHP & Alkes</h6>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-9">
                         <!-- Usulan -->
@@ -426,59 +480,90 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Usulan BMHP -->
                             <div class="col-md-4">
-                                <label class="text-sm text-muted"><i>Total Usulan</i></label>
-                                <div class="info-box mb-3 border border-dark" style="background-color: #70d6ff;">
-                                    <span class="info-box-icon"><i class="fas fa-people-roof"></i></span>
-
-                                    <div class="info-box-content">
-                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 1)->count() }}</h3>
-                                        <h6 class="info-box-text text-sm">Usulan Kerumahtanggaan</h6>
+                                <div class="card card-widget widget-user-2 border border-dark">
+                                    <div class="bg-primary p-3">
+                                        <h6 class="my-auto font-weight-bold">
+                                            <i class="fas fa-laptop-medical"></i> Usulan BMHP & Alkes
+                                        </h6>
                                     </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-                                <div class="info-box mb-3 border border-dark" style="background-color: #8093f1;">
-                                    <span class="info-box-icon"><i class="fas fa-city"></i></span>
-
-                                    <div class="info-box-content">
-                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 2)->count() }}</h3>
-                                        <h6 class="info-box-text text-sm">Usulan Gedung Bangunan</h6>
+                                    <div class="card-body p-0">
+                                        <ul class="nav flex-column font-weight-bold">
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'bmhp') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="verif">
+                                                    <input type="hidden" name="form" value="6">
+                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-file-signature"></i> Persetujuan
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ Auth::user()->usulan->where('form_id', 6)->whereNull('status_persetujuan')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'bmhp') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="proses">
+                                                    <input type="hidden" name="form" value="6">
+                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-clock"></i> Proses
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ Auth::user()->usulan->where('form_id', 6)->where('status_proses', 'proses')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'bmhp') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="selesai">
+                                                    <input type="hidden" name="form" value="6">
+                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-check-circle"></i> Selesai
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ Auth::user()->usulan->where('form_id', 6)->where('status_proses', 'selesai')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li class="nav-item">
+                                                <form action="{{ route('usulan', 'bmhp') }}" method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="status" value="false">
+                                                    <input type="hidden" name="form" value="6">
+                                                    <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
+                                                        <span class="float-left">
+                                                            <i class="fas fa-times-circle"></i> Ditolak
+                                                        </span>
+                                                        <span class="float-right">
+                                                            {{ Auth::user()->usulan->where('form_id', 6)->where('status_persetujuan', 'false')->count() }}
+                                                            usulan
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <!-- /.info-box-content -->
                                 </div>
                             </div>
                             @endif
-                            <div class="col-md-8">
-                                <div class="card border border-dark" style="height: 94.5%;">
+                            <div class="col-md-12">
+                                <div class="card border border-dark">
                                     <label class="p-2 text-center">Total Usulan</label>
                                     <div class="card-body text-center">
                                         <canvas id="stokChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="info-box mb-3 border border-dark" style="background-color: #4ed59a;">
-                                    <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
-
-                                    <div class="info-box-content">
-                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 3)->count() }}</h3>
-                                        <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
-                                    </div>
-                                </div>
-                                <div class="info-box mb-3 border border-dark" style="background-color: #ff8a76;">
-                                    <span class="info-box-icon"><i class="fas fa-car-on"></i></span>
-
-                                    <div class="info-box-content">
-                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 4)->count() }}</h3>
-                                        <h6 class="info-box-text text-sm">Usulan Servis</h6>
-                                    </div>
-                                </div>
-                                <div class="info-box mb-3 border border-dark" style="background-color: #ec5a61;">
-                                    <span class="info-box-icon"><i class="fas fa-gas-pump"></i></span>
-
-                                    <div class="info-box-content">
-                                        <h3 class="info-box-number">{{ Auth::user()->usulan->where('form_id', 5)->count() }}</h3>
-                                        <h6 class="info-box-text text-sm">Usulan BBM</h6>
                                     </div>
                                 </div>
                             </div>
@@ -542,10 +627,10 @@
         var stokChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Usulan UKT', 'Usulan GDN', 'Usulan ATK'],
+                labels: ['Usulan UKT', 'Usulan GDN', 'Usulan ATK', 'Usulan BBM', 'Usulan Servis', 'Usulan BMHP & Alkes'],
                 datasets: [{
-                    data: [usulanUkt, usulanGdn, usulanAtk],
-                    backgroundColor: ['#70d6ff', '#8093f1', '#fa7a6c']
+                    data: [usulanUkt, usulanGdn, usulanAtk], // Data angka
+                    backgroundColor: ['#70d6ff', '#8093f1', '#4ed59a', '#ec5a61', '#ff8a76', '#F0A04B']
                 }]
             },
             options: {

@@ -54,6 +54,15 @@ class Access
             }
         }
 
+        if ($status == 'admin-bmhp')
+        {
+            if ($role == 1 || $akses == 5) {
+                return $next($request);
+            } else {
+                return back()->with('failed','Anda tidak memiliki akses!');
+            }
+        }
+
         if ($status == 'monitor')
         {
             if ($role != 4) {

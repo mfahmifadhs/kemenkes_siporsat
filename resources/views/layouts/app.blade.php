@@ -145,7 +145,7 @@
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
                                 <p>
-                                Alat Tulis Kantor
+                                    Alat Tulis Kantor
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -188,13 +188,41 @@
                             </a>
                         </li>
 
-                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
+                        <li class="nav-item">
+                            <a href="#" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-laptop-medical"></i>
+                                <p>
+                                    BMHP & Alkes
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('bmhp') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Permintaan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('usulan','bmhp') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Daftar Usulan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id)
                         <li class="nav-header"><i>Master Data</i></li>
+
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 3)
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-pencil"></i>
                                 <p>
-                                Master ATK
+                                    Master ATK
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -230,13 +258,14 @@
                             </ul>
                         </li>
                         @endif
+
+
                         @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 4)
-                        <li class="nav-header"><i>Master Data</i></li>
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold">
                                 <i class="nav-icon fas fa-car"></i>
                                 <p>
-                                Master AADB
+                                    Master AADB
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -256,6 +285,43 @@
                             </ul>
                         </li>
                         @endif
+
+                        @if (Auth::user()->role_id == 1 || Auth::user()->akses_id == 5)
+                        <li class="nav-item">
+                            <a href="#" class="nav-link font-weight-bold">
+                                <i class="nav-icon fas fa-laptop-medical"></i>
+                                <p>
+                                    Master BMHP & Alkes
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('bmhp-barang') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Barang</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('bmhp-kategori') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Kategori</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ Route('bmhp-stok') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Stok (Barang Masuk)</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
+
+                        @endif
+
 
                         @if (Auth::user()->role_id == 1)
                         <li class="nav-header"><i>Usulan</i></li>

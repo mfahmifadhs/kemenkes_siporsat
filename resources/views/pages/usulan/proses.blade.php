@@ -245,6 +245,40 @@
             </div>
             @endif
 
+            <!-- ========================== BMHP ================================= -->
+            @if ($data->form_id == 6)
+            <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
+                <label>Uraian Permintaan</label>
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered border border-dark">
+                        <thead class="text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Barang</th>
+                                <th>Deskripsi</th>
+                                <th>Keterangan</th>
+                                <th>Jumlah</th>
+                                <th>Stok</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-xs">
+                            @foreach ($data->detailBmhp as $row)
+                            <tr class="bg-white">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $row->bmhp->nama_barang }}</td>
+                                <td>{{ $row->bmhp->deskripsi }}</td>
+                                <td>{{ $row->keterangan }}</td>
+                                <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
+                                <td class="text-center">{{ $row->bmhp->stok().' '.$row->bmhp->satuan->nama_satuan }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
             <!-- ========================== AADB SERVIS ================================= -->
             @if ($data->form_id == 4)
             <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">

@@ -135,7 +135,7 @@
         @endif
 
         <!-- ========================== ATK ================================= -->
-        @if ($data->form_id == 3)
+            @if (in_array($data->form_id, [3,6]))
         <div class="card-body h4" style="overflow-y: auto; max-height: 50vh;">
             <label>Uraian Permintaan</label>
             <div class="table-responsive">
@@ -148,6 +148,7 @@
                             <th class="th">Jumlah</th>
                         </tr>
                     </thead>
+                    @if ($data->form_id == 3)
                     <tbody>
                         @foreach ($data->detailAtk as $row)
                         <tr class="bg-white">
@@ -158,6 +159,20 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    @endif
+
+                    @if ($data->form_id == 6)
+                    <tbody>
+                        @foreach ($data->detailBmhp as $row)
+                        <tr class="bg-white">
+                            <td class="td text-center">{{ $loop->iteration }}</td>
+                            <td class="td">{{ $row->bmhp->nama_barang }}</td>
+                            <td class="td">{{ $row->bmhp->deskripsi }}</td>
+                            <td class="td text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    @endif
                 </table>
             </div>
         </div>
@@ -248,7 +263,7 @@
                         <h3>{{ $data->pegawai->nama_pegawai }}</h3>
                     </div>
                 </div>
-                @if ($data->form_id == 3)
+                @if ($data->form_id == 3 || $data->form_id == 6)
                 <div class="row mt-5">
                     <div class="col-md-12">
                         <h3 class="lh-base">

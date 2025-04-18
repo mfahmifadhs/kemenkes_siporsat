@@ -187,7 +187,7 @@
                         </div>
                         @endif
                     </div>
-                    @if ($data->form_id == 3 && $data->status_proses == 'selesai')
+                    @if (($data->form_id == 3 || $data->form_id == 6) && $data->status_proses == 'selesai')
                     <div class="col-md-4">
                         @if (!$data->tanggal_ambil)
                         <div class="input-group">
@@ -237,7 +237,7 @@
             @endif
 
             <!-- ========================== ATK ================================= -->
-            @if ($data->form_id == 3)
+            @if (in_array($data->form_id, [3,6]))
             <div class="card-body small" style="overflow-y: auto; max-height: 50vh;">
                 <label>Uraian Permintaan</label>
                 <div class="table-responsive">
@@ -247,19 +247,37 @@
                                 <th>No</th>
                                 <th>Nama Barang</th>
                                 <th>Deskripsi</th>
+                                <th>Keterangan</th>
                                 <th>Jumlah</th>
                             </tr>
                         </thead>
+                        @if ($data->form_id == 3)
                         <tbody class="text-xs">
                             @foreach ($data->detailAtk as $row)
                             <tr class="bg-white">
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>{{ $row->atk->nama_barang }}</td>
                                 <td>{{ $row->atk->deskripsi }}</td>
+                                <td>{{ $row->keterangan }}</td>
                                 <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
                             </tr>
                             @endforeach
                         </tbody>
+                        @endif
+
+                        @if ($data->form_id == 6)
+                        <tbody class="text-xs">
+                            @foreach ($data->detailBmhp as $row)
+                            <tr class="bg-white">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $row->bmhp->nama_barang }}</td>
+                                <td>{{ $row->bmhp->deskripsi }}</td>
+                                <td>{{ $row->keterangan }}</td>
+                                <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        @endif
                     </table>
                 </div>
             </div>

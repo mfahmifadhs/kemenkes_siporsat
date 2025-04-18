@@ -11,6 +11,7 @@ use App\Http\Controllers\AtkKeranjangController;
 use App\Http\Controllers\AtkSatuanController;
 use App\Http\Controllers\AtkStokController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BmhpKategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GdnController;
@@ -21,6 +22,10 @@ use App\Http\Controllers\UserAksesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsulanAtkController;
 use App\Http\Controllers\UsulanController;
+use App\Http\Controllers\BmhpController;
+use App\Http\Controllers\BmhpKeranjangController;
+use App\Http\Controllers\BmhpStokController;
+use App\Http\Controllers\UsulanBmhpController;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +54,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('usulan-atk/store',     [UsulanAtkController::class, 'store'])->name('usulan-atk.store');
     Route::post('usulan-atk/update',    [UsulanAtkController::class, 'update'])->name('usulan-atk.update');
 
-    Route::get('atk/select-detail/{id}', [AtkController::class, 'selectByCategory'])->name('atk.select-detail');
+    Route::get('usulan-bmhp/hapus/{id}', [UsulanBmhpController::class, 'delete'])->name('usulan-bmhp.delete');
+    Route::post('usulan-bmhp/store',     [UsulanBmhpController::class, 'store'])->name('usulan-bmhp.store');
+    Route::post('usulan-bmhp/update',    [UsulanBmhpController::class, 'update'])->name('usulan-bmhp.update');
+
+    Route::get('atk/select-detail/{id}',  [AtkController::class, 'selectByCategory'])->name('atk.select-detail');
+    Route::get('bmhp/select-detail/{id}', [BmhpController::class, 'selectByCategory'])->name('bmhp.select-detail');
 
     Route::get('usulan/verif/{id}',   [UsulanController::class, 'verif'])->name('usulan.verif');
     Route::get('usulan/proses/{id}',  [UsulanController::class, 'proses'])->name('usulan.proses');
@@ -90,6 +100,19 @@ Route::group(['middleware' => 'auth'], function () {
     });
     // ========================================================================================================
 
+    // BMHP ====================================================================================================
+    Route::get('bmhp', [BmhpController::class, 'index'])->name('bmhp');
+    Route::get('bmhp-stok/ready',   [BmhpStokController::class, 'ready'])->name('bmhp-stok.ready');
+
+    Route::group(['prefix' => 'bmhp-bucket', 'as' => 'bmhp-bucket.'], function () {
+        Route::get('update/{aksi}/{id}', [BmhpKeranjangController::class, 'update'])->name('update');
+        Route::get('remove/{id}',        [BmhpKeranjangController::class, 'remove'])->name('remove');
+        Route::get('reusul/{id}',        [BmhpKeranjangController::class, 'reusul'])->name('reusul');
+        Route::get('store',              [BmhpKeranjangController::class, 'store'])->name('store');
+        Route::post('create',            [BmhpKeranjangController::class, 'create'])->name('create');
+    });
+    // ========================================================================================================
+
     Route::get('aadb',              [AadbController::class, 'index'])->name('aadb');
     Route::get('aadb/select',       [AadbController::class, 'select'])->name('aadb.select');
     Route::get('aadb/create',       [AadbController::class, 'create'])->name('aadb.create');
@@ -97,7 +120,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('aadb/edit/{id}',    [AadbController::class, 'edit'])->name('aadb.edit');
     Route::post('aadb/store',       [AadbController::class, 'store'])->name('aadb.store');
     Route::post('aadb/update/{id}', [AadbController::class, 'update'])->name('aadb.update');
-
 
     // Akses Super User
     Route::group(['middleware' => ['access:user']], function () {
@@ -128,7 +150,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('kriteria/store', [PenilaianKriteriaController::class, 'store'])->name('kriteria.store');
         Route::post('kriteria/update/{id}', [PenilaianKriteriaController::class, 'update'])->name('kriteria.update');
-
 
         Route::group(['middleware' => ['access:admin-atk']], function () {
             Route::get('atk-barang',                    [AtkController::class, 'show'])->name('atk-barang');
@@ -161,14 +182,40 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('atk-satuan/update/{id}', [AtkSatuanController::class, 'update'])->name('atk-satuan.update');
         });
 
-
         Route::group(['middleware' => ['access:admin-aadb']], function () {
-
             Route::get('aadb-kategori', [AadbKategoriController::class, 'show'])->name('aadb-kategori');
             Route::group(['prefix' => 'aadb-kategori', 'as' => 'aadb-kategori.'], function () {
                 Route::post('store',       [AadbKategoriController::class, 'store'])->name('store');
                 Route::post('update/{id}', [AadbKategoriController::class, 'update'])->name('update');
             });
+        });
+
+        Route::group(['middleware' => ['access:admin-bmhp']], function () {
+            Route::get('bmhp-kategori', [BmhpKategoriController::class, 'show'])->name('bmhp-kategori');
+            Route::group(['prefix' => 'bmhp-kategori', 'as' => 'bmhp-kategori.'], function () {
+                Route::post('store',       [BmhpKategoriController::class, 'store'])->name('store');
+                Route::post('update/{id}', [BBmhpKategoriControllerm::class, 'update'])->name('update');
+            });
+
+            Route::get('bmhp-barang',                    [BmhpController::class, 'show'])->name('bmhp-barang');
+            Route::get('bmhp-barang/select',             [BmhpController::class, 'select'])->name('bmhp-barang.select');
+            Route::get('bmhp-barang/select/detail/{id}', [BmhpController::class, 'selectById'])->name('bmhp-barang.select-detail');
+            Route::get('bmhp-barang/detail/{id}',        [BmhpController::class, 'detail'])->name('bmhp-barang.detail');
+            Route::get('bmhp-barang/edit/{id}',          [BmhpController::class, 'edit'])->name('bmhp-barang.edit');
+            Route::get('bmhp-barang/create',             [BmhpController::class, 'create'])->name('bmhp-barang.create');
+            Route::post('bmhp-barang/store',             [BmhpController::class, 'store'])->name('bmhp-barang.store');
+            Route::post('bmhp-barang/upload',            [BmhpController::class, 'upload'])->name('bmhp-barang.upload');
+            Route::post('bmhp-barang/update',            [BmhpController::class, 'update'])->name('bmhp-barang.update');
+
+            Route::get('bmhp-stok',                      [BmhpStokController::class, 'show'])->name('bmhp-stok');
+            Route::get('bmhp-stok/detail/{id}',          [BmhpStokController::class, 'detail'])->name('bmhp-stok.detail');
+            Route::get('bmhp-stok/edit/{id}',            [BmhpStokController::class, 'edit'])->name('bmhp-stok.edit');
+            Route::get('bmhp-stok/delete/{id}',          [BmhpStokController::class, 'delete'])->name('bmhp-stok.delete');
+            Route::get('bmhp-stok/item-delete/{id}',     [BmhpStokController::class, 'itemDelete'])->name('bmhp-stok.item.delete');
+            Route::post('bmhp-stok/store',               [BmhpStokController::class, 'store'])->name('bmhp-stok.store');
+            Route::post('bmhp-stok/update/{id}',         [BmhpStokController::class, 'update'])->name('bmhp-stok.update');
+            Route::post('bmhp-stok/item-store',          [BmhpStokController::class, 'itemStore'])->name('bmhp-stok.item.store');
+            Route::post('bmhp-stok/item-update/{id}',    [BmhpStokController::class, 'itemUpdate'])->name('bmhp-stok.item.update');
         });
 
 

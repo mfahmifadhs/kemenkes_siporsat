@@ -96,6 +96,13 @@ class Atk extends Model
             }
         })->where('atk_id', $this->id_atk)->where('status', 'true')->sum('jumlah');
 
+        // return AtkDistribusiDetail::whereHas('distribusi.user.pegawai', function ($query) use ($ukerId) {
+        //     if ($ukerId) {
+        //         $query->where('uker_id', $ukerId);
+        //     }
+        // })->whereHas('usulan', function ($q) {
+        //     $q->where('status_proses', 'diproses');
+        // })->where('atk_id', $this->id_atk)->where('status', 'true')->sum('jumlah');
     }
 
     public function stokUker()

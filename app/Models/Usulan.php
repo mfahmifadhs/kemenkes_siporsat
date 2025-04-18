@@ -67,4 +67,8 @@ class Usulan extends Model
     public function detailBbm() {
         return $this->hasMany(UsulanBbm::class, 'usulan_id');
     }
+
+    public function detailBmhp() {
+        return $this->hasMany(UsulanBmhp::class, 'usulan_id');
+    }
 }
