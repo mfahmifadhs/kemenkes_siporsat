@@ -227,6 +227,7 @@
                                 <th>No</th>
                                 <th>Nama Barang</th>
                                 <th>Deskripsi</th>
+                                <th>Keterangan</th>
                                 <th>Jumlah</th>
                             </tr>
                         </thead>
@@ -236,6 +237,7 @@
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>{{ $row->atk->nama_barang }}</td>
                                 <td>{{ $row->atk->deskripsi }}</td>
+                                <td>{{ $row->keterangan }}</td>
                                 <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
                             </tr>
                             @endforeach

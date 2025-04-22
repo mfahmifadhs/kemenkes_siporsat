@@ -249,6 +249,7 @@
                                 <th>No</th>
                                 <th>Nama Barang</th>
                                 <th>Deskripsi</th>
+                                <th>Keterangan</th>
                                 <th>Jumlah</th>
                                 <th>Distribusi</th>
                                 <th>Stok Gudang</th>
@@ -260,6 +261,7 @@
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>{{ $row->atk->nama_barang }}</td>
                                 <td>{{ $row->atk->deskripsi }}</td>
+                                <td>{{ $row->keterangan }}</td>
                                 <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-default btn-xs border-dark" data-toggle="modal" data-target="#modal-{{ $row->id_detail }}">
