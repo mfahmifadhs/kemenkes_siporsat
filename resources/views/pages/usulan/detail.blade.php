@@ -33,7 +33,7 @@
                         </span>
                     </a>
                     @endif
-                    @if ((!$data->status_persetujuan && Auth::user()->role_id == 4 && $data->status_persetujuan != 'false') || in_array(Auth::user()->role_id, [1, 2]))
+                    @if ((!$data->status_persetujuan && Auth::user()->role_id == 4) || $data->status_persetujuan != 'false' || in_array(Auth::user()->role_id, [1, 2]))
                     <a href="{{ route('usulan.edit', $data->id_usulan) }}" class="btn btn-warning border-dark btn-xs mt-0 p-1">
                         <i class="fas fa-edit"></i> Edit
                     </a>
