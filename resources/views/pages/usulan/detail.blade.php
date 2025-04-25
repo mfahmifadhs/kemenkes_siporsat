@@ -26,7 +26,7 @@
                     Detail Usulan
                 </label>
                 <div class="card-tools">
-                    @if ($data->form_id == 3)
+                    @if ($data->form_id == 3 && $data->status_persetujuan != 'false')
                     <a href="#" onclick="confirmReusul(event, `{{ route('atk-bucket.reusul', $data->id_usulan) }}`)">
                         <span class="btn btn-default badge mt-2 p-2 border border-dark">
                             <i class="fas fa-basket-shopping"></i> Usulkan Kembali
@@ -53,6 +53,19 @@
                     <span class="badge badge-danger mt-2 p-2 border border-dark">
                         <i class="fas fa-times-circle"></i> Permintaan Ditolak
                     </span>
+                    @if ($data->form_id == 3)
+                    <a href="#" onclick="confirmReusul(event, `{{ route('atk-bucket.reusul', $data->id_usulan) }}`)">
+                        <span class="btn btn-primary badge mt-2 p-2 border border-dark">
+                            <i class="fas fa-file-circle-plus"></i> Usulkan Kembali
+                        </span>
+                    </a>
+                    @else
+                    <a href="#" onclick="confirmReusul(event, `{{ route('usulan.edit', $data->id_usulan) }}`)">
+                        <span class="btn btn-primary badge mt-2 p-2 border border-dark">
+                            <i class="fas fa-file-circle-plus"></i> Usulkan Kembali
+                        </span>
+                    </a>
+                    @endif
                     @endif
                 </div>
             </div>

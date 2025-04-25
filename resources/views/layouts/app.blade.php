@@ -635,7 +635,7 @@
             event.preventDefault(); // Prevent the default link behavior
             Swal.fire({
                 title: 'Usulkan Kembali',
-                text: 'Barang akan ditambahkan ke dalam keranjang, silahkan periksa keranjang',
+                text: 'Mengusulkan kembali',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya!',

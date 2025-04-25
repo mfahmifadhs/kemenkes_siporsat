@@ -644,6 +644,13 @@ class UsulanController extends Controller
             }
         }
 
+        if ($usulan->status_persetujuan == 'false') {
+            Usulan::where('id_usulan', $id)->update([
+                'status_persetujuan' => null,
+                'keterangan_tolak'   => null
+            ]);
+        }
+
         return redirect()->route('usulan.detail', $id)->with('success', 'Berhasil Menyimpan');
     }
 
