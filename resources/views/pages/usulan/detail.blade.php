@@ -53,13 +53,13 @@
                     <span class="badge badge-danger mt-2 p-2 border border-dark">
                         <i class="fas fa-times-circle"></i> Permintaan Ditolak
                     </span>
-                    @if ($data->form_id == 3)
+                    @if ($data->form_id == 3 && Auth::user()->role_id == 4)
                     <a href="#" onclick="confirmReusul(event, `{{ route('atk-bucket.reusul', $data->id_usulan) }}`)">
                         <span class="btn btn-primary badge mt-2 p-2 border border-dark">
                             <i class="fas fa-file-circle-plus"></i> Usulkan Kembali
                         </span>
                     </a>
-                    @else
+                    @elseif (Auth::user()->role_id == 4)
                     <a href="#" onclick="confirmReusul(event, `{{ route('usulan.edit', $data->id_usulan) }}`)">
                         <span class="btn btn-primary badge mt-2 p-2 border border-dark">
                             <i class="fas fa-file-circle-plus"></i> Usulkan Kembali
