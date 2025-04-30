@@ -633,6 +633,11 @@ class UsulanController extends Controller
 
         if ($usulan->form_id == 5) {
             UsulanBbm::where('usulan_id', $id)->delete();
+
+            Usulan::where('id_usulan', $id)->update([
+                'tanggal_selesai'   => $request->bulan_permintaan,
+            ]);
+
             $aadb = $request->aadb;
             foreach ($aadb as $aadb_id) {
                 $id_detail = UsulanBbm::withTrashed()->count() + 1;
