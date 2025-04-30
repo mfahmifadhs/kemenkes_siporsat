@@ -571,6 +571,7 @@ class UsulanController extends Controller
 
     public function update(Request $request, $id)
     {
+        dd($request->all());
         $usulan = Usulan::where('id_usulan', $id)->first();
 
         Usulan::where('id_usulan', $id)->update([
@@ -633,7 +634,6 @@ class UsulanController extends Controller
 
         if ($usulan->form_id == 5) {
             UsulanBbm::where('usulan_id', $id)->delete();
-            dd($request->all());
             $aadb = $request->aadb;
             foreach ($aadb as $aadb_id) {
                 $id_detail = UsulanBbm::withTrashed()->count() + 1;
