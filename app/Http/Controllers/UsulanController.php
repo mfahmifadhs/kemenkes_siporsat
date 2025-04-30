@@ -633,6 +633,7 @@ class UsulanController extends Controller
 
         if ($usulan->form_id == 5) {
             UsulanBbm::where('usulan_id', $id)->delete();
+            dd($request->all());
             $aadb = $request->aadb;
             foreach ($aadb as $aadb_id) {
                 $id_detail = UsulanBbm::withTrashed()->count() + 1;
