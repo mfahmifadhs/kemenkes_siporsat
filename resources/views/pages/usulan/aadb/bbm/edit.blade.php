@@ -65,6 +65,7 @@
                                                     data-id="{{ $row->id_aadb }}"
                                                     style="scale: 1.7;"
                                                     value="{{ $row->id_aadb }}"
+                                                    name="aadb[]"
                                                     @if(in_array($row->id_aadb, $selectedAadb)) checked @endif>
 
                                                 @if(in_array($row->id_aadb, $selectedAadb))
