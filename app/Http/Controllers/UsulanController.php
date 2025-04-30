@@ -557,8 +557,8 @@ class UsulanController extends Controller
         }
 
         if ($data->form_id == 5) {
-            $uker = Auth::user()->pegawai->uker_id;
-            $aadb = Aadb::where('uker_id', $uker)->where('status', 'true')->orderBy('kualifikasi', 'desc')->orderBy('kategori_id', 'asc')->get();
+            $usulan = Usulan::where('id_usulan', $id)->first();
+            $aadb   = Aadb::where('uker_id', $usulan->user->pegawai->uker_id)->where('status', 'true')->orderBy('kualifikasi', 'desc')->orderBy('kategori_id', 'asc')->get();
             return view('pages.usulan.aadb.bbm.edit', compact('id', 'aadb', 'data'));
         }
 
