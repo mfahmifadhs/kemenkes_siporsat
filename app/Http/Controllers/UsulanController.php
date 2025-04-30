@@ -571,7 +571,6 @@ class UsulanController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
         $usulan = Usulan::where('id_usulan', $id)->first();
 
         Usulan::where('id_usulan', $id)->update([
