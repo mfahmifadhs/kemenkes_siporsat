@@ -635,7 +635,7 @@ class UsulanController extends Controller
             UsulanBbm::where('usulan_id', $id)->delete();
 
             Usulan::where('id_usulan', $id)->update([
-                'tanggal_selesai'   => Carbon::parse($request->bulan_permintaan . '-01') : null,
+                'tanggal_selesai'   => Carbon::parse($request->bulan_permintaan . '-01'),
             ]);
 
             $aadb = $request->aadb;
