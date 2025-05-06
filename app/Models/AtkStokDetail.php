@@ -23,7 +23,7 @@ class AtkStokDetail extends Model
     ];
 
     public function stok() {
-        return $this->belongsTo(Stok::class, 'stok_id');
+        return $this->belongsTo(AtkStok::class, 'stok_id');
     }
 
     public function atk() {
