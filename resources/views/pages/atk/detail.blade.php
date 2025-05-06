@@ -61,11 +61,11 @@
                                         <div class="col-md-3 my-1">Satuan</div>
                                         <div class="col-md-9 my-1">: {{ $data->satuan->nama_satuan }}</div>
 
-                                        <div class="col-md-3 my-1">Keterangan</div>
-                                        <div class="col-md-9 my-1">: {{ $data->keterangan }}</div>
-
                                         <div class="col-md-3 my-1">Status</div>
                                         <div class="col-md-9 my-1">: {{ $data->status == 'true' ? 'Tersedia' : 'Tidak Tersedia' }}</div>
+
+                                        <div class="col-md-3 my-1">Sisa Stok</div>
+                                        <div class="col-md-9 my-1">: {{ $data->stok().' '.$data->satuan->nama_satuan }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -80,6 +80,9 @@
                             <label class="card-title">
                                 Pembelian
                             </label>
+                            <div class="card-tools">
+                                Total : {{ $data->stokMasuk->sum('jumlah') }} {{ $data->satuan->nama_satuan }}
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <div class="card-body border border-dark">
@@ -121,6 +124,9 @@
                             <label class="card-title">
                                 Permintaan
                             </label>
+                            <div class="card-tools">
+                                Total : {{ $data->stokKeluar->sum('jumlah') }} {{ $data->satuan->nama_satuan }}
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <div class="card-body border border-dark">
@@ -216,4 +222,3 @@
 </script>
 @endsection
 @endsection
-
