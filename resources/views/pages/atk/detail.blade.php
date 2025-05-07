@@ -148,7 +148,7 @@
                                             @foreach ($data->stokKeluar as $row)
                                             <tr class="bg-white">
                                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                                <td class="text-center">{{ Carbon\Carbon::parse($row->tanggal_beli)->isoFormat('DD MMMM Y') }}</td>
+                                                <td class="text-center">{{ Carbon\Carbon::parse($row->tanggal_usulan)->isoFormat('DD MMMM Y') }}</td>
                                                 <td>{{ $row->usulan->kode_usulan }}</td>
                                                 <td>{{ $row->usulan->user->pegawai->uker->unit_kerja }}</td>
                                                 <td>{{ $row->usulan->keterangan }}</td>
