@@ -49,7 +49,8 @@ class Atk extends Model
 
     public function stokKeluar()
     {
-        return $this->hasMany(UsulanAtk::class, 'atk_id')->where('status', 'true');
+        return $this->hasMany(UsulanAtk::class, 'atk_id')->join('t_usulan', 'id_usulan', 'usulan_id')
+            ->where('t_usulan_atk.status', 'true')->where('status_persetujuan', 'true');
     }
 
     public function stok()
