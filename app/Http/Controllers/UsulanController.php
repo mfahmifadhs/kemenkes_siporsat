@@ -162,7 +162,7 @@ class UsulanController extends Controller
                     </a>';
             }
 
-            if (in_array(Auth::user()->akses_id, [2, 3]) && $row->status_proses == 'proses') {
+            if ((in_array(Auth::user()->akses_id, [2, 3]) || Auth::user()->id == 25) && $row->status_proses == 'proses') {
                 $aksi .= '
                     <a href="' . route('usulan.proses', $row->id_usulan) . '" class="btn btn-default btn-xs bg-warning rounded border-dark">
                         <i class="fas fa-file-import p-1" style="font-size: 12px;"></i>
