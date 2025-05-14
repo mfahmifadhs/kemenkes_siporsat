@@ -182,6 +182,7 @@
 
 <script>
     $(document).ready(function() {
+        let userId  = '{{ auth()->user()->id }}';
         let role    = '{{ auth()->user()->role_id }}';
         let form    = '{{ $form->kode_form }}';
         let formId  = '{{ $formId }}';
@@ -265,7 +266,7 @@
                                     columns: [0, 2, 3, 4, 5, 6, 7, 8],
                                 },
                             },
-                            (role == 4 && form != 'atk' && form != 'bmhp' ? [{
+                            ((role == 4 || userId == 25) && form != 'atk' && form != 'bmhp' ? [{
                                 text: ' Tambah',
                                 className: 'bg-primary',
                                 action: function(e, dt, button, config) {
