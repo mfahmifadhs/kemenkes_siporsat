@@ -75,10 +75,10 @@ class Access
 
         if ($status == 'user' || $id == 25)
         {
-            if ($role != 4) {
-                return back()->with('failed','Anda tidak memiliki akses!');
-            } else {
+            if ($role == 4 || $id == 25) {
                 return $next($request);
+            } else {
+                return back()->with('failed','Anda tidak memiliki akses!');
             }
         }
 
