@@ -392,8 +392,6 @@
             const qty = parseFloat(form.find('input[name="qty"]').val().replace(/\./g, '')) || 0
             const maxQty = form.find('input[name="qty"]').attr("max")
 
-            console.log('maks ' + qty)
-
             if (qty == 0) {
                 Swal.fire({
                     title: 'Jumlah harus lebih dari 1',
