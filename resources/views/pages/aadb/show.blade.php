@@ -320,7 +320,7 @@
                                     text: ' PDF',
                                     pageSize: 'A4',
                                     className: 'bg-danger',
-                                    title: 'kegiatan',
+                                    title: 'aadb',
                                     exportOptions: {
                                         columns: [0, 2, 3, 4],
                                     },
@@ -328,7 +328,7 @@
                                     extend: 'excel',
                                     text: ' Excel',
                                     className: 'bg-success',
-                                    title: 'kegiatan',
+                                    title: 'aadb',
                                     exportOptions: {
                                         columns: [0, 2, 3, 4, 5, 6, 7, 8],
                                     },

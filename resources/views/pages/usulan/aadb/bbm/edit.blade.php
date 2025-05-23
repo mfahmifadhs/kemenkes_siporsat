@@ -69,7 +69,7 @@
                                                     @if(in_array($row->id_aadb, $selectedAadb)) checked @endif>
 
                                                 @if(in_array($row->id_aadb, $selectedAadb))
-                                                <input type="hidden" name="aadb[]" value="{{ $row->id_aadb }}" id="hidden-aadb-{{ $row->id_aadb }}">
+                                                <input type="hidden" value="{{ $row->id_aadb }}" id="hidden-aadb-{{ $row->id_aadb }}">
                                                 <div id="hidden-container"></div>
                                                 @endif
                                             </td>
@@ -123,7 +123,6 @@
                 if (!existingInput) {
                     let hiddenInput = document.createElement("input");
                     hiddenInput.type = "hidden";
-                    hiddenInput.name = "aadb[]";
                     hiddenInput.value = aadbId;
                     hiddenInput.id = "hidden-aadb-" + aadbId;
                     hiddenContainer.appendChild(hiddenInput);

@@ -632,21 +632,25 @@ class UsulanController extends Controller
         }
 
         if ($usulan->form_id == 5) {
-            UsulanBbm::where('usulan_id', $id)->delete();
+            $detail = $request->aadb;
+            UsulanBbm::where('usulan_id', $id)->whereNotIn('aadb_id', $detail)->delete();
+
+            foreach ($detail as $i => $aadb) {
+                $cekAadb = UsulanBbm::where('usulan_id', $id)->where('aadb_id', $aadb)->first();
+                if (!$cekAadb) {
+                    $id_detail = UsulanBbm::withTrashed()->count() + 1;
+                    $detail = new UsulanBbm();
+                    $detail->id_detail   = $id_detail;
+                    $detail->usulan_id   = $id;
+                    $detail->aadb_id     = $aadb;
+                    $detail->save();
+                }
+
+            }
 
             Usulan::where('id_usulan', $id)->update([
                 'tanggal_selesai'   => Carbon::parse($request->bulan_permintaan . '-01'),
             ]);
-
-            $aadb = $request->aadb;
-            foreach ($aadb as $aadb_id) {
-                $id_detail = UsulanBbm::withTrashed()->count() + 1;
-                $detail = new UsulanBbm();
-                $detail->id_detail   = $id_detail;
-                $detail->usulan_id   = $id;
-                $detail->aadb_id     = $aadb_id;
-                $detail->save();
-            }
         }
 
         if ($usulan->status_persetujuan == 'false') {
