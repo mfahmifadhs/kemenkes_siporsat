@@ -263,7 +263,7 @@
                                 <td>{{ $row->atk->deskripsi }}</td>
                                 <td>{{ $row->keterangan }}</td>
                                 <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
-                                <td class="text-center">{{ $row->atk->stokUker().' '.$row->atk->satuan->nama_satuan }}</td>
+                                <td class="text-center">{{ $row->atk->stokUker($row->usulan->pegawai->uker_id).' '.$row->atk->satuan->nama_satuan }}</td>
                                 <td class="text-center">{{ $row->atk->stok().' '.$row->atk->satuan->nama_satuan }}</td>
                             </tr>
                             @endforeach

@@ -106,9 +106,9 @@ class Atk extends Model
         // })->where('atk_id', $this->id_atk)->where('status', 'true')->sum('jumlah');
     }
 
-    public function stokUker()
+    public function stokUker($id = null)
     {
-        $ukerId = Auth::user()->pegawai->uker_id;
+        $ukerId = $id ?? Auth::user()->pegawai->uker_id;
         $dataMasuk = UsulanAtk::whereHas('usulan.user.pegawai', function ($query) use ($ukerId) {
             $query->where('status_persetujuan', 'true');
             if ($ukerId) {
