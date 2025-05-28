@@ -243,16 +243,22 @@ class UsulanController extends Controller
                 $format = $this->nomorNaskah($request);
             }
 
+            if ($data->form_id == 5) {
+                $tanggal = $data->tanggal_selesai;
+            } else {
+                $tanggal = $request->tanggal_selesai;
+            }
+
             Usulan::where('id_usulan', $id)->update([
                 'verif_id'           => Auth::user()->pegawai_id,
                 'nomor_usulan'       => $request->persetujuan == 'true' ? $format : null,
                 'status_persetujuan' => $request->persetujuan,
                 'status_proses'      => $request->persetujuan == 'true' ? 'proses' : null,
                 'keterangan_tolak'   => $request->alasan_penolakan ?? null,
-                'tanggal_selesai'    => $request->tanggal_selesai ?? null,
+                'tanggal_selesai'    => $tanggal,
                 'otp_2'              => $request->persetujuan == 'true' ? rand(111111, 999999) : null,
                 'otp_3'              => $otp3,
-                'tanggal_usulan'     => Carbon::parse($request->tanggal_selesai . ' ' . now()->toTimeString()) ?? Carbon::now()
+                'tanggal_usulan'     => $data->tanggal_usulan
             ]);
 
             if ($data->form_id == 3) {
