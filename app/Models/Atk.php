@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
+use Carbon\Carbon;
 
 class Atk extends Model
 {
@@ -69,6 +70,23 @@ class Atk extends Model
             ->join('t_usulan', 'id_usulan', 'usulan_id')
             ->join('users', 'id', 'user_id')
             ->join('t_pegawai', 'id_pegawai', 'pegawai_id');
+    }
+
+    public function permintaanAkhir($id = null)
+    {
+        $data   = UsulanAtk::where('id_detail', $id)->first();
+        $ukerId = $data->usulan->pegawai->uker_id;
+
+        $latest = UsulanAtk::whereHas('usulan.user.pegawai', function ($query) use ($ukerId) {
+            $query->where('status_persetujuan', 'true');
+            $query->where('uker_id', $ukerId);
+        })
+            ->where('atk_id', $data->atk_id)
+            ->where('usulan_id', '!=', $data->usulan_id)
+            ->orderByDesc('id_detail')
+            ->first();
+
+        return $latest ? Carbon::parse($latest->usulan->tanggal_usulan)->isoFormat('DD MMMM Y') : null;
     }
 
     // =====================================================================

@@ -253,6 +253,7 @@
                                 <th>Jumlah</th>
                                 <th>Stok Uker</th>
                                 <th>Stok Gudang</th>
+                                <th>Tanggal Permintaan Terakhir</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -265,6 +266,7 @@
                                 <td class="text-center">{{ $row->jumlah.' '.$row->satuan->nama_satuan }} </td>
                                 <td class="text-center">{{ $row->atk->stokUker($row->usulan->pegawai->uker_id).' '.$row->atk->satuan->nama_satuan }}</td>
                                 <td class="text-center">{{ $row->atk->stok().' '.$row->atk->satuan->nama_satuan }}</td>
+                                <td class="text-center">{{ $row->atk->permintaanAkhir($row->id_detail) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
