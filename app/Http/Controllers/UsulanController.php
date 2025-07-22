@@ -335,6 +335,10 @@ class UsulanController extends Controller
         // =================================================================================
 
         if ($id == 'servis') {
+            $request->validate([
+                'file' => 'required|mimes:pdf|max:2048',
+            ]);
+
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $fileName = $file->getClientOriginalName();

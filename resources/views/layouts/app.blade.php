@@ -445,6 +445,16 @@
     </script>
     @endif
 
+    @if ($errors->any())
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Validasi Gagal!',
+            html: `{!! implode('<br>', $errors->all()) !!}`
+        });
+    </script>
+    @endif
+
     @yield('js')
     <script>
         $(function() {

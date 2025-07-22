@@ -65,7 +65,7 @@
                                 <span class="w-75 input-group">
                                     <div class="btn btn-default btn-file w-75 border border-dark p-2">
                                         <i class="fas fa-upload"></i> Upload PDF <br>
-                                        <small>Data Pendukung Foto Kerusakan/Lainnya dalam 1 file PDF</small> <br>
+                                        <small>Data Pendukung Foto Kerusakan/Lainnya dalam 1 file PDF (maks. 2mb)</small> <br>
                                         <input type="file" class="form-control image" name="file" onchange="displaySelectedFile(this)" accept=".pdf" required>
                                         <span id="selected-file-name"></span>
                                     </div>
