@@ -108,21 +108,6 @@
             </div>
         </div>
 
-
-        {{-- TOTAL --}}
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <div class="info-box mb-3 border border-dark" style="background-color: #4ed59a;">
-                    <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
-
-                    <div class="info-box-content">
-                        <h3 class="info-box-number">{{ $usulan->where('form_id', 3)->count() }}</h3>
-                        <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
