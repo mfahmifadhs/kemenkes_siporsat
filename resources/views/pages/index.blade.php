@@ -23,7 +23,7 @@
                 </p>
             </div>
 
-            <div class="col-md-4 text-md-right mt-2 my-auto">
+            <!-- <div class="col-md-4 text-md-right mt-2 my-auto">
                 <button type="button"
                     class="btn btn-outline-primary btn-sm px-3 py-2"
                     data-toggle="modal"
@@ -35,7 +35,7 @@
 
                     <i class="fas fa-chevron-down ml-2"></i>
                 </button>
-            </div>
+            </div> -->
         </div>
 
         {{-- FILTER --}}
