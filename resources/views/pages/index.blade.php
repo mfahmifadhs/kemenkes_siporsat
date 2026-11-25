@@ -5,15 +5,127 @@
 <!-- Main content -->
 <section class="content-header">
     <div class="container-fluid">
+
+        {{-- HEADER --}}
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <h4 class="font-weight-bold mb-1">
+                    Dashboard
+                </h4>
+
+                <p class="text-muted mb-0">
+                    Selamat datang,
+                    <strong>
+                        {{ ucfirst(strtolower(Auth::user()->pegawai->nama_pegawai)) }}
+                    </strong>
+                    <span class="mx-1">•</span>
+                    {{ Auth::user()->pegawai->uker->unit_kerja }}
+                </p>
+            </div>
+
+            <div class="col-md-4 text-md-right mt-2 my-auto">
+                <button type="button"
+                    class="btn btn-outline-primary btn-sm px-3 py-2"
+                    data-toggle="modal"
+                    data-target="#modalFilterPeriode">
+
+                    <i class="far fa-calendar-alt mr-2"></i>
+
+                    {{ \Carbon\Carbon::createFromDate($tahun, $bulan ?: now()->month, 1)->translatedFormat('F Y') }}
+
+                    <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        {{-- FILTER --}}
+
+        <div class="modal fade" id="modalFilterPeriode" tabindex="-1"
+            role="dialog" aria-labelledby="modalFilterPeriodeLabel"
+            aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalFilterPeriodeLabel">
+                            <i class="far fa-calendar-alt text-primary mr-2"></i>
+                            Filter Periode
+                        </h5>
+
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+
+                    <form action="{{ url()->current() }}" method="GET">
+
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Pilih Bulan</label>
+
+                                <select name="bulan" class="form-control" required>
+                                    @foreach (range(1, 12) as $i)
+                                    <option value="{{ $i }}"
+                                        {{ (int) $bulan === $i ? 'selected' : '' }}>
+                                        {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="font-weight-bold">Pilih Tahun</label>
+
+                                <select name="tahun" class="form-control" required>
+                                    @foreach (range(now()->year, now()->year - 5) as $th)
+                                    <option value="{{ $th }}"
+                                        {{ (int) $tahun === $th ? 'selected' : '' }}>
+                                        {{ $th }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light"
+                                data-dismiss="modal">
+                                Batal
+                            </button>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter mr-1"></i>
+                                Terapkan
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        {{-- TOTAL --}}
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="info-box mb-3 border border-dark" style="background-color: #4ed59a;">
+                    <span class="info-box-icon"><i class="fas fa-pencil"></i></span>
+
+                    <div class="info-box-content">
+                        <h3 class="info-box-number">{{ $usulan->where('form_id', 3)->count() }}</h3>
+                        <h6 class="info-box-text text-sm">Usulan Alat Tulis Kantor</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="font-weight-bold mb-4 text-capitalize">
-                            Selamat Datang, {{ ucfirst(strtolower(Auth::user()->pegawai->nama_pegawai)) }}
-                            <small>({{ Auth::user()->pegawai->uker->unit_kerja }})</small>
-                        </h4>
-                    </div>
 
                     <div class="col-md-3">
                         <div class="card border border-dark">
@@ -117,6 +229,8 @@
                                                 <form action="{{ route('usulan', 'ukt') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -132,6 +246,8 @@
                                                 <form action="{{ route('usulan', 'ukt') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -147,6 +263,8 @@
                                                 <form action="{{ route('usulan', 'ukt') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -162,6 +280,8 @@
                                                 <form action="{{ route('usulan', 'ukt') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
@@ -190,6 +310,8 @@
                                                 <form action="{{ route('usulan', 'gdn') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -205,6 +327,8 @@
                                                 <form action="{{ route('usulan', 'gdn') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -220,6 +344,8 @@
                                                 <form action="{{ route('usulan', 'gdn') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -235,6 +361,8 @@
                                                 <form action="{{ route('usulan', 'gdn') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
@@ -264,6 +392,8 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -279,6 +409,8 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -294,6 +426,8 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -309,6 +443,8 @@
                                                 <form action="{{ route('usulan', 'atk') }}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
@@ -339,6 +475,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
                                                     <input type="hidden" name="form" value="4">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -355,6 +493,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
                                                     <input type="hidden" name="form" value="4">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -371,6 +511,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
                                                     <input type="hidden" name="form" value="4">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -387,6 +529,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
                                                     <input type="hidden" name="form" value="4">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
@@ -417,6 +561,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
                                                     <input type="hidden" name="form" value="5">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -433,6 +579,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
                                                     <input type="hidden" name="form" value="5">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -449,6 +597,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
                                                     <input type="hidden" name="form" value="5">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -465,6 +615,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
                                                     <input type="hidden" name="form" value="5">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
@@ -495,6 +647,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="verif">
                                                     <input type="hidden" name="form" value="6">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-file-signature"></i> Persetujuan
@@ -511,6 +665,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="proses">
                                                     <input type="hidden" name="form" value="6">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-clock"></i> Proses
@@ -527,6 +683,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="selesai">
                                                     <input type="hidden" name="form" value="6">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-check-circle"></i> Selesai
@@ -543,6 +701,8 @@
                                                     @csrf
                                                     <input type="hidden" name="status" value="false">
                                                     <input type="hidden" name="form" value="6">
+                                                    <input type="hidden" name="bulan" value="{{ $bulan }}">
+                                                    <input type="hidden" name="tahun" value="{{ $tahun }}">
                                                     <button type="submit" class="nav-link btn btn-link py-2 font-weight-bold text-left btn-block">
                                                         <span class="float-left">
                                                             <i class="fas fa-times-circle"></i> Ditolak
